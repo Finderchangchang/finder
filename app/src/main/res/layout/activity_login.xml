@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="手机号"
+            android:textColor="@color/themeColor"
+            android:textSize="10sp" />
+
+        <EditText
+            android:id="@+id/tv_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@null"
+            android:cursorVisible="false"
+            android:gravity="center"
+            android:hint="***********"
+            android:textColor="@color/themeColor"
+            android:textColorHint="@color/themeColor"
+            android:textSize="24sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:text="验证码"
+            android:textColor="@color/themeColor"
+            android:textSize="10sp" />
+
+        <EditText
+            android:id="@+id/tv_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@null"
+            android:cursorVisible="false"
+            android:gravity="center"
+            android:hint="******"
+            android:maxLength="6"
+            android:textColor="@color/themeColor"
+            android:textColorHint="@color/themeColor"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:textSize="12sp"
+            android:textColor="@color/themeColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/bt_two"
+                style="@style/number_button"
+                android:layout_centerHorizontal="true"
+                android:text="2" />
+
+            <Button
+                android:id="@+id/bt_one"
+                style="@style/number_button"
+                android:layout_marginRight="25dp"
+                android:layout_toLeftOf="@id/bt_two"
+                android:text="1" />
+
+            <Button
+                android:id="@+id/bt_three"
+                style="@style/number_button"
+                android:layout_marginLeft="25dp"
+                android:layout_toRightOf="@id/bt_two"
+                android:text="3" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <Button
+                android:id="@+id/bt_five"
+                style="@style/number_button"
+                android:layout_centerHorizontal="true"
+                android:text="5" />
+
+            <Button
+                android:id="@+id/bt_four"
+                style="@style/number_button"
+                android:layout_marginRight="25dp"
+                android:layout_toLeftOf="@id/bt_five"
+                android:text="4" />
+
+            <Button
+                android:id="@+id/bt_six"
+                style="@style/number_button"
+                android:layout_marginLeft="25dp"
+                android:layout_toRightOf="@id/bt_five"
+                android:text="6" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <Button
+                android:id="@+id/bt_eight"
+                style="@style/number_button"
+                android:layout_centerHorizontal="true"
+                android:text="8" />
+
+            <Button
+                android:id="@+id/bt_seven"
+                style="@style/number_button"
+                android:layout_marginRight="25dp"
+                android:layout_toLeftOf="@id/bt_eight"
+                android:text="7" />
+
+            <Button
+                android:id="@+id/bt_nine"
+                style="@style/number_button"
+                android:layout_marginLeft="25dp"
+                android:layout_toRightOf="@id/bt_eight"
+                android:text="9" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <Button
+                android:id="@+id/bt_zero"
+                style="@style/number_button"
+                android:layout_centerHorizontal="true"
+                android:text="0" />
+
+            <Button
+                android:id="@+id/bt_delete"
+                style="@style/text_button"
+                android:layout_marginRight="25dp"
+                android:layout_toLeftOf="@id/bt_zero"
+                android:text="返回" />
+
+            <Button
+                android:id="@+id/bt_next"
+                style="@style/text_button"
+                android:layout_marginLeft="25dp"
+                android:layout_toRightOf="@id/bt_zero"
+                android:text="发送" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

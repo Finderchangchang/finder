@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/main_bar"
+        android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/barHeight">
+
+        <ImageView
+            android:id="@+id/im_back"
+            android:layout_marginLeft="16dp"
+            android:src="@drawable/ic_back"
+            android:paddingRight="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true" />
+
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:layout_marginLeft="16dp"
+            />
+
+        <RelativeLayout
+            android:visibility="gone"
+            android:id="@+id/rl_messages"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:layout_centerVertical="true"
+            android:layout_width="28dp"
+            android:layout_height="28dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:textColor="@color/themeColor"
+                android:text="@string/message"/>
+            <TextView
+                android:layout_width="12dp"
+                android:textSize="8sp"
+                android:textColor="@android:color/white"
+                android:text="1"
+                android:layout_marginRight="4dp"
+                android:gravity="center"
+                android:background="@drawable/circle_messages"
+                android:layout_alignParentRight="true"
+                android:layout_height="12dp" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <com.github.nuptboyzhb.lib.SuperSwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/main_bar"
+        >
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </com.github.nuptboyzhb.lib.SuperSwipeRefreshLayout>
+
+    <com.bm.library.PhotoView
+        android:id="@+id/iv_preview_img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:background="@android:color/black"
+        android:scaleType="centerInside"
+        android:visibility="gone" />
+    <TextView
+        android:id="@+id/tv_nothing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="nothing"
+        android:layout_centerInParent="true"
+        android:textSize="22sp"/>
+</RelativeLayout>

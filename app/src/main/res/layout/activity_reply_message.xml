@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/barHeight">
+
+        <TextView
+            android:id="@+id/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:text="取消"
+            android:gravity="center"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:textColor="#7E7F7E"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/publish"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp"
+            android:gravity="center"
+            android:text="发送"
+            android:textColor="@color/themeColor"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/et_content"
+        android:background="@null"
+        android:padding="10dp"
+        android:textColorHint="#E5E5E5"
+        android:hint="发表评论"
+        android:textCursorDrawable="@null"
+        android:gravity="start"
+        android:textSize="16sp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

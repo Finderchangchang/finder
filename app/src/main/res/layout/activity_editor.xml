@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg">
+
+    <RelativeLayout
+        android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/barHeight">
+
+        <TextView
+            android:id="@+id/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:text="取消"
+            android:gravity="center"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:textColor="#7E7F7E"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/publish"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp"
+            android:gravity="center"
+            android:text="发布"
+            android:textColor="@color/themeColor"
+            android:textSize="16sp" />
+    </RelativeLayout>
+    
+    <LinearLayout
+        android:layout_marginTop="60dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ic_preview"
+            android:layout_width="100dp"
+            android:layout_height="180dp"
+            android:layout_margin="10dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_loading"
+            android:visibility="visible"/>
+        <RelativeLayout
+            android:id="@+id/ic_preview_video1"
+            android:layout_width="100dp"
+            android:layout_height="180dp"
+            android:layout_margin="10dp"
+            android:visibility="gone"
+            >
+        <ImageView
+            android:id="@+id/ic_preview_video"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_loading"
+            />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/icon_share_video"
+                />
+        </RelativeLayout>
+        <EditText
+            android:id="@+id/content"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:background="@android:color/white"
+            android:layout_width="0dp"
+            android:gravity="start"
+            android:textSize="16sp"
+            android:hint=" 拍完世界，写下生活..."
+            android:layout_weight="3"
+            android:layout_height="180dp" />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textColor="@android:color/black"
+        android:visibility="gone"
+        />
+
+    <com.bm.library.PhotoView
+        android:id="@+id/iv_preview_img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:background="@android:color/black"
+        android:scaleType="centerInside"
+        android:visibility="gone" />
+</RelativeLayout>

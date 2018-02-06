@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="picker_select"     parent="Theme.AppCompat.NoActionBar">
+        <item name="android:colorPrimary">@color/themeColor</item>
+
+    </style>
+</resources>

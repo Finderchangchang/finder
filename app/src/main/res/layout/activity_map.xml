@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/map_content"
+    android:layout_height="match_parent">
+
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/mTexturemap"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <ImageView
+        android:id="@+id/bt_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="13dp"
+        android:padding="4dp"
+        android:src="@drawable/ic_back" />
+
+
+    <ImageView
+        android:id="@+id/local"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_map_local"/>
+
+    <LinearLayout
+        android:id="@+id/rl_local"
+        android:layout_marginLeft="10dp"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:background="@drawable/ic_local_bg"
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/local"
+       >
+        <ImageView
+            android:id="@+id/zoom_jia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_zoomjia"/>
+
+        <ImageView
+            android:id="@+id/zoom_jian"
+            android:layout_below="@id/zoom_jia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_zoomjian"/>
+
+    </LinearLayout>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:visibility="gone"
+        android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</RelativeLayout>
