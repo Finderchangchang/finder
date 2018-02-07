@@ -228,7 +228,7 @@ public class CaptureLayout extends FrameLayout {
         });
 
         //取消按钮
-        btn_cancel = new TypeButton(getContext(), TypeButton.TYPE_CANCEL, (int) (button_size / 1.62f));
+        btn_cancel = new TypeButton(getContext(), TypeButton.TYPE_CANCEL, (int) (button_size / 1.16f));
         btn_cancel.setBackgroundResource(R.drawable.ic_camera_cancel);
         final LayoutParams btn_cancel_param = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         btn_cancel_param.gravity = Gravity.CENTER_VERTICAL;
@@ -245,7 +245,7 @@ public class CaptureLayout extends FrameLayout {
             }
         });
         //确认按钮
-        btn_confirm = new TypeButton(getContext(), TypeButton.TYPE_CONFIRM, (int) (button_size / 1.5f));
+        btn_confirm = new TypeButton(getContext(), TypeButton.TYPE_CONFIRM, (int) (button_size / 1f));
 //        btn_confirm.setBackgroundResource(R.drawable.ic_camera_true);
         LayoutParams btn_confirm_param = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         btn_confirm_param.gravity = Gravity.CENTER_VERTICAL | Gravity.RIGHT;
@@ -263,10 +263,10 @@ public class CaptureLayout extends FrameLayout {
         });
 
         //返回按钮
-        btn_return = new TypeButton(getContext(), TypeButton.TYPE_NULL, (int) (button_size / 1.5f));
+        btn_return = new TypeButton(getContext(), TypeButton.TYPE_NULL, (int) (button_size / 2f));
         LayoutParams btn_return_param = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         btn_return_param.gravity = Gravity.CENTER_VERTICAL;
-        btn_return_param.setMargins(layout_width / 6, 0, 0, 0);
+        btn_return_param.setMargins(layout_width / 4 - button_size / 2, 0, 0, 0);
         btn_return.setLayoutParams(btn_return_param);
         btn_return.setBackgroundResource(R.drawable.video_btn);
         btn_return.setOnClickListener(new OnClickListener() {
