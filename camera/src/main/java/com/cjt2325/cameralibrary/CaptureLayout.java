@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -66,6 +67,7 @@ public class CaptureLayout extends FrameLayout {
     public void setReturnLisenter(ReturnListener returnListener) {
         this.returnListener = returnListener;
     }
+
 
     private CaptureButton btn_capture;      //拍照按钮
     private TypeButton btn_confirm;         //确认按钮
@@ -172,6 +174,7 @@ public class CaptureLayout extends FrameLayout {
             @Override
             public void takePictures() {
                 if (captureLisenter != null) {
+                    btn_return.setVisibility(View.GONE);
                     captureLisenter.takePictures();
                 }
             }
@@ -190,6 +193,7 @@ public class CaptureLayout extends FrameLayout {
                     //if (!res) {
                     //captureLisenter.takePictures();
                     //} else {
+                    btn_return.setVisibility(View.GONE);
                     captureLisenter.recordStart();
                     //}
                 }
@@ -201,7 +205,8 @@ public class CaptureLayout extends FrameLayout {
                 if (captureLisenter != null) {
                     captureLisenter.recordEnd(time);
                 }
-                startAlphaAnimation(true);
+                btn_return.setVisibility(View.VISIBLE);
+                //startAlphaAnimation(false);
                 startTypeBtnAnimator();
             }
 
@@ -209,6 +214,7 @@ public class CaptureLayout extends FrameLayout {
             public void recordZoom(float zoom) {
                 if (captureLisenter != null) {
                     captureLisenter.recordZoom(zoom);
+                    btn_return.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -216,12 +222,13 @@ public class CaptureLayout extends FrameLayout {
             public void recordError() {
                 if (captureLisenter != null) {
                     captureLisenter.recordError();
+                    btn_return.setVisibility(View.VISIBLE);
                 }
             }
         });
 
         //取消按钮
-        btn_cancel = new TypeButton(getContext(), TypeButton.TYPE_CANCEL, (int) (button_size / 1.5f));
+        btn_cancel = new TypeButton(getContext(), TypeButton.TYPE_CANCEL, (int) (button_size / 1.62f));
         btn_cancel.setBackgroundResource(R.drawable.ic_camera_cancel);
         final LayoutParams btn_cancel_param = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         btn_cancel_param.gravity = Gravity.CENTER_VERTICAL;
@@ -237,7 +244,6 @@ public class CaptureLayout extends FrameLayout {
 //                resetCaptureLayout();
             }
         });
-
         //确认按钮
         btn_confirm = new TypeButton(getContext(), TypeButton.TYPE_CONFIRM, (int) (button_size / 1.5f));
 //        btn_confirm.setBackgroundResource(R.drawable.ic_camera_true);
@@ -257,7 +263,7 @@ public class CaptureLayout extends FrameLayout {
         });
 
         //返回按钮
-        btn_return = new TypeButton(getContext(), TypeButton.TYPE_NULL, button_size / 2);
+        btn_return = new TypeButton(getContext(), TypeButton.TYPE_NULL, (int) (button_size / 1.5f));
         LayoutParams btn_return_param = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         btn_return_param.gravity = Gravity.CENTER_VERTICAL;
         btn_return_param.setMargins(layout_width / 6, 0, 0, 0);
@@ -348,7 +354,7 @@ public class CaptureLayout extends FrameLayout {
             animator_txt_tip.start();
             //isFirst = false;
         } else {
-            ObjectAnimator animator_txt_tip = ObjectAnimator.ofFloat(txt_tip, "alpha", 1f, 0f);
+            ObjectAnimator animator_txt_tip = ObjectAnimator.ofFloat(txt_tip, "alpha", 0f, 1f);
             animator_txt_tip.setDuration(500);
             animator_txt_tip.start();
         }

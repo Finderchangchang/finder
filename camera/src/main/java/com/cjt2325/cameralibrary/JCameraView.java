@@ -554,8 +554,9 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
         captureBitmap = bitmap;
         mPhoto.setImageBitmap(bitmap);
         mPhoto.setVisibility(VISIBLE);
-        mCaptureLayout.startAlphaAnimation(true);
         mCaptureLayout.startTypeBtnAnimator();
+        mCaptureLayout.startAlphaAnimation(false);
+
     }
 
     @Override
