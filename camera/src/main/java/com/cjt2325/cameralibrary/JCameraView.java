@@ -219,6 +219,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
             @Override
             public void takePictures() {
                 if (!result) {
+                    mFoucsView.setVisibility(GONE);
                     mSwitchCamera.setVisibility(INVISIBLE);
                     mFlashLamp.setVisibility(INVISIBLE);
                     back.setVisibility(INVISIBLE);
@@ -229,13 +230,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
 
             @Override
             public void recordStart() {
-                if (!result) {
-                    mSwitchCamera.setVisibility(INVISIBLE);
-                    mFlashLamp.setVisibility(INVISIBLE);
-                    back.setVisibility(INVISIBLE);
-                    //image_time.setVisibility(INVISIBLE);
-                    machine.capture();
-                } else {
+                if (result) {
                     mSwitchCamera.setVisibility(INVISIBLE);
                     mFlashLamp.setVisibility(INVISIBLE);
                     back.setVisibility(INVISIBLE);
@@ -247,6 +242,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
 
             @Override
             public void recordShort(final long time) {
+                mFoucsView.setVisibility(GONE);
                 mCaptureLayout.setTextWithAnimation("录制时间过短");
                 mSwitchCamera.setVisibility(VISIBLE);
                 mFlashLamp.setVisibility(VISIBLE);
@@ -263,6 +259,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
 
             @Override
             public void recordEnd(long time) {
+                mFoucsView.setVisibility(GONE);
                 timer.cancel();
                 machine.stopRecord(false, time);
             }
@@ -557,7 +554,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
         captureBitmap = bitmap;
         mPhoto.setImageBitmap(bitmap);
         mPhoto.setVisibility(VISIBLE);
-        mCaptureLayout.startAlphaAnimation();
+        mCaptureLayout.startAlphaAnimation(true);
         mCaptureLayout.startTypeBtnAnimator();
     }
 

@@ -454,6 +454,7 @@ public class DetailActivity extends BaseActivity {
                     public void onNext(Response<String> stringResponse) {
                         CodeEntity entity = GsonUtil.GosnToEntity(stringResponse.body(), CodeEntity.class);
                         if (entity.getCode() == 1) {
+                            getMoodDetatils(moodId, UserStatusUtil.getUserId(), lat, lon);
 
                         }
                     }
@@ -492,6 +493,8 @@ public class DetailActivity extends BaseActivity {
                             showToast("删除成功");
                             finish();
                             //mainRecyclerAdapter.remove(postion);
+                            getMoodDetatils(moodId, UserStatusUtil.getUserId(), lat, lon);
+
                         }
                     }
                 });

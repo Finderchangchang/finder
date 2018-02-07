@@ -182,10 +182,15 @@ public class CaptureButton extends View {
             case STATE_PRESS:
                 if (captureLisenter != null && (button_state == BUTTON_STATE_ONLY_CAPTURE || button_state ==
                         BUTTON_STATE_BOTH)) {
-                    if (!isRecording) {
-                        postDelayed(longPressRunnable, 0);
+                    //true摄像 false拍照
+                    if (result) {
+                        if (!isRecording) {
+                            postDelayed(longPressRunnable, 0);
+                        } else {
+                            recordEnd();
+                        }
                     } else {
-                        recordEnd();
+                        startCaptureAnimation(button_inside_radius);
                     }
 //                    startCaptureAnimation(button_inside_radius);
                 } else {
@@ -283,7 +288,7 @@ public class CaptureButton extends View {
             }
             state = STATE_RECORDERING;
             timer.start();
-        }else{
+        } else {
             isRecording = false;
         }
 //            }
@@ -375,5 +380,12 @@ public class CaptureButton extends View {
     //设置状态
     public void resetState() {
         state = STATE_IDLE;
+    }
+
+    boolean result = false;
+
+    //设置按钮点击还是拍照 true摄像 false拍照
+    public void setResult(boolean res) {
+        result = res;
     }
 }

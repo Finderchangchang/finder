@@ -47,13 +47,17 @@ public class CaptureLayout extends FrameLayout {
         this.captureLisenter = captureLisenter;
     }
 
+    boolean result = false;
+
     public void setLeftImg(boolean txt) {
+        result = txt;
+        btn_capture.setResult(result);
         if (txt) {
-            txt_tip.setText("点击摄像");
+            txt_tip.setText("轻触摄像");
             btn_capture.setBackgroundResource(R.drawable.video_btn);
             btn_return.setBackgroundResource(R.drawable.camera_btn);
         } else {
-            txt_tip.setText("点击拍照");
+            txt_tip.setText("轻触拍照");
             btn_capture.setBackgroundResource(R.drawable.camera_btn);
             btn_return.setBackgroundResource(R.drawable.video_btn);
         }
@@ -177,15 +181,19 @@ public class CaptureLayout extends FrameLayout {
                 if (captureLisenter != null) {
                     captureLisenter.recordShort(time);
                 }
-                startAlphaAnimation();
+                startAlphaAnimation(false);
             }
 
             @Override
             public void recordStart() {
                 if (captureLisenter != null) {
+                    //if (!res) {
+                    //captureLisenter.takePictures();
+                    //} else {
                     captureLisenter.recordStart();
+                    //}
                 }
-                startAlphaAnimation();
+                startAlphaAnimation(false);
             }
 
             @Override
@@ -193,7 +201,7 @@ public class CaptureLayout extends FrameLayout {
                 if (captureLisenter != null) {
                     captureLisenter.recordEnd(time);
                 }
-                startAlphaAnimation();
+                startAlphaAnimation(true);
                 startTypeBtnAnimator();
             }
 
@@ -213,7 +221,7 @@ public class CaptureLayout extends FrameLayout {
         });
 
         //取消按钮
-        btn_cancel = new TypeButton(getContext(), TypeButton.TYPE_CANCEL, button_size);
+        btn_cancel = new TypeButton(getContext(), TypeButton.TYPE_CANCEL, (int) (button_size / 1.5f));
         btn_cancel.setBackgroundResource(R.drawable.ic_camera_cancel);
         final LayoutParams btn_cancel_param = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         btn_cancel_param.gravity = Gravity.CENTER_VERTICAL;
@@ -225,13 +233,13 @@ public class CaptureLayout extends FrameLayout {
                 if (typeLisenter != null) {
                     typeLisenter.cancel();
                 }
-                startAlphaAnimation();
+                startAlphaAnimation(true);
 //                resetCaptureLayout();
             }
         });
 
         //确认按钮
-        btn_confirm = new TypeButton(getContext(), TypeButton.TYPE_CONFIRM, button_size);
+        btn_confirm = new TypeButton(getContext(), TypeButton.TYPE_CONFIRM, (int) (button_size / 1.5f));
 //        btn_confirm.setBackgroundResource(R.drawable.ic_camera_true);
         LayoutParams btn_confirm_param = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         btn_confirm_param.gravity = Gravity.CENTER_VERTICAL | Gravity.RIGHT;
@@ -243,7 +251,7 @@ public class CaptureLayout extends FrameLayout {
                 if (typeLisenter != null) {
                     typeLisenter.confirm();
                 }
-                startAlphaAnimation();
+                startAlphaAnimation(true);
 //                resetCaptureLayout();
             }
         });
@@ -254,7 +262,7 @@ public class CaptureLayout extends FrameLayout {
         btn_return_param.gravity = Gravity.CENTER_VERTICAL;
         btn_return_param.setMargins(layout_width / 6, 0, 0, 0);
         btn_return.setLayoutParams(btn_return_param);
-        btn_return.setBackgroundResource(R.drawable.camera_btn);
+        btn_return.setBackgroundResource(R.drawable.video_btn);
         btn_return.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -291,7 +299,7 @@ public class CaptureLayout extends FrameLayout {
                 if (typeLisenter != null) {
                     typeLisenter.confirm();
                 }
-                startAlphaAnimation();
+                startAlphaAnimation(true);
 //                resetCaptureLayout();
             }
         });
@@ -321,6 +329,7 @@ public class CaptureLayout extends FrameLayout {
     public void resetCaptureLayout() {
         btn_capture.resetState();
         btn_cancel.setVisibility(GONE);
+        txt_tip.setVisibility(VISIBLE);
         btn_confirm.setVisibility(GONE);
         btn_capture.setVisibility(VISIBLE);
         if (this.iconLeft != 0)
@@ -332,12 +341,16 @@ public class CaptureLayout extends FrameLayout {
     }
 
 
-    public void startAlphaAnimation() {
-        if (isFirst) {
+    public void startAlphaAnimation(boolean is_show) {
+        if (!is_show) {
             ObjectAnimator animator_txt_tip = ObjectAnimator.ofFloat(txt_tip, "alpha", 1f, 0f);
             animator_txt_tip.setDuration(500);
             animator_txt_tip.start();
-            isFirst = false;
+            //isFirst = false;
+        } else {
+            ObjectAnimator animator_txt_tip = ObjectAnimator.ofFloat(txt_tip, "alpha", 1f, 0f);
+            animator_txt_tip.setDuration(500);
+            animator_txt_tip.start();
         }
     }
 

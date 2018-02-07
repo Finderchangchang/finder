@@ -82,14 +82,14 @@ public class VideoAcitvity extends BaseActivity {
         close_iv = (ImageView) findViewById(R.id.close_iv);
         // 设置视频保存路径
         jCameraView.setSaveVideoPath(getSDPath() + File.separator + "JCamera");
-        jCameraView.setTip("点击录像");
+        jCameraView.setTip("轻触拍照");
 //            jCameraView.setFeatures(JCameraView.BUTTON_STATE_ONLY_RECORDER); // 设置功能
         dir = getSDPath() + "/find/video";
         File fileDir = new File(dir);
         if (!fileDir.exists()) {
             fileDir.mkdirs();
         }
-        close_iv.setOnClickListener(new View.OnClickListener() {
+         close_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setResult(2);
@@ -167,7 +167,14 @@ public class VideoAcitvity extends BaseActivity {
         jCameraView.setJCameraLisenter(new JCameraListener() {
             @Override
             public void captureSuccess(Bitmap bitmap) {
-
+                String path = FileUtil.saveBitmap("JCamera", bitmap);
+                startActivity(new Intent(VideoAcitvity.this, EditorActivity.class)
+                        .putExtra(Constant.TAG_LAT, mLat)
+                        .putExtra(Constant.TAG_LON, mLon)
+                        .putExtra("path", filePath)
+                        .putExtra("url", path)
+                        .putExtra("filename", fileName));
+                finish();
             }
 
             @Override
