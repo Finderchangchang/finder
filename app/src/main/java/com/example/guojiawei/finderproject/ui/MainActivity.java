@@ -88,7 +88,7 @@ public class MainActivity extends BaseActivity {
     PhotoView ivPreviewImg;
     @BindView(R.id.message_num)
     TextView messageNum;
-
+    public static MainActivity main;
     private MainContentAdapter mainRecyclerAdapter;
     /**
      * 百度地图定位服务
@@ -121,6 +121,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initViews(Bundle savedInstanceState) {
+        main = this;
         setCommentNum();
         //设置首页列表
         setRecyclerView();
