@@ -615,8 +615,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        page = 1;
-        loadHomeData(page);
+//        page = 1;
+//        loadHomeData(page);
     }
 
     @Override
@@ -644,6 +644,10 @@ public class MainActivity extends BaseActivity {
                     .putExtra(Constant.TAG_LON, mLon), 1);
             SharedPreferencesUtil.saveData(getContext(), "refresh", false);
 
+        }
+        if (requestCode == 77) {
+            page = 1;
+            loadHomeData(page);
         }
 
     }

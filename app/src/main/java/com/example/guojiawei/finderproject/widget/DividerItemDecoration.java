@@ -115,7 +115,6 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     @Override
     public void getItemOffsets(Rect outRect, int itemPosition, RecyclerView parent) {
-        Log.i("11-----------", itemPosition + "");
         if (mOrientation == VERTICAL_LIST) {
             if (itemPosition == 0) {
                 outRect.set(0, 10, 0, mDivider.getIntrinsicHeight() + 10);
@@ -123,9 +122,10 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
                 outRect.set(0, 0, 0, mDivider.getIntrinsicHeight() + 10);
             }
         } else {
-            outRect.set(0, 0, mDivider.getIntrinsicWidth() + 10, 0);
+//            outRect.set(0, 0, mDivider.getIntrinsicWidth() + 10, 0);
+            //outRect.set(0, 0, 0, mDivider.getIntrinsicHeight() + 10);
         }
-        outRect.set(0, 0, mDivider.getIntrinsicWidth(), 10);
+        //outRect.set(0, 0, mDivider.getIntrinsicWidth(), 10);
     }
 
     private int dp2px(Context context, float dpVal) {
