@@ -229,7 +229,6 @@ public class VideoAcitvity extends BaseActivity {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 firstFrame.compress(Bitmap.CompressFormat.PNG, 100, baos);
                 byte[] bitmapByte = baos.toByteArray();
-
                 startActivity(new Intent(VideoAcitvity.this, EditorActivity.class)
                         .putExtra(Constant.TAG_LAT, mLat)
                         .putExtra(Constant.TAG_LON, mLon)

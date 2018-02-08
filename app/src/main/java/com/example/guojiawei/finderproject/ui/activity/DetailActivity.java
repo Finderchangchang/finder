@@ -27,7 +27,7 @@ import com.example.guojiawei.finderproject.ui.Video_playAty;
 import com.example.guojiawei.finderproject.util.Constant;
 import com.example.guojiawei.finderproject.util.EncryptUtil;
 import com.example.guojiawei.finderproject.util.GsonUtil;
-import com.example.guojiawei.finderproject.util.SharedPreferencesUtil;
+import com.cjt2325.cameralibrary.SharedPreferencesUtil;
 import com.example.guojiawei.finderproject.util.UserStatusUtil;
 import com.example.guojiawei.finderproject.widget.MessageDetailDividerItemDecoration;
 import com.example.guojiawei.finderproject.widget.dialog.DialogSelector;

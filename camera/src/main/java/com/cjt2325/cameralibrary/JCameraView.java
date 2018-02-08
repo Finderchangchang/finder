@@ -292,6 +292,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
             @Override
             public void cancel() {
                 machine.cancle(mVideoView.getHolder(), screenProp);
+                mCaptureLayout.btn_return.setVisibility(VISIBLE);
             }
 
             @Override
@@ -383,6 +384,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
     public void surfaceDestroyed(SurfaceHolder holder) {
         LogUtil.i("JCameraView SurfaceDestroyed");
         CameraInterface.getInstance().doDestroyCamera();
+        CameraInterface.destroyCameraInterface();//销毁相机进程
     }
 
 
@@ -510,6 +512,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
                 break;
             case TYPE_DEFAULT:
                 mVideoView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+//                mCaptureLayout.resetCaptureLayout();
                 break;
         }
         mSwitchCamera.setVisibility(VISIBLE);
@@ -517,8 +520,10 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
         back.setVisibility(VISIBLE);
         image_time.setVisibility(GONE);
         mCaptureLayout.resetCaptureLayout();
+
     }
 
+    //拍照或者摄像成功的回调
     @Override
     public void confirmState(int type) {
         switch (type) {
@@ -537,11 +542,12 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
                 }
                 break;
             case TYPE_SHORT:
+                mCaptureLayout.resetCaptureLayout();
                 break;
             case TYPE_DEFAULT:
+                mCaptureLayout.resetCaptureLayout();
                 break;
         }
-        mCaptureLayout.resetCaptureLayout();
     }
 
     @Override

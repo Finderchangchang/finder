@@ -1,7 +1,8 @@
 package com.example.guojiawei.finderproject.util;
 
 import android.app.Application;
-import android.content.Context;
+
+import com.cjt2325.cameralibrary.SharedPreferencesUtil;
 
 /**
  * Created by guojiawei on 2017/11/14.

@@ -66,8 +66,8 @@ public class CameraInterface implements Camera.PreviewCallback {
     private boolean isPreviewing = false;
 
     private int SELECTED_CAMERA = -1;
-    private int CAMERA_POST_POSITION = -1;
-    private int CAMERA_FRONT_POSITION = -1;
+    private int CAMERA_POST_POSITION = 0;
+    private int CAMERA_FRONT_POSITION = 1;
 
     private SurfaceHolder mHolder = null;
     private float screenProp = -1.0f;
@@ -315,9 +315,11 @@ public class CameraInterface implements Camera.PreviewCallback {
         void cameraHasOpened();
     }
 
+    //第一次打开APP的时候初始化当前信息
     private CameraInterface() {
         findAvailableCameras();
-        SELECTED_CAMERA = CAMERA_POST_POSITION;
+        SELECTED_CAMERA = CAMERA_FRONT_POSITION;
+        switchCamera(mHolder, screenProp);
         saveVideoPath = "";
     }
 
@@ -365,6 +367,7 @@ public class CameraInterface implements Camera.PreviewCallback {
     }
 
     public synchronized void switchCamera(SurfaceHolder holder, float screenProp) {
+
         if (SELECTED_CAMERA == CAMERA_POST_POSITION) {
             SELECTED_CAMERA = CAMERA_FRONT_POSITION;
         } else {
@@ -389,6 +392,7 @@ public class CameraInterface implements Camera.PreviewCallback {
      * doStartPreview
      */
     public void doStartPreview(SurfaceHolder holder, float screenProp) {
+
         if (isPreviewing) {
             LogUtil.i("doStartPreview isPreviewing");
         }
@@ -432,6 +436,7 @@ public class CameraInterface implements Camera.PreviewCallback {
                 mCamera.startPreview();//启动浏览
                 isPreviewing = true;
                 Log.i(TAG, "=== Start Preview ===");
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -700,17 +705,17 @@ public class CameraInterface implements Camera.PreviewCallback {
     private void findAvailableCameras() {
         Camera.CameraInfo info = new Camera.CameraInfo();
         int cameraNum = Camera.getNumberOfCameras();
-        for (int i = 0; i < cameraNum; i++) {
-            Camera.getCameraInfo(i, info);
-            switch (info.facing) {
-                case Camera.CameraInfo.CAMERA_FACING_FRONT:
-                    CAMERA_FRONT_POSITION = info.facing;
-                    break;
-                case Camera.CameraInfo.CAMERA_FACING_BACK:
-                    CAMERA_POST_POSITION = info.facing;
-                    break;
-            }
-        }
+//        for (int i = 0; i < cameraNum; i++) {
+//            Camera.getCameraInfo(i, info);
+//            switch (info.facing) {
+//                case Camera.CameraInfo.CAMERA_FACING_FRONT://正面摄像头
+//                    CAMERA_FRONT_POSITION = info.facing;
+//                    break;
+//                case Camera.CameraInfo.CAMERA_FACING_BACK://背面摄像头
+//                    CAMERA_POST_POSITION = info.facing;
+//                    break;
+//            }
+//        }
     }
 
     int handlerTime = 0;

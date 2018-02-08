@@ -1,4 +1,4 @@
-package com.example.guojiawei.finderproject.util;
+package com.cjt2325.cameralibrary;
 
 import android.content.Context;
 import android.content.SharedPreferences;

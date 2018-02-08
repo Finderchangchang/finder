@@ -72,7 +72,7 @@ public class CaptureLayout extends FrameLayout {
     private CaptureButton btn_capture;      //拍照按钮
     private TypeButton btn_confirm;         //确认按钮
     private TypeButton btn_cancel;          //取消按钮
-    private TypeButton btn_return;        //返回按钮
+    public TypeButton btn_return;        //返回按钮
     private ImageView iv_custom_left;            //左边自定义按钮
     private ImageView iv_custom_right;            //右边自定义按钮
     private TextView txt_tip;               //提示文本
@@ -132,10 +132,13 @@ public class CaptureLayout extends FrameLayout {
 
     public void startTypeBtnAnimator() {
         //拍照录制结果后的动画
-        if (this.iconLeft != 0)
+        if (this.iconLeft != 0) {
             iv_custom_left.setVisibility(GONE);
-        else
+        } else {
             btn_return.setVisibility(GONE);
+            btn_capture.setVisibility(GONE);
+            txt_tip.setVisibility(GONE);
+        }
         if (this.iconRight != 0)
             iv_custom_right.setVisibility(GONE);
         btn_capture.setVisibility(GONE);
@@ -175,6 +178,8 @@ public class CaptureLayout extends FrameLayout {
             public void takePictures() {
                 if (captureLisenter != null) {
                     btn_return.setVisibility(View.GONE);
+                    btn_capture.setVisibility(GONE);
+                    txt_tip.setVisibility(GONE);
                     captureLisenter.takePictures();
                 }
             }
@@ -194,6 +199,9 @@ public class CaptureLayout extends FrameLayout {
                     //captureLisenter.takePictures();
                     //} else {
                     btn_return.setVisibility(View.GONE);
+//                    btn_capture.setVisibility(GONE);
+                    txt_tip.setVisibility(GONE);
+
                     captureLisenter.recordStart();
                     //}
                 }
@@ -205,7 +213,7 @@ public class CaptureLayout extends FrameLayout {
                 if (captureLisenter != null) {
                     captureLisenter.recordEnd(time);
                 }
-                btn_return.setVisibility(View.VISIBLE);
+                //btn_return.setVisibility(View.VISIBLE);
                 //startAlphaAnimation(false);
                 startTypeBtnAnimator();
             }
@@ -215,6 +223,8 @@ public class CaptureLayout extends FrameLayout {
                 if (captureLisenter != null) {
                     captureLisenter.recordZoom(zoom);
                     btn_return.setVisibility(View.VISIBLE);
+                    btn_capture.setVisibility(VISIBLE);
+                    txt_tip.setVisibility(VISIBLE);
                 }
             }
 
@@ -223,6 +233,8 @@ public class CaptureLayout extends FrameLayout {
                 if (captureLisenter != null) {
                     captureLisenter.recordError();
                     btn_return.setVisibility(View.VISIBLE);
+                    btn_capture.setVisibility(VISIBLE);
+                    txt_tip.setVisibility(VISIBLE);
                 }
             }
         });
@@ -257,7 +269,8 @@ public class CaptureLayout extends FrameLayout {
                 if (typeLisenter != null) {
                     typeLisenter.confirm();
                 }
-                startAlphaAnimation(true);
+                //开启动画
+                //startAlphaAnimation(true);
 //                resetCaptureLayout();
             }
         });
@@ -269,6 +282,9 @@ public class CaptureLayout extends FrameLayout {
         btn_return_param.setMargins(layout_width / 4 - button_size / 2, 0, 0, 0);
         btn_return.setLayoutParams(btn_return_param);
         btn_return.setBackgroundResource(R.drawable.video_btn);
+        btn_return.setVisibility(VISIBLE);
+        btn_capture.setVisibility(VISIBLE);
+        //txt_tip.setVisibility(VISIBLE);
         btn_return.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -337,11 +353,10 @@ public class CaptureLayout extends FrameLayout {
         btn_cancel.setVisibility(GONE);
         txt_tip.setVisibility(VISIBLE);
         btn_confirm.setVisibility(GONE);
-        btn_capture.setVisibility(VISIBLE);
-        if (this.iconLeft != 0)
-            iv_custom_left.setVisibility(VISIBLE);
-        else
-            btn_return.setVisibility(VISIBLE);
+//        if (this.iconLeft != 0)
+//            iv_custom_left.setVisibility(VISIBLE);
+//        else
+//            btn_return.setVisibility(VISIBLE);
         if (this.iconRight != 0)
             iv_custom_right.setVisibility(VISIBLE);
     }
@@ -389,10 +404,10 @@ public class CaptureLayout extends FrameLayout {
         if (this.iconLeft != 0) {
             iv_custom_left.setImageResource(iconLeft);
             iv_custom_left.setVisibility(VISIBLE);
-            btn_return.setVisibility(GONE);
+            //btn_return.setVisibility(GONE);
         } else {
             iv_custom_left.setVisibility(GONE);
-            btn_return.setVisibility(GONE);
+            //btn_return.setVisibility(GONE);
         }
         if (this.iconRight != 0) {
             iv_custom_right.setImageResource(iconRight);

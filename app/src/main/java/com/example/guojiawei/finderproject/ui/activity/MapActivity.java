@@ -27,12 +27,11 @@ import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.example.guojiawei.finderproject.R;
 import com.example.guojiawei.finderproject.base.BaseActivity;
 import com.example.guojiawei.finderproject.util.Constant;
-import com.example.guojiawei.finderproject.util.SharedPreferencesUtil;
+import com.cjt2325.cameralibrary.SharedPreferencesUtil;
 
 import java.text.DecimalFormat;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.baidu.mapapi.map.InfoWindow.*;

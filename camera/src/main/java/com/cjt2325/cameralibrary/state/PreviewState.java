@@ -1,11 +1,13 @@
 package com.cjt2325.cameralibrary.state;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
 import com.cjt2325.cameralibrary.CameraInterface;
 import com.cjt2325.cameralibrary.JCameraView;
+import com.cjt2325.cameralibrary.SharedPreferencesUtil;
 import com.cjt2325.cameralibrary.util.LogUtil;
 
 /**
@@ -46,6 +48,7 @@ class PreviewState implements State {
 
     @Override
     public void swtich(SurfaceHolder holder, float screenProp) {
+        Context context = machine.getContext();
         CameraInterface.getInstance().switchCamera(holder, screenProp);
     }
 

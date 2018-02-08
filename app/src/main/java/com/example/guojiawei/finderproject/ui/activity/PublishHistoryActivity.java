@@ -25,7 +25,7 @@ import com.example.guojiawei.finderproject.util.BitMapUtil;
 import com.example.guojiawei.finderproject.util.Constant;
 import com.example.guojiawei.finderproject.util.EncryptUtil;
 import com.example.guojiawei.finderproject.util.GsonUtil;
-import com.example.guojiawei.finderproject.util.SharedPreferencesUtil;
+import com.cjt2325.cameralibrary.SharedPreferencesUtil;
 import com.example.guojiawei.finderproject.util.UserStatusUtil;
 import com.example.guojiawei.finderproject.widget.DividerItemDecoration;
 import com.example.guojiawei.finderproject.widget.dialog.DialogSelector;
