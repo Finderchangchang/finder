@@ -442,7 +442,7 @@ public class DetailActivity extends BaseActivity {
                 .subscribe(new Subscriber<Response<String>>() {
                     @Override
                     public void onCompleted() {
-
+                        getMoodDetatils(moodId, UserStatusUtil.getUserId(), lat, lon);
                     }
 
                     @Override
@@ -452,11 +452,11 @@ public class DetailActivity extends BaseActivity {
 
                     @Override
                     public void onNext(Response<String> stringResponse) {
-                        CodeEntity entity = GsonUtil.GosnToEntity(stringResponse.body(), CodeEntity.class);
-                        if (entity.getCode() == 1) {
-                            getMoodDetatils(moodId, UserStatusUtil.getUserId(), lat, lon);
+//                        CodeEntity entity = GsonUtil.GosnToEntity(stringResponse.body(), CodeEntity.class);
+//                        if (entity.getCode() == 1) {
+                        getMoodDetatils(moodId, UserStatusUtil.getUserId(), lat, lon);
 
-                        }
+//                        }
                     }
                 });
     }

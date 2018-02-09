@@ -7,13 +7,22 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowAnimationStyle">@style/fade</item>
     </style>
 
     <style name="MyWindowAnimTheme">
-        <item name="android:activityOpenEnterAnimation">@anim/out_to_right</item>
-        <item name="android:activityOpenExitAnimation">@anim/out_to_right</item>
-        <item name="android:activityCloseEnterAnimation">@anim/out_to_left</item>
-        <item name="android:activityCloseExitAnimation">@anim/out_to_left</item>
+        <item name="android:activityOpenEnterAnimation">@anim/out_to_out</item>
+        <item name="android:activityOpenExitAnimation">@anim/out_to_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/out_to_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/out_to_in</item>
+    </style>
+
+
+    <style name="fade">
+        <item name="android:activityOpenEnterAnimation">@anim/in_from_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>
+        <item name="android:activityCloseEnterAnimation">@anim/in_from_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
     </style>
 
     <style name="number_button">

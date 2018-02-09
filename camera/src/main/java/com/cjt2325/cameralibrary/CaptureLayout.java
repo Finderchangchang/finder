@@ -69,7 +69,7 @@ public class CaptureLayout extends FrameLayout {
     }
 
 
-    private CaptureButton btn_capture;      //拍照按钮
+    public CaptureButton btn_capture;      //拍照按钮
     private TypeButton btn_confirm;         //确认按钮
     private TypeButton btn_cancel;          //取消按钮
     public TypeButton btn_return;        //返回按钮

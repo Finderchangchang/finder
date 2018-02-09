@@ -239,9 +239,9 @@ public class MainActivity extends BaseActivity {
                 if (UserStatusUtil.isLogin()) {
                     MainRecyclerAdapter adapter = (MainRecyclerAdapter) adapaterm;
                     HomeDataEntity.DataBean.RowsBean.ListBean bean = adapter.getDatas().get(position);
-                    startActivity(new Intent(getContext(), ReplyMessageActivity.class)
+                    startActivityForResult(new Intent(getContext(), ReplyMessageActivity.class)
                             .putExtra(Constant.TAG_MOOD_ID, bean.getId())
-                            .putExtra(Constant.TAG_COMMENT_ID, ""));
+                            .putExtra(Constant.TAG_COMMENT_ID, ""), 2);
                 } else {
                     startActivityForResult(new Intent(getContext(), LoginActivity.class), 100);
                 }
@@ -613,12 +613,6 @@ public class MainActivity extends BaseActivity {
         }
     };
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        page = 1;
-//        loadHomeData(page);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -646,7 +640,7 @@ public class MainActivity extends BaseActivity {
             SharedPreferencesUtil.saveData(getContext(), "refresh", false);
 
         }
-        if (requestCode == 77) {
+        if (requestCode == 77 || requestCode == 2) {
             page = 1;
             loadHomeData(page);
         }

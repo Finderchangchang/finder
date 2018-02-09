@@ -293,6 +293,8 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
             public void cancel() {
                 machine.cancle(mVideoView.getHolder(), screenProp);
                 mCaptureLayout.btn_return.setVisibility(VISIBLE);
+                mCaptureLayout.btn_capture.setVisibility(VISIBLE);
+
             }
 
             @Override
