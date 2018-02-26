@@ -5,7 +5,8 @@
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/camera/camera.iml" filepath="$PROJECT_DIR$/camera/camera.iml" />
       <module fileurl="file://$PROJECT_DIR$/camerafragment/camerafragment.iml" filepath="$PROJECT_DIR$/camerafragment/camerafragment.iml" />
-      <module fileurl="file://$PROJECT_DIR$/finderProject.iml" filepath="$PROJECT_DIR$/finderProject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/finder.iml" filepath="$PROJECT_DIR$/finder.iml" />
+      <module fileurl="file://E:\work\wnk\finder\finderProject.iml" filepath="E:\work\wnk\finder\finderProject.iml" />
     </modules>
   </component>
 </project>

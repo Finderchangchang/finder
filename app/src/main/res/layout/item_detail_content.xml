@@ -100,8 +100,8 @@
         <ImageView
             android:id="@+id/ic_preview_img"
             android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:scaleType="fitXY"
+            android:layout_height="180dp"
+            android:scaleType="centerCrop"
             android:src="@drawable/ic_loading"
             android:visibility="visible" />
 

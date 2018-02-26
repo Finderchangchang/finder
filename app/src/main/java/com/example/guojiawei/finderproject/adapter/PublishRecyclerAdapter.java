@@ -58,13 +58,13 @@ public class PublishRecyclerAdapter extends BaseRecyclerViewAdapater<PublishEnti
                 if (getDatas().get(position).getImage_url() == null || getDatas().get(position).getImage_url().equals("")) {
 
                 } else {
-                    BitMapUtil.loadImage(mContext, getDatas().get(position).getImage_url(), h.ic_preview_video);
+                    BitMapUtil.loadCycleImage(mContext, getDatas().get(position).getImage_url(), h.ic_preview_video);
 //                    videoId = getDatas().get(position).getVideo_id();
                 }
             } else {
                 h.icPreviewImg.setVisibility(View.VISIBLE);
                 h.ic_preview_video1.setVisibility(View.GONE);
-                BitMapUtil.loadImage(mContext, getDatas().get(position).getImg_s(), h.icPreviewImg);
+                BitMapUtil.loadCycleImage(mContext, getDatas().get(position).getImg_s(), h.icPreviewImg);
             }
             h.tvName.setText(getDatas().get(position).getUser().toString());
             h.tvContent.setText(getDatas().get(position).getContent().toString());

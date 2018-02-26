@@ -43,16 +43,16 @@
 
         <ImageView
             android:id="@+id/ic_preview"
-            android:layout_width="100dp"
-            android:layout_height="180dp"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
             android:layout_margin="10dp"
             android:scaleType="fitXY"
             android:src="@drawable/ic_loading"
             android:visibility="visible"/>
         <RelativeLayout
             android:id="@+id/ic_preview_video1"
-            android:layout_width="100dp"
-            android:layout_height="180dp"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
             android:layout_margin="10dp"
             android:visibility="gone"
             >
@@ -80,7 +80,7 @@
             android:textSize="16sp"
             android:hint=" 拍完世界，写下生活..."
             android:layout_weight="3"
-            android:layout_height="180dp" />
+            android:layout_height="130dp" />
     </LinearLayout>
     <TextView
         android:id="@+id/tv_progress"

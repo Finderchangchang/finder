@@ -45,7 +45,7 @@ public class DetailsAdapter extends BaseRecyclerViewAdapater<DetailsEntity.MessE
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        head = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_content, parent, false);
+        head = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_detail_content, parent, false);
         View message = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message, parent, false);
         message.setOnClickListener(new View.OnClickListener() {
             @Override
