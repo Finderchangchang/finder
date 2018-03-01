@@ -37,6 +37,7 @@ import com.example.guojiawei.finderproject.util.EncryptUtil;
 import com.example.guojiawei.finderproject.util.GsonUtil;
 import com.example.guojiawei.finderproject.util.KeyBoardUtil;
 import com.example.guojiawei.finderproject.util.UserStatusUtil;
+import com.example.guojiawei.finderproject.widget.RoundImageView;
 import com.example.guojiawei.finderproject.widget.camera.VideoPreViewAty;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.convert.StringConvert;
@@ -67,9 +68,9 @@ public class EditorActivity extends BaseActivity {
     @BindView(R.id.publish)
     TextView publish;
     @BindView(R.id.ic_preview)
-    ImageView icPreview;
+    RoundImageView icPreview;
     @BindView(R.id.ic_preview_video)
-    ImageView icPreview_video;
+    RoundImageView icPreview_video;
     @BindView(R.id.ic_preview_video1)
     RelativeLayout icPreview_video1;
     @BindView(R.id.content)

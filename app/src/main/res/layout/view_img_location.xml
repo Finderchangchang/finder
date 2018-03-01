@@ -13,10 +13,16 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="4dp"
-        android:scaleType="fitXY"
+        android:scaleType="center"
         android:src="@drawable/ic_loading"
         android:visibility="visible" />
-
+    <ImageView
+        android:id="@+id/video_iv"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/icon_share_video"
+        />
     <RelativeLayout
         android:id="@+id/ic_preview_video1"
         android:layout_width="80dp"
@@ -26,20 +32,16 @@
 
         <com.example.guojiawei.finderproject.widget.RoundImageView
             android:id="@+id/ic_preview_video"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="13.5dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginBottom="14dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="4dp"
             android:scaleType="center"
             android:src="@drawable/ic_loading" />
 
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_centerInParent="true"
-            android:src="@drawable/icon_share_video" />
+
     </RelativeLayout>
 
 

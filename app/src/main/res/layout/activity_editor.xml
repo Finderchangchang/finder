@@ -57,11 +57,11 @@
             android:layout_margin="10dp"
             android:visibility="gone">
 
-            <ImageView
+            <com.example.guojiawei.finderproject.widget.RoundImageView
                 android:id="@+id/ic_preview_video"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleType="fitXY"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:scaleType="center"
                 android:src="@drawable/ic_loading" />
 
             <ImageView
