@@ -2,94 +2,95 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/bg">
+    android:background="@color/bg"
+    android:orientation="vertical">
 
     <RelativeLayout
-        android:background="@android:color/white"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/barHeight">
+        android:layout_height="@dimen/barHeight"
+        android:background="@android:color/white">
 
         <TextView
             android:id="@+id/cancel"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
-            android:text="取消"
             android:gravity="center"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
+            android:text="取消"
             android:textColor="#7E7F7E"
             android:textSize="16sp" />
 
         <TextView
             android:id="@+id/publish"
-            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:paddingRight="16dp"
-            android:paddingLeft="16dp"
+            android:layout_centerVertical="true"
             android:gravity="center"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:text="发布"
             android:textColor="@color/themeColor"
             android:textSize="16sp" />
     </RelativeLayout>
-    
-    <LinearLayout
-        android:layout_marginTop="60dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <ImageView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp">
+
+        <com.example.guojiawei.finderproject.widget.RoundImageView
             android:id="@+id/ic_preview"
             android:layout_width="130dp"
             android:layout_height="130dp"
             android:layout_margin="10dp"
-            android:scaleType="fitXY"
+            android:scaleType="center"
             android:src="@drawable/ic_loading"
-            android:visibility="visible"/>
+            android:visibility="visible" />
+
         <RelativeLayout
             android:id="@+id/ic_preview_video1"
             android:layout_width="130dp"
             android:layout_height="130dp"
             android:layout_margin="10dp"
-            android:visibility="gone"
-            >
-        <ImageView
-            android:id="@+id/ic_preview_video"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_loading"
-            />
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/ic_preview_video"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_loading" />
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:src="@drawable/icon_share_video"
-                />
+                android:src="@drawable/icon_share_video" />
         </RelativeLayout>
+
         <EditText
             android:id="@+id/content"
-            android:padding="10dp"
-            android:layout_margin="10dp"
-            android:background="@android:color/white"
             android:layout_width="0dp"
-            android:gravity="start"
-            android:textSize="16sp"
-            android:hint=" 拍完世界，写下生活..."
+            android:layout_height="130dp"
+            android:layout_margin="10dp"
             android:layout_weight="3"
-            android:layout_height="130dp" />
+            android:background="@drawable/rouded"
+            android:gravity="start"
+            android:hint=" 拍完世界，写下生活..."
+            android:padding="10dp"
+            android:textSize="16sp" />
     </LinearLayout>
+
     <TextView
         android:id="@+id/tv_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:textColor="@android:color/black"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
     <com.bm.library.PhotoView
         android:id="@+id/iv_preview_img"

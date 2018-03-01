@@ -41,7 +41,7 @@ public class BitMapUtil {
     public static void loadImage(Context context, int url, ImageView imageView) {
         Glide.with(context)
                 .load(url)
-                .transform(new GlideRoundTransform(context, 5))
+//                .transform(new GlideRoundTransform(context, 5))
 
                 //  .placeholder(R.drawable.ic_loading)
                 // .error(R.drawable.ic_loading)
@@ -52,7 +52,7 @@ public class BitMapUtil {
     public static void loadImage(Context context, File file, ImageView imageView) {
         Glide.with(context)
                 .load(file)
-                .transform(new GlideRoundTransform(context, 5))
+//                .transform(new GlideRoundTransform(context, 5))
 
                 //.centerCrop()
                 //  .placeholder(R.drawable.ic_loading)
