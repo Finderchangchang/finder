@@ -10,76 +10,76 @@
         android:layout_height="40dp"
         android:layout_alignParentStart="true"
         android:layout_alignTop="@+id/ic_preview"
-        android:layout_marginTop="5dp"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="5dp"
         android:layout_weight="1"
         android:src="@drawable/ic_head_load" />
 
 
-        <LinearLayout
-            android:layout_toRightOf="@id/ic_head"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/ic_head"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:text="@string/test"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/tv_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/test"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="@string/test"
+            android:textSize="8sp" />
 
-            <TextView
-                android:id="@+id/tv_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="@string/test"
-                android:textSize="8sp" />
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="@string/test"
+            android:textSize="14sp" />
+    </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_content"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/test"
-                android:layout_marginTop="6dp"
-                android:textSize="14sp" />
-        </LinearLayout>
-
-    <ImageView
+    <com.example.guojiawei.finderproject.widget.RoundImageView
         android:id="@+id/ic_preview"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="12dp"
-        android:scaleType="fitXY"
+        android:scaleType="center"
         android:src="@drawable/ic_logo"
         android:visibility="visible" />
+
     <RelativeLayout
         android:id="@+id/ic_preview_video1"
         android:layout_width="30dp"
         android:layout_height="60dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="10dp"
         android:layout_alignParentRight="true"
-        android:visibility="gone"
-        >
-        <ImageView
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:visibility="gone">
+
+        <com.example.guojiawei.finderproject.widget.RoundImageView
             android:id="@+id/ic_preview_video"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_loading"
-            />
+            android:scaleType="center"
+            android:src="@drawable/ic_loading" />
+
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_centerInParent="true"
-            android:src="@drawable/icon_share_video"
-            />
+            android:src="@drawable/icon_share_video" />
     </RelativeLayout>
 
 </RelativeLayout>

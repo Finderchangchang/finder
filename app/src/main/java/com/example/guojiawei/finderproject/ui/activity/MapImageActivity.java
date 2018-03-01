@@ -36,6 +36,7 @@ import com.example.guojiawei.finderproject.ui.fragment.ContentFragment;
 import com.example.guojiawei.finderproject.ui.fragment.ImageFragment;
 import com.example.guojiawei.finderproject.util.Constant;
 import com.example.guojiawei.finderproject.util.CornersTransform;
+import com.example.guojiawei.finderproject.widget.RoundImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +64,7 @@ public class MapImageActivity extends BaseActivity {
     ImageView local;
     @BindView(R.id.viewpager)
     ViewPager viewpager;
-    private  BaiduMap mBaiduMap;
+    private BaiduMap mBaiduMap;
     private double lat;
     private double lon;
     private String imgUrl;
@@ -137,9 +138,9 @@ public class MapImageActivity extends BaseActivity {
 
     private void setMarker() {
         final View view = LayoutInflater.from(this).inflate(R.layout.view_img_location, null);
-        final ImageView iv = (ImageView) view.findViewById(R.id.ic_img);
+        final RoundImageView iv = (RoundImageView) view.findViewById(R.id.ic_img);
         final RelativeLayout ic_preview_video1 = (RelativeLayout) view.findViewById(R.id.ic_preview_video1);
-        final ImageView ic_preview_video = (ImageView) view.findViewById(R.id.ic_preview_video);
+        final RoundImageView ic_preview_video = (RoundImageView) view.findViewById(R.id.ic_preview_video);
 
         //定义用于显示该InfoWindow的坐标点
         final LatLng ll = new LatLng(lat, lon);
@@ -164,15 +165,15 @@ public class MapImageActivity extends BaseActivity {
                         startActivity(intent);
                     }
                 });
-                    //显示InfoWindow
+                //显示InfoWindow
                 mBaiduMap.showInfoWindow(mInfoWindow);
-                }
+            }
         });
 
         Glide.with(MapImageActivity.this).load(imgUrl).asBitmap().transform(new CornersTransform(MapImageActivity.this)).into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                    iv.setImageBitmap(resource);
+                iv.setImageBitmap(resource);
                 //创建InfoWindow , 传入 view， 地理坐标， y 轴偏移量
                 InfoWindow mInfoWindow = new InfoWindow(BitmapDescriptorFactory.fromView(view), ll, -47, new InfoWindow.OnInfoWindowClickListener() {
                     @Override

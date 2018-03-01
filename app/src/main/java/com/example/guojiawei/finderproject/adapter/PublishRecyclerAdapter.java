@@ -15,6 +15,7 @@ import com.example.guojiawei.finderproject.adapter.base.BaseRecyclerViewAdapater
 import com.example.guojiawei.finderproject.adapter.listener.OnPublishItemButtonListener;
 import com.example.guojiawei.finderproject.entity.PublishEntity;
 import com.example.guojiawei.finderproject.util.BitMapUtil;
+import com.example.guojiawei.finderproject.widget.RoundImageView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -141,11 +142,11 @@ public class PublishRecyclerAdapter extends BaseRecyclerViewAdapater<PublishEnti
         @BindView(R.id.tv_time)
         TextView tvTime;
         @BindView(R.id.ic_preview_img)
-        ImageView icPreviewImg;
+        RoundImageView icPreviewImg;
         @BindView(R.id.ic_preview_video1)
         RelativeLayout ic_preview_video1;
         @BindView(R.id.ic_preview_video)
-        ImageView ic_preview_video;
+        RoundImageView ic_preview_video;
         @BindView(R.id.tv_content)
         TextView tvContent;
         @BindView(R.id.ic_gps)

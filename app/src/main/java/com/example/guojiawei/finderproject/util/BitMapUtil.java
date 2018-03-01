@@ -32,9 +32,9 @@ public class BitMapUtil {
                 .placeholder(R.drawable.ic_loading)
                 // .error(R.drawable.ic_loading)
                 //.centerCrop()
-                .transform(new GlideRoundTransform(context, 5))
-//                .dontAnimate()
-//                .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                .transform(new GlideRoundTransform(context, 5))
+                .dontAnimate()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imageView);
     }
 

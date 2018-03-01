@@ -16,6 +16,7 @@ import com.example.guojiawei.finderproject.adapter.listener.OnItemButtonListener
 import com.example.guojiawei.finderproject.adapter.listener.OnMainItemClickListener;
 import com.example.guojiawei.finderproject.entity.HomeDataEntity;
 import com.example.guojiawei.finderproject.util.BitMapUtil;
+import com.example.guojiawei.finderproject.widget.RoundImageView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -121,7 +122,7 @@ public class MainRecyclerAdapter extends BaseRecyclerViewAdapater<HomeDataEntity
                 h.ic_preview_video1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        onItemButtonListener.play(MainRecyclerAdapter.this,position);
+                        onItemButtonListener.play(MainRecyclerAdapter.this, position);
                     }
                 });
                 h.icMore.setOnClickListener(new View.OnClickListener() {
@@ -160,11 +161,11 @@ public class MainRecyclerAdapter extends BaseRecyclerViewAdapater<HomeDataEntity
         @BindView(R.id.tv_time)
         TextView tvTime;
         @BindView(R.id.ic_preview_img)
-        ImageView icPreviewImg;
+        RoundImageView icPreviewImg;
         @BindView(R.id.ic_preview_video1)
         RelativeLayout ic_preview_video1;
         @BindView(R.id.ic_preview_video)
-        ImageView ic_preview_video;
+        RoundImageView ic_preview_video;
         @BindView(R.id.tv_content)
         TextView tvContent;
         @BindView(R.id.ic_gps)

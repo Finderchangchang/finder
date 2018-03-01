@@ -14,6 +14,7 @@ import com.example.guojiawei.finderproject.R;
 import com.example.guojiawei.finderproject.adapter.base.BaseRecyclerViewAdapater;
 import com.example.guojiawei.finderproject.entity.MessageDetailEntity;
 import com.example.guojiawei.finderproject.util.BitMapUtil;
+import com.example.guojiawei.finderproject.widget.RoundImageView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -105,7 +106,7 @@ public class MessageDetailAdapter extends BaseRecyclerViewAdapater<MessageDetail
         @BindView(R.id.ic_preview_video1)
         RelativeLayout ic_preview_video1;
         @BindView(R.id.ic_preview_video)
-        ImageView ic_preview_video;
+        RoundImageView ic_preview_video;
 
         MessageDetailViewHolder(View view) {
             super(view);

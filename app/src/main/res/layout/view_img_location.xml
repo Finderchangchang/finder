@@ -4,41 +4,42 @@
     android:layout_height="80dp"
     android:background="@drawable/ic_img_location">
 
-    <ImageView
+    <com.example.guojiawei.finderproject.widget.RoundImageView
         android:id="@+id/ic_img"
-        android:src="@drawable/ic_loading"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_gravity="center"
+        android:layout_marginBottom="13.5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
         android:scaleType="fitXY"
-        android:layout_marginLeft="3dp"
-        android:layout_marginRight="3dp"
-        android:layout_marginBottom="11dp"
-        android:visibility="visible"
-        />
+        android:src="@drawable/ic_loading"
+        android:visibility="visible" />
+
     <RelativeLayout
         android:id="@+id/ic_preview_video1"
         android:layout_width="80dp"
         android:layout_height="80dp"
 
-        android:visibility="gone"
-        >
-        <ImageView
+        android:visibility="gone">
+
+        <com.example.guojiawei.finderproject.widget.RoundImageView
             android:id="@+id/ic_preview_video"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:layout_marginLeft="3dp"
-            android:layout_marginRight="3dp"
-            android:layout_marginBottom="10.5dp"
-            android:src="@drawable/ic_loading"
-            />
+            android:layout_marginBottom="13.5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_loading" />
+
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_centerInParent="true"
-            android:src="@drawable/icon_share_video"
-            />
+            android:src="@drawable/icon_share_video" />
     </RelativeLayout>
 
 

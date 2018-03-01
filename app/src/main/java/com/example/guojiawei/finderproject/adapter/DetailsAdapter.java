@@ -16,6 +16,7 @@ import com.example.guojiawei.finderproject.adapter.listener.OnItemButtonListener
 import com.example.guojiawei.finderproject.entity.DetailsEntity;
 import com.example.guojiawei.finderproject.util.BitMapUtil;
 import com.example.guojiawei.finderproject.widget.CircleImageView;
+import com.example.guojiawei.finderproject.widget.RoundImageView;
 import com.example.guojiawei.finderproject.widget.dialog.ContentPreviewDialog;
 
 import butterknife.BindView;
@@ -215,11 +216,11 @@ public class DetailsAdapter extends BaseRecyclerViewAdapater<DetailsEntity.MessE
         @BindView(R.id.ic_more)
         ImageView icMore;
         @BindView(R.id.ic_preview_img)
-        ImageView icPreviewImg;
+        RoundImageView icPreviewImg;
         @BindView(R.id.ic_preview_video1)
         RelativeLayout ic_preview_video1;
         @BindView(R.id.ic_preview_video)
-        ImageView ic_preview_video;
+        RoundImageView ic_preview_video;
         @BindView(R.id.tv_content)
         TextView tvContent;
         @BindView(R.id.ic_gps)
