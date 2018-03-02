@@ -8,6 +8,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.cjt2325.cameralibrary.SharedPreferencesUtil;
 import com.example.guojiawei.finderproject.R;
 import com.example.guojiawei.finderproject.base.BaseActivity;
 import com.example.guojiawei.finderproject.entity.CodeEntity;
@@ -131,6 +132,7 @@ public class ReplyMessageActivity extends BaseActivity {
                                         .putExtra("user_re_id", mReId)
                                         .putExtra("nickname", getIntent().getStringExtra("nickname")));
                             }
+                            SharedPreferencesUtil.saveData(getContext(), "refresh", true);
                             setResult(10);
                             finish();
                             mMProgressDialog.dismiss();

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -641,8 +642,12 @@ public class MainActivity extends BaseActivity {
 
         }
         if (requestCode == 77 || requestCode == 2) {
-            page = 1;
-            loadHomeData(page);
+            boolean result = (boolean) SharedPreferencesUtil.getData(getContext(), "refresh", false);
+            if (result) {
+                page = 1;
+                loadHomeData(page);
+            }
+
         }
 
     }

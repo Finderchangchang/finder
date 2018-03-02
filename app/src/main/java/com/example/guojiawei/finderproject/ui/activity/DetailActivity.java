@@ -124,7 +124,7 @@ public class DetailActivity extends BaseActivity {
                 DetailsAdapter adapter = (DetailsAdapter) adapaterm;
                 DetailsEntity.HeadEntity.DataBean bean = adapter.getHeadEntity().getData();
                 dianZan(UserStatusUtil.getUserId(), bean.getId());
-
+                SharedPreferencesUtil.saveData(getContext(), "refresh", true);
                 String thing = bean.getThing();
                 if (!UserStatusUtil.isLogin()) {
                     startActivity(new Intent(DetailActivity.this, LoginActivity.class));
@@ -297,6 +297,7 @@ public class DetailActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 10) {
+            SharedPreferencesUtil.saveData(getContext(), "refresh", true);//评论
             getMoodDetatils(moodId, UserStatusUtil.getUserId(), lat, lon);
         }
     }

@@ -57,16 +57,16 @@
         android:layout_marginEnd="12dp"
         android:scaleType="center"
         android:src="@drawable/ic_logo"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <RelativeLayout
         android:id="@+id/ic_preview_video1"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="5dp"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <com.example.guojiawei.finderproject.widget.RoundImageView
             android:id="@+id/ic_preview_video"
