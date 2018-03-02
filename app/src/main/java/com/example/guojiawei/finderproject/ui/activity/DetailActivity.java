@@ -214,6 +214,7 @@ public class DetailActivity extends BaseActivity {
                         .putExtra(Constant.TAG_LON, Double.valueOf(bean.getLongitude()))
                         .putExtra("url", bean.getImg_s())
                         .putExtra("url_s", bean.getImg())
+                        .putExtra("Image_url", bean.getImage_url())
                         .putExtra("content", bean.getContent()));
             }
 

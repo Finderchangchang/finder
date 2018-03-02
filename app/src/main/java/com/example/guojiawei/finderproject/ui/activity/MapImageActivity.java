@@ -146,7 +146,7 @@ public class MapImageActivity extends BaseActivity {
 
         //定义用于显示该InfoWindow的坐标点
         final LatLng ll = new LatLng(lat, lon);
-        if(TextUtils.isEmpty(img_url))img_url=imgUrl;
+        if (TextUtils.isEmpty(img_url)) img_url = imgUrl;
         Glide.with(MapImageActivity.this).load(img_url).asBitmap().transform(new CornersTransform(MapImageActivity.this)).into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
