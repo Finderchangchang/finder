@@ -215,6 +215,7 @@ public class DetailActivity extends BaseActivity {
                         .putExtra("url", bean.getImg_s())
                         .putExtra("url_s", bean.getImg())
                         .putExtra("Image_url", bean.getImage_url())
+                        .putExtra("video_id", bean.getVideo_id())
                         .putExtra("content", bean.getContent()));
             }
 
