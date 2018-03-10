@@ -83,6 +83,8 @@ public class CenterActivity extends BaseActivity {
     TextView center;
     @BindView(R.id.tv_message_num)
     TextView tvMessageNum;
+    @BindView(R.id.rl_dt)
+    RelativeLayout rl_dt;
 
     private DialogSelector dialogSelector;
     private ImagePicker imagePicker;
@@ -135,7 +137,7 @@ public class CenterActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.center, R.id.tv_center, R.id.rl_head, R.id.rl_room, R.id.rl_my, R.id.ic_head})
+    @OnClick({R.id.center, R.id.tv_center, R.id.rl_head, R.id.rl_room, R.id.rl_my, R.id.ic_head, R.id.rl_dt})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.center:
@@ -143,6 +145,9 @@ public class CenterActivity extends BaseActivity {
                 break;
             case R.id.tv_center:
                 dialogSelector.show();
+                break;
+            case R.id.rl_dt://好友动态
+                startActivity(new Intent(this, PeopleHistoryActivity.class));
                 break;
             case R.id.rl_head:
                 Matisse.from(CenterActivity.this)
@@ -159,6 +164,7 @@ public class CenterActivity extends BaseActivity {
                         .forResult(10001);
                 break;
             case R.id.rl_room:
+//                startActivity(new Intent(this, PeopleHistoryActivity.class));
                 startActivity(new Intent(this, PublishHistoryActivity.class));
                 break;
             case R.id.rl_my:

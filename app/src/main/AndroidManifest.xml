@@ -73,6 +73,7 @@
             android:name=".ui.activity.ReplyJuBaoActivity"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity android:name=".ui.activity.PeoplePublishHistoryActivity" />
+        <activity android:name=".ui.activity.PeopleHistoryActivity" />
         <activity android:name=".ui.activity.MessageDetailActivity" />
 
         <receiver
