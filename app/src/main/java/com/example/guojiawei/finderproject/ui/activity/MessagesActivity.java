@@ -50,6 +50,8 @@ public class MessagesActivity extends BaseActivity {
     SuperSwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.tv_nothing)
     TextView tvNothing;
+    @BindView(R.id.right_iv)
+    ImageView right_iv;
 
     private MessageRecyclerAdapter messageRecyclerAdapter;
     private int defaultPage = 1;
@@ -64,6 +66,18 @@ public class MessagesActivity extends BaseActivity {
     @Override
     public void initViews(Bundle savedInstanceState) {
         setRecyclerView();
+        right_iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (is_all) {//true:所有人。false：
+                    right_iv.setImageResource(R.mipmap.f_you_true);
+                } else {
+                    right_iv.setImageResource(R.mipmap.f_you_false);
+                }
+                is_all = !is_all;
+                getMyMessage(UserStatusUtil.getUserId(), defaultPage + "", defaultRows + "");
+            }
+        });
         getMyMessage(UserStatusUtil.getUserId(), defaultPage + "", defaultRows + "");
         messageRecyclerAdapter.setOnRecyclerViewItemClickListener(new OnRecyclerViewItemClickListener() {
             @Override
@@ -152,14 +166,18 @@ public class MessagesActivity extends BaseActivity {
                 });
     }
 
+    boolean is_all = false;
+
     private void getMyMessage(String user_id, String page, String rows) {
         Map<String, String> params = new HashMap<>();
         params.put("user_id", user_id);
         params.put("page", page);
         params.put("rows", rows);
         EncryptUtil.EncryptAutoSort(params);
-
-        Observable<Response<String>> observable = OkGo.<String>post(API.MY_MESSAGE)
+//        String url = API.MY_MESSAGE;
+        String url = API.MY_FOLLOW_MY;
+        if (is_all) url = API.MY_FOLLOW_TO;
+        Observable<Response<String>> observable = OkGo.<String>post(url)
                 .params(params, false)
                 .converter(new StringConvert())
                 .adapt(new ObservableResponse<String>());

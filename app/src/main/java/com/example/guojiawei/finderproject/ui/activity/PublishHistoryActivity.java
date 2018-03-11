@@ -67,7 +67,9 @@ public class PublishHistoryActivity extends BaseActivity {
     RelativeLayout mainBar;
     @BindView(R.id.tv_nothing)
     TextView tvNothing;
-
+    @BindView(R.id.right_iv)
+    ImageView right_iv;
+    boolean is_all = false;//true:获得所有朋友信息。false：只获得自己的信息
 
     private PublishRecyclerAdapter mainRecyclerAdapter;
 
@@ -96,7 +98,19 @@ public class PublishHistoryActivity extends BaseActivity {
         mLat = (String) SharedPreferencesUtil.getData(this, Constant.TAG_LAT, "");
         mLon = (String) SharedPreferencesUtil.getData(this, Constant.TAG_LON, "");
         loadHistoryData(default_page);
-
+        right_iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (is_all) {//true:所有人。false：
+                    right_iv.setImageResource(R.mipmap.f_wen_true);
+                } else {
+                    right_iv.setImageResource(R.mipmap.f_wen_false);
+                }
+                is_all = !is_all;
+                page = 1;
+                loadHistoryData(default_page);
+            }
+        });
     }
 
     /**
@@ -160,7 +174,8 @@ public class PublishHistoryActivity extends BaseActivity {
                     mainRecyclerAdapter.notifyItemChanged(position);
                 }
             }
-            public void play( int position) {
+
+            public void play(int position) {
                 PublishEntity.DataBean.RowsBean bean = mainRecyclerAdapter.getDatas().get(position);
                 String videoid = bean.getVideo_id();
                 Intent intent = new Intent(PublishHistoryActivity.this, Video_playAty.class);
@@ -168,6 +183,7 @@ public class PublishHistoryActivity extends BaseActivity {
                 startActivity(intent);
 
             }
+
             @Override
             public void pinglun(int position) {
                 PublishEntity.DataBean.RowsBean bean = mainRecyclerAdapter.getDatas().get(position);
@@ -220,8 +236,8 @@ public class PublishHistoryActivity extends BaseActivity {
                         .putExtra(Constant.TAG_LON, Double.valueOf(bean.getLongitude()))
                         .putExtra("url", bean.getImg_s())
                         .putExtra("url_s", bean.getImg())
-                        .putExtra("Image_url",bean.getImage_url())
-                        .putExtra("video_id",bean.getVideo_id())
+                        .putExtra("Image_url", bean.getImage_url())
+                        .putExtra("video_id", bean.getVideo_id())
                         .putExtra("content", bean.getContent()));
             }
 
@@ -317,8 +333,9 @@ public class PublishHistoryActivity extends BaseActivity {
         params.put("longitude", mLon + "");
         EncryptUtil.EncryptAutoSort(params);
 
-
-        Observable<Response<String>> observable = OkGo.<String>post(API.MY_MOOD)
+        String url = API.MY_MOOD;//只获得自己的
+        if (is_all) url = API.MY_ALL_MOOD;//获得所有的信息
+        Observable<Response<String>> observable = OkGo.<String>post(url)
                 .params(params, false)
                 .converter(new StringConvert())
                 .adapt(new ObservableResponse<String>());
@@ -341,10 +358,10 @@ public class PublishHistoryActivity extends BaseActivity {
                     public void onNext(Response<String> stringResponse) {
                         PublishEntity entity = GsonUtil.GosnToEntity(stringResponse.body(), PublishEntity.class);
                         if (entity.getCode() == 1) {
-                          if(entity.getData().getRows().size() > 0){
-                              swipeRefreshLayout.setVisibility(View.VISIBLE);
-                              tvNothing.setVisibility(View.GONE);
-                          }
+                            if (entity.getData().getRows().size() > 0) {
+                                swipeRefreshLayout.setVisibility(View.VISIBLE);
+                                tvNothing.setVisibility(View.GONE);
+                            }
                             swipeRefreshLayout.setRefreshing(false);
                             swipeRefreshLayout.setLoadMore(false);
                             if (page == 1) {

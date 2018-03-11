@@ -150,6 +150,15 @@ public class PublishEntity {
             private String img_s;
             private String image_url;
             private String video_id;
+            private Con con;
+
+            public Con getCon() {
+                return con;
+            }
+
+            public void setCon(Con con) {
+                this.con = con;
+            }
 
             public String getImage_url() {
                 return image_url;
@@ -311,11 +320,33 @@ public class PublishEntity {
                 this.thing = thing;
             }
 
+            public static class Con {
+                private String content;
+                private String insert_time;
+
+                public String getContent() {
+                    return content;
+                }
+
+                public void setContent(String content) {
+                    this.content = content;
+                }
+
+                public String getInsert_time() {
+                    return insert_time;
+                }
+
+                public void setInsert_time(String insert_time) {
+                    this.insert_time = insert_time;
+                }
+            }
+
             public static class UserBean {
                 /**
                  * id : 39
                  * nickname : 笑哈哈哈哈
                  * head_img : http://xiaohei3576.oss-cn-beijing.aliyuncs.com/files/20171121/20171121110832_16465.jpg?OSSAccessKeyId=LTAIVIGdQoo0oH5A&Expires=1511253397&Signature=mmm6EaCvPbAb0dLAMB0hrgKzOOA%3D
+                 *
                  * @ : 2
                  * head_img_y : http://img.zl-finder.com/files/20171121/20171121110832_16465.jpg
                  */

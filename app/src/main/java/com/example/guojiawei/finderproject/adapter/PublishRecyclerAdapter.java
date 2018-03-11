@@ -2,6 +2,7 @@ package com.example.guojiawei.finderproject.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,12 +69,20 @@ public class PublishRecyclerAdapter extends BaseRecyclerViewAdapater<PublishEnti
                 BitMapUtil.loadCycleImage(mContext, getDatas().get(position).getImg_s(), h.icPreviewImg);
             }
             h.tvName.setText(getDatas().get(position).getUser().toString());
-            h.tvContent.setText(getDatas().get(position).getContent().toString());
+            String con = getDatas().get(position).getContent();
+            if (TextUtils.isEmpty(con)) {
+                con = getDatas().get(position).getCon().getContent();
+            }
+            h.tvContent.setText(con);
             Glide.with(h.itemView.getContext()).load(getDatas().get(position).getUser().getHead_img()).placeholder(R.drawable.ic_head_load).into(h.icHead);
             h.tvName.setText(getDatas().get(position).getUser().getNickname());
             h.tvZan.setText(getDatas().get(position).getThing_num());
             h.tvPinglun.setText(getDatas().get(position).getComment_num());
-            h.tvJuli.setText(Double.valueOf(getDatas().get(position).getJuli()) / 10 + "km");
+            String jl = getDatas().get(position).getJuli();
+            if (TextUtils.isEmpty(jl)) {
+                jl = "0";
+            }
+            h.tvJuli.setText(Double.valueOf(jl) / 10 + "km");
             h.tvAite.setText(getDatas().get(position).getUser().get_$219() + "");
             h.tvTime.setText(getDatas().get(position).getInsert_time());
             if ("".equals(getDatas().get(position).getThing())) {

@@ -96,59 +96,14 @@
             android:textSize="24sp" />
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/rl_dt"
-        android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/rl_head"
-        android:layout_marginTop="60dp"
-        android:background="@android:color/white">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/num_tv"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:drawableLeft="@drawable/ic_wen"
-            android:drawablePadding="4dp"
-            android:text="  好友动态"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/num_tv"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="16dp"
-            android:background="@drawable/circle_messages"
-            android:gravity="center"
-            android:text="1"
-            android:textColor="@android:color/white"
-            android:textSize="8sp"
-            android:visibility="gone" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:src="@drawable/ic_back_right" />
-    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/rl_room"
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/rl_dt"
-        android:layout_marginTop="5dp"
+        android:layout_below="@+id/rl_head"
+        android:layout_marginTop="60dp"
         android:background="@android:color/white">
 
         <TextView

@@ -36,7 +36,8 @@ public interface API {
 
     String MY_MESSAGE = BASE_URL + "/api.php?c=Comment&a=mylist";
 
-    String MY_MOOD = BASE_URL + "/api.php?c=Mood&a=mylist";//朋友消息
+    String MY_MOOD = BASE_URL + "/api.php?c=Mood&a=mylist";//朋友消息mylist
+    String MY_ALL_MOOD = BASE_URL + "/api.php?c=Mood&a=follow_from";//朋友消息mylist
 
     String MY_FOLLOW_MY = BASE_URL + "/api.php?c=Comment&a=follow_my";//关注我的F友
 

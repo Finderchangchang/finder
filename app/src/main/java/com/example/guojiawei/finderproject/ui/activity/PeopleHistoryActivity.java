@@ -18,11 +18,16 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.cjt2325.cameralibrary.SharedPreferencesUtil;
 import com.example.guojiawei.finderproject.R;
+import com.example.guojiawei.finderproject.adapter.DetailsAdapter;
+import com.example.guojiawei.finderproject.adapter.YouDetailsAdapter;
 import com.example.guojiawei.finderproject.adapter.PublishRecyclerAdapter;
+import com.example.guojiawei.finderproject.adapter.base.BaseRecyclerViewAdapater;
+import com.example.guojiawei.finderproject.adapter.listener.OnItemButtonListener;
 import com.example.guojiawei.finderproject.adapter.listener.OnPublishItemButtonListener;
 import com.example.guojiawei.finderproject.adapter.listener.OnRecyclerViewItemClickListener;
 import com.example.guojiawei.finderproject.base.BaseActivity;
 import com.example.guojiawei.finderproject.entity.CodeEntity;
+import com.example.guojiawei.finderproject.entity.DetailsEntity;
 import com.example.guojiawei.finderproject.entity.PublishEntity;
 import com.example.guojiawei.finderproject.net.API;
 import com.example.guojiawei.finderproject.ui.Video_playAty;
@@ -34,6 +39,7 @@ import com.example.guojiawei.finderproject.widget.DividerItemDecoration;
 import com.example.guojiawei.finderproject.widget.dialog.DialogSelector;
 import com.example.guojiawei.finderproject.widget.dialog.DialogSelectorListener;
 import com.github.nuptboyzhb.lib.SuperSwipeRefreshLayout;
+import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.convert.StringConvert;
 import com.lzy.okgo.model.Response;
@@ -73,7 +79,7 @@ public class PeopleHistoryActivity extends BaseActivity {
     TextView tvNothing;
 
 
-    private PublishRecyclerAdapter mainRecyclerAdapter;
+    private YouDetailsAdapter mainRecyclerAdapter;
 
     //lat
     private String mLat;
@@ -98,7 +104,7 @@ public class PeopleHistoryActivity extends BaseActivity {
     @Override
     public void initViews(Bundle savedInstanceState) {
         setRecyclerView();
-        userId = getIntent().getStringExtra("userid");
+        userId = UserStatusUtil.getUserId();
         nickname = getIntent().getStringExtra("name");
         mLat = (String) SharedPreferencesUtil.getData(this, Constant.TAG_LAT, "");
         mLon = (String) SharedPreferencesUtil.getData(this, Constant.TAG_LON, "");
@@ -116,7 +122,7 @@ public class PeopleHistoryActivity extends BaseActivity {
     }
 
     private void setRecyclerView() {
-        mainRecyclerAdapter = new PublishRecyclerAdapter(PeopleHistoryActivity.this);
+        mainRecyclerAdapter = new YouDetailsAdapter(PeopleHistoryActivity.this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
         recyclerView.setAdapter(mainRecyclerAdapter);
@@ -138,41 +144,74 @@ public class PeopleHistoryActivity extends BaseActivity {
         mainRecyclerAdapter.setOnRecyclerViewItemClickListener(new OnRecyclerViewItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                startActivity(new Intent(PeopleHistoryActivity.this, DetailActivity.class)
+                startActivity(new Intent(PeopleHistoryActivity.this, PeopleHistoryActivity.class)
                         .putExtra(Constant.TAG_MOOD_ID, mainRecyclerAdapter.getDatas().get(position).getId()));
             }
         });
-
-        /**
-         * item 点赞 评论 举报等按钮监听点击
-         */
-        mainRecyclerAdapter.setOnItemButtonListener(new OnPublishItemButtonListener() {
+        mainRecyclerAdapter.setOnItemButtonListener(new OnItemButtonListener() {
             @Override
-            public void zan(int position) {
-                PublishEntity.DataBean.RowsBean bean = mainRecyclerAdapter.getDatas().get(position);
+            public void head(BaseRecyclerViewAdapater adapaterm, View v, int position) {
+                DetailsAdapter adapter = (DetailsAdapter) adapaterm;
+                DetailsEntity.HeadEntity.DataBean bean = adapter.getHeadEntity().getData();
+                final ImageView pv = (ImageView) v;
+                //设置不可以双指缩放移动放大等操作，跟普通的image一模一样,默认情况下就是disenable()状态
+                ivPreviewImg.setImageDrawable(null);
+                // BitMapUtil.loadImage(MainActivity.this, pv.getDrawingCache(), ivPreviewImg);
+                Glide.with(PeopleHistoryActivity.this).load(bean.getUser().getHead_img()).asBitmap().into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
 
+                        ivPreviewImg.setImageBitmap(resource);
+                        //获取img1的信息
+                        mInfo = PhotoView.getImageViewInfo(pv);
+                        ivPreviewImg.setVisibility(View.VISIBLE);
+                        ivPreviewImg.animaFrom(mInfo);
+                    }
+                });
+
+                ivPreviewImg.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // 让img2从自身位置变换到原来img1图片的位置大小
+                        ivPreviewImg.animaTo(mInfo, new Runnable() {
+                            @Override
+                            public void run() {
+                                ivPreviewImg.setVisibility(View.GONE);
+                            }
+                        });
+                    }
+                });
+
+            }
+
+            @Override
+            public void zan(BaseRecyclerViewAdapater adapaterm, int position) {
+                DetailsAdapter adapter = (DetailsAdapter) adapaterm;
+                DetailsEntity.HeadEntity.DataBean bean = adapter.getHeadEntity().getData();
                 dianZan(UserStatusUtil.getUserId(), bean.getId());
-                String thing = mainRecyclerAdapter.getDatas().get(position).getThing();
+                SharedPreferencesUtil.saveData(getContext(), "refresh", true);
+                String thing = bean.getThing();
                 if (!UserStatusUtil.isLogin()) {
                     startActivity(new Intent(PeopleHistoryActivity.this, LoginActivity.class));
                     return;
                 }
-                if ("0".equals(thing)) {
-                    mainRecyclerAdapter.getDatas().get(position).setThing("1");
-                    mainRecyclerAdapter.getDatas().get(position).setThing_num(Integer.valueOf(mainRecyclerAdapter.getDatas().get(position).getThing_num()) + 1 + "");
-                    mainRecyclerAdapter.notifyItemChanged(position);
-                }
-                if ("1".equals(thing)) {
-                    mainRecyclerAdapter.getDatas().get(position).setThing("0");
-                    mainRecyclerAdapter.getDatas().get(position).setThing_num(Integer.valueOf(mainRecyclerAdapter.getDatas().get(position).getThing_num()) - 1 + "");
 
-                    mainRecyclerAdapter.notifyItemChanged(position);
+                if (thing.equals("0")) {
+                    bean.setThing("1");
+                    bean.setThing_num(Integer.valueOf(bean.getThing_num()) + 1 + "");
+                    adapaterm.notifyItemChanged(position);
                 }
+                if (thing.equals("1")) {
+                    bean.setThing("0");
+                    bean.setThing_num(Integer.valueOf(bean.getThing_num()) - 1 + "");
+                    adapaterm.notifyItemChanged(position);
+                }
+
             }
 
-            public void play(int position) {
-                PublishEntity.DataBean.RowsBean bean = mainRecyclerAdapter.getDatas().get(position);
-                String videoid = bean.getVideo_id();
+            public void play(BaseRecyclerViewAdapater adapaterm, int position) {
+                DetailsAdapter adapter = (DetailsAdapter) adapaterm;
+                String videoid = adapter.getHeadEntity().getData().getVideo_id();
                 Intent intent = new Intent(PeopleHistoryActivity.this, Video_playAty.class);
                 intent.putExtra("videoid", videoid);
                 startActivity(intent);
@@ -180,16 +219,23 @@ public class PeopleHistoryActivity extends BaseActivity {
             }
 
             @Override
-            public void pinglun(int position) {
-                PublishEntity.DataBean.RowsBean bean = mainRecyclerAdapter.getDatas().get(position);
-                startActivity(new Intent(PeopleHistoryActivity.this, ReplyMessageActivity.class)
-                        .putExtra(Constant.TAG_MOOD_ID, bean.getId())
-                        .putExtra(Constant.TAG_COMMENT_ID, ""));
+            public void pinglun(BaseRecyclerViewAdapater adapaterm, int position) {
+                DetailsAdapter adapter = (DetailsAdapter) adapaterm;
+                if (UserStatusUtil.isLogin()) {
+                    DetailsEntity.HeadEntity.DataBean bean = adapter.getHeadEntity().getData();
+                    startActivityForResult(new Intent(PeopleHistoryActivity.this, ReplyMessageActivity.class)
+                            .putExtra(Constant.TAG_MOOD_ID, bean.getId())
+                            .putExtra(Constant.TAG_COMMENT_ID, ""), 11);
+                } else {
+                    startActivity(new Intent(PeopleHistoryActivity.this, LoginActivity.class));
+                }
             }
 
             @Override
-            public void more(final int position) {
-                final PublishEntity.DataBean.RowsBean bean = mainRecyclerAdapter.getDatas().get(position);
+            public void more(BaseRecyclerViewAdapater adapaterm, final int position) {
+                DetailsAdapter adapter = (DetailsAdapter) adapaterm;
+
+                final DetailsEntity.HeadEntity.DataBean bean = adapter.getHeadEntity().getData();
                 if (bean.getUser_id().equals(UserStatusUtil.getUserId())) {
                     final DialogSelector dialogSelector = new DialogSelector(PeopleHistoryActivity.this);
                     dialogSelector.setTitle("删除");
@@ -211,7 +257,8 @@ public class PeopleHistoryActivity extends BaseActivity {
                     dialogSelector.setListener(new DialogSelectorListener() {
                         @Override
                         public void onSure() {
-                            report(UserStatusUtil.getUserId(), bean.getId(), "", bean.getContent());
+                            startActivity(new Intent(PeopleHistoryActivity.this, ReplyJuBaoActivity.class)
+                                    .putExtra(Constant.TAG_MOOD_ID, bean.getId()));
                         }
 
                         @Override
@@ -224,33 +271,30 @@ public class PeopleHistoryActivity extends BaseActivity {
             }
 
             @Override
-            public void juli(int position) {
-                PublishEntity.DataBean.RowsBean bean = mainRecyclerAdapter.getDatas().get(position);
+            public void juli(BaseRecyclerViewAdapater adapaterm, int position) {
+                DetailsAdapter adapter = (DetailsAdapter) adapaterm;
+                DetailsEntity.HeadEntity.DataBean bean = adapter.getHeadEntity().getData();
                 startActivity(new Intent(PeopleHistoryActivity.this, MapImageActivity.class)
                         .putExtra(Constant.TAG_LAT, Double.valueOf(bean.getLatitude()))
                         .putExtra(Constant.TAG_LON, Double.valueOf(bean.getLongitude()))
-                        .putExtra("url", bean.getImg_s()));
+                        .putExtra("url", bean.getImg_s())
+                        .putExtra("url_s", bean.getImg())
+                        .putExtra("Image_url", bean.getImage_url())
+                        .putExtra("video_id", bean.getVideo_id())
+                        .putExtra("content", bean.getContent()));
             }
 
             @Override
-            public void imgPreview(View v, int position) {
+            public void imgPreview(BaseRecyclerViewAdapater adapaterm, View v, int position) {
+                DetailsAdapter adapter = (DetailsAdapter) adapaterm;
+                DetailsEntity.HeadEntity.DataBean bean = adapter.getHeadEntity().getData();
                 final ImageView pv = (ImageView) v;
                 //设置不可以双指缩放移动放大等操作，跟普通的image一模一样,默认情况下就是disenable()状态
-                pv.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        //获取img1的信息
-                        mInfo = PhotoView.getImageViewInfo(pv);
-                        ivPreviewImg.setVisibility(View.VISIBLE);
-                        ivPreviewImg.animaFrom(mInfo);
-                    }
-                });
-                PublishEntity.DataBean.RowsBean bean = mainRecyclerAdapter.getDatas().get(position);
+                ivPreviewImg.setImageDrawable(null);
+                // BitMapUtil.loadImage(MainActivity.this, pv.getDrawingCache(), ivPreviewImg);
                 Glide.with(PeopleHistoryActivity.this).load(bean.getImg()).asBitmap().into(new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-
                         ivPreviewImg.setImageBitmap(resource);
                         //获取img1的信息
                         mInfo = PhotoView.getImageViewInfo(pv);
@@ -270,18 +314,48 @@ public class PeopleHistoryActivity extends BaseActivity {
                         });
                     }
                 });
-                ivPreviewImg.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // 让img2从自身位置变换到原来img1图片的位置大小
-                        ivPreviewImg.animaTo(mInfo, new Runnable() {
-                            @Override
-                            public void run() {
-                                ivPreviewImg.setVisibility(View.GONE);
-                            }
-                        });
-                    }
-                });
+            }
+        });
+
+        mainRecyclerAdapter.setOnRecyclerViewItemClickListener(new OnRecyclerViewItemClickListener() {
+            @Override
+            public void onItemClick(View v, final int position) {
+                if (!UserStatusUtil.getUserId().equals(mainRecyclerAdapter.getDatas().get(position).getUser_id())) {
+                    startActivity(new Intent(PeopleHistoryActivity.this, ReplyMessageActivity.class)
+//                            .putExtra(Constant.TAG_MOOD_ID, mainRecyclerAdapter.getDatas().get(position).getMood_id())
+                            .putExtra(Constant.TAG_COMMENT_ID, mainRecyclerAdapter.getDatas().get(position).getId())
+                            .putExtra("name", mainRecyclerAdapter.getDatas().get(position).getUser().getNickname())
+                            .putExtra("reid", mainRecyclerAdapter.getDatas().get(position).getUser_id())
+                            .putExtra("nickname", mainRecyclerAdapter.getDatas().get(position).getUser().getNickname()));
+
+                } else {
+                    final DialogSelector dialogSelector = new DialogSelector(PeopleHistoryActivity.this);
+                    dialogSelector.setTitle("删除");
+                    dialogSelector.setListener(new DialogSelectorListener() {
+                        @Override
+                        public void onSure() {
+                            //delMessage(UserStatusUtil.getUserId(), mainRecyclerAdapter.getDatas().get(position).getId(), position);
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            dialogSelector.dismiss();
+                        }
+                    });
+                    dialogSelector.show();
+                }
+            }
+        });
+
+        mainRecyclerAdapter.setOnReplyMessageHeadOnclickListener(new YouDetailsAdapter.OnReplyMessageHeadOnclickListener() {
+            @Override
+            public void onClickHead(int position) {
+                if (!UserStatusUtil.getUserId().equals(mainRecyclerAdapter.getDatas().get(position).getUser_id())) {
+                    startActivity(new Intent(getContext(), PeoplePublishHistoryActivity.class)
+                            .putExtra("userid", mainRecyclerAdapter.getDatas().get(position).getUser_id())
+                            .putExtra("name", mainRecyclerAdapter.getDatas().get(position).getUser().getNickname()));
+
+                }
             }
         });
 
@@ -362,7 +436,7 @@ public class PeopleHistoryActivity extends BaseActivity {
 
                     @Override
                     public void onError(Throwable e) {
-                        String err="";
+                        String err = "";
                     }
 
                     @Override
@@ -374,7 +448,8 @@ public class PeopleHistoryActivity extends BaseActivity {
                             swipeRefreshLayout.setLoadMore(false);
                             swipeRefreshLayout.setVisibility(View.VISIBLE);
                             if (page == 1) {
-                                mainRecyclerAdapter.refreshDatas(entity.getData().getRows());
+                                mainRecyclerAdapter.setHeadEntity(entity.getData());
+//                                mainRecyclerAdapter.refreshDatas(entity.getData().getRows());
                             } else {
                                 mainRecyclerAdapter.addItems(entity.getData().getRows());
                             }
