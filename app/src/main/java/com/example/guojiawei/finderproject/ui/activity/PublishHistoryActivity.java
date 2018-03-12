@@ -333,8 +333,8 @@ public class PublishHistoryActivity extends BaseActivity {
         params.put("longitude", mLon + "");
         EncryptUtil.EncryptAutoSort(params);
 
-        String url = API.MY_MOOD;//只获得自己的
-        if (is_all) url = API.MY_ALL_MOOD;//获得所有的信息
+        String url = API.MY_ALL_MOOD;//获得所有的信息
+        if (is_all) url = API.MY_MOOD;//只获得自己的
         Observable<Response<String>> observable = OkGo.<String>post(url)
                 .params(params, false)
                 .converter(new StringConvert())

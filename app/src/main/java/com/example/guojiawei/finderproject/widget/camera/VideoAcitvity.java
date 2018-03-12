@@ -12,12 +12,14 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.cjt2325.cameralibrary.JCameraView;
+import com.cjt2325.cameralibrary.listener.ClickListener;
 import com.cjt2325.cameralibrary.listener.ErrorListener;
 import com.cjt2325.cameralibrary.listener.JCameraListener;
 import com.cjt2325.cameralibrary.util.FileUtil;
 import com.example.guojiawei.finderproject.R;
 import com.example.guojiawei.finderproject.base.BaseActivity;
 import com.example.guojiawei.finderproject.ui.activity.EditorActivity;
+import com.example.guojiawei.finderproject.ui.activity.LoginActivity;
 import com.example.guojiawei.finderproject.util.Constant;
 
 import java.io.BufferedInputStream;
@@ -89,7 +91,7 @@ public class VideoAcitvity extends BaseActivity {
         if (!fileDir.exists()) {
             fileDir.mkdirs();
         }
-         close_iv.setOnClickListener(new View.OnClickListener() {
+        close_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setResult(2);
@@ -146,6 +148,13 @@ public class VideoAcitvity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 VideoAcitvity.this.finish();
+            }
+        });
+        //跳转到相册页面
+        jCameraView.setRightClickListener(new ClickListener() {
+            @Override
+            public void onClick() {
+                startActivity(new Intent(getContext(), LoginActivity.class));
             }
         });
         jCameraView.setErrorLisenter(new ErrorListener() {

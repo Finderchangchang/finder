@@ -223,6 +223,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
                     mSwitchCamera.setVisibility(INVISIBLE);
                     mFlashLamp.setVisibility(INVISIBLE);
                     back.setVisibility(INVISIBLE);
+                    mCaptureLayout.iv_custom_right.setVisibility(INVISIBLE);
                     //image_time.setVisibility(INVISIBLE);
                     machine.capture();
                 }
@@ -236,6 +237,8 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
                     back.setVisibility(INVISIBLE);
                     image_time.setVisibility(VISIBLE);
                     timer.start();
+                    mCaptureLayout.iv_custom_right.setVisibility(INVISIBLE);
+
                     machine.record(mVideoView.getHolder().getSurface(), screenProp);
                 }
             }
@@ -248,6 +251,8 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
                 mFlashLamp.setVisibility(VISIBLE);
                 back.setVisibility(VISIBLE);
                 image_time.setVisibility(GONE);
+                mCaptureLayout.iv_custom_right.setVisibility(VISIBLE);
+                mCaptureLayout.btn_return.setVisibility(VISIBLE);
                 timer.cancel();
                 postDelayed(new Runnable() {
                     @Override
@@ -262,6 +267,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
                 mFoucsView.setVisibility(GONE);
                 timer.cancel();
                 machine.stopRecord(false, time);
+                mCaptureLayout.iv_custom_right.setVisibility(VISIBLE);
             }
 
             @Override
@@ -293,6 +299,8 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
             public void cancel() {
                 machine.cancle(mVideoView.getHolder(), screenProp);
                 mCaptureLayout.btn_return.setVisibility(VISIBLE);
+                mCaptureLayout.iv_custom_right.setVisibility(VISIBLE);
+
                 mCaptureLayout.btn_capture.setVisibility(VISIBLE);
 
             }

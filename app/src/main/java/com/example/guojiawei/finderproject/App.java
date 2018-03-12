@@ -3,6 +3,7 @@ package com.example.guojiawei.finderproject;
 import android.app.Application;
 
 import com.baidu.mapapi.SDKInitializer;
+import com.example.guojiawei.finderproject.util.GlideImageLoader;
 import com.example.guojiawei.finderproject.util.UserStatusUtil;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheEntity;
@@ -14,6 +15,9 @@ import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
+import cn.finalteam.galleryfinal.CoreConfig;
+import cn.finalteam.galleryfinal.GalleryFinal;
+import cn.finalteam.galleryfinal.ThemeConfig;
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.service.JPushMessageReceiver;
 import okhttp3.OkHttpClient;

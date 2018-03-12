@@ -175,8 +175,8 @@ public class MessagesActivity extends BaseActivity {
         params.put("rows", rows);
         EncryptUtil.EncryptAutoSort(params);
 //        String url = API.MY_MESSAGE;
-        String url = API.MY_FOLLOW_MY;
-        if (is_all) url = API.MY_FOLLOW_TO;
+        String url = API.MY_FOLLOW_TO;//关注我的人
+        if (is_all) url = API.MY_FOLLOW_MY;//我关注的人
         Observable<Response<String>> observable = OkGo.<String>post(url)
                 .params(params, false)
                 .converter(new StringConvert())

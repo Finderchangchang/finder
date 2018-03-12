@@ -74,7 +74,7 @@ public class CaptureLayout extends FrameLayout {
     private TypeButton btn_cancel;          //取消按钮
     public TypeButton btn_return;        //返回按钮
     private ImageView iv_custom_left;            //左边自定义按钮
-    private ImageView iv_custom_right;            //右边自定义按钮
+    public ImageView iv_custom_right;            //右边自定义按钮
     private TextView txt_tip;               //提示文本
 
     private int layout_width;
@@ -126,8 +126,9 @@ public class CaptureLayout extends FrameLayout {
 
     public void initEvent() {
         //默认Typebutton为隐藏
-        iv_custom_right.setVisibility(GONE);
+//        iv_custom_right.setVisibility(GONE);
         btn_confirm.setVisibility(GONE);
+        iv_custom_right.setVisibility(VISIBLE);
     }
 
     public void startTypeBtnAnimator() {
@@ -140,10 +141,11 @@ public class CaptureLayout extends FrameLayout {
             txt_tip.setVisibility(GONE);
         }
         if (this.iconRight != 0)
-            iv_custom_right.setVisibility(GONE);
-        btn_capture.setVisibility(GONE);
+//            iv_custom_right.setVisibility(GONE);
+            btn_capture.setVisibility(GONE);
         btn_cancel.setVisibility(VISIBLE);
         btn_confirm.setVisibility(VISIBLE);
+        iv_custom_right.setVisibility(GONE);
         btn_cancel.setClickable(false);
         btn_confirm.setClickable(false);
         ObjectAnimator animator_cancel = ObjectAnimator.ofFloat(btn_cancel, "translationX", layout_width / 4, 0);
@@ -274,7 +276,23 @@ public class CaptureLayout extends FrameLayout {
 //                resetCaptureLayout();
             }
         });
-
+        //右边自定义按钮
+        iv_custom_right = new ImageView(getContext());
+        LayoutParams iv_custom_param_right = new LayoutParams((int) (button_size / 2.5f), (int) (button_size / 2.5f));
+        iv_custom_param_right.gravity = Gravity.CENTER_VERTICAL | Gravity.RIGHT;
+        iv_custom_param_right.setMargins(0, 0, (layout_width / 4) - button_size / 2, 0);
+        iv_custom_right.setImageResource(R.drawable.img_glary);
+        iv_custom_right.setLayoutParams(iv_custom_param_right);
+        iv_custom_right.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (rightClickListener != null) {
+                    rightClickListener.onClick();
+                }
+//                startAlphaAnimation(true);
+//                resetCaptureLayout();
+            }
+        });
         //返回按钮
         btn_return = new TypeButton(getContext(), TypeButton.TYPE_NULL, (int) (button_size / 2f));
         LayoutParams btn_return_param = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
@@ -309,22 +327,6 @@ public class CaptureLayout extends FrameLayout {
             }
         });
 
-        //右边自定义按钮
-        iv_custom_right = new ImageView(getContext());
-        LayoutParams iv_custom_param_right = new LayoutParams((int) (button_size / 2.5f), (int) (button_size / 2.5f));
-        iv_custom_param_right.gravity = Gravity.CENTER_VERTICAL | Gravity.RIGHT;
-        iv_custom_param_right.setMargins(0, 0, layout_width / 6, 0);
-        iv_custom_right.setLayoutParams(iv_custom_param_right);
-        iv_custom_right.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (typeLisenter != null) {
-                    typeLisenter.confirm();
-                }
-                startAlphaAnimation(true);
-//                resetCaptureLayout();
-            }
-        });
 
         txt_tip = new TextView(getContext());
         LayoutParams txt_param = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
@@ -357,6 +359,7 @@ public class CaptureLayout extends FrameLayout {
 //            iv_custom_left.setVisibility(VISIBLE);
 //        else
 //            btn_return.setVisibility(VISIBLE);
+
         if (this.iconRight != 0)
             iv_custom_right.setVisibility(VISIBLE);
     }
@@ -413,7 +416,7 @@ public class CaptureLayout extends FrameLayout {
             iv_custom_right.setImageResource(iconRight);
             iv_custom_right.setVisibility(VISIBLE);
         } else {
-            iv_custom_right.setVisibility(GONE);
+//            iv_custom_right.setVisibility(GONE);
         }
     }
 
