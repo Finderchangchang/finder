@@ -3,6 +3,7 @@ package com.example.guojiawei.finderproject.widget.camera;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.ExifInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.baidu.mapapi.model.LatLng;
 import com.cjt2325.cameralibrary.JCameraView;
 import com.cjt2325.cameralibrary.listener.ClickListener;
 import com.cjt2325.cameralibrary.listener.ErrorListener;
@@ -20,7 +22,9 @@ import com.example.guojiawei.finderproject.R;
 import com.example.guojiawei.finderproject.base.BaseActivity;
 import com.example.guojiawei.finderproject.ui.activity.EditorActivity;
 import com.example.guojiawei.finderproject.ui.activity.LoginActivity;
+import com.example.guojiawei.finderproject.ui.loader.ShowImgActivity;
 import com.example.guojiawei.finderproject.util.Constant;
+import com.example.guojiawei.finderproject.util.GlideImageLoader;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -28,6 +32,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.List;
+
+import cn.finalteam.galleryfinal.CoreConfig;
+import cn.finalteam.galleryfinal.FunctionConfig;
+import cn.finalteam.galleryfinal.GalleryFinal;
+import cn.finalteam.galleryfinal.ThemeConfig;
+import cn.finalteam.galleryfinal.model.PhotoInfo;
 
 public class VideoAcitvity extends BaseActivity {
     private JCameraView jCameraView;
@@ -143,6 +155,9 @@ public class VideoAcitvity extends BaseActivity {
         }
     }
 
+    double output1;
+    double output2;
+
     private void initListener() {
         jCameraView.back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,7 +169,31 @@ public class VideoAcitvity extends BaseActivity {
         jCameraView.setRightClickListener(new ClickListener() {
             @Override
             public void onClick() {
-                startActivity(new Intent(getContext(), LoginActivity.class));
+                ThemeConfig theme = new ThemeConfig.Builder()
+                        .build();
+                //配置功能
+                FunctionConfig functionConfig = new FunctionConfig.Builder()
+                        .setEnablePreview(true)
+                        .build();
+                CoreConfig coreConfig = new CoreConfig.Builder(getContext(), new GlideImageLoader(), theme)
+                        .setFunctionConfig(functionConfig)
+                        .build();
+                GalleryFinal.init(coreConfig);
+                GalleryFinal.openGallerySingle(0, new GalleryFinal.OnHanlderResultCallback() {
+                    @Override
+                    public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
+                        if (resultList.size() > 0) {
+                            String url = resultList.get(0).getPhotoPath();
+                            startActivity(new Intent(getContext(), ShowImgActivity.class)
+                                    .putExtra("url", resultList.get(0).getPhotoPath()));
+                        }
+                    }
+
+                    @Override
+                    public void onHanlderFailure(int requestCode, String errorMsg) {
+
+                    }
+                });
             }
         });
         jCameraView.setErrorLisenter(new ErrorListener() {
@@ -262,5 +301,30 @@ public class VideoAcitvity extends BaseActivity {
         ObjectAnimator animator2 = ObjectAnimator.ofFloat(right, "translationX", 0f, 300f);
         animator2.setDuration(300);
         animator2.start();
+    }
+
+    private static float convertRationalLatLonToFloat(
+            String rationalString, String ref) {
+
+        String[] parts = rationalString.split(",");
+
+        String[] pair;
+        pair = parts[0].split("/");
+        double degrees = Double.parseDouble(pair[0].trim())
+                / Double.parseDouble(pair[1].trim());
+
+        pair = parts[1].split("/");
+        double minutes = Double.parseDouble(pair[0].trim())
+                / Double.parseDouble(pair[1].trim());
+
+        pair = parts[2].split("/");
+        double seconds = Double.parseDouble(pair[0].trim())
+                / Double.parseDouble(pair[1].trim());
+
+        double result = degrees + (minutes / 60.0) + (seconds / 3600.0);
+        if ((ref.equals("S") || ref.equals("W"))) {
+            return (float) -result;
+        }
+        return (float) result;
     }
 }

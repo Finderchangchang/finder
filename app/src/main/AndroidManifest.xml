@@ -46,9 +46,7 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="mxtdgHIkw3aRgiUwAjVSc006m0yhyOUE" />
 
-        <activity android:name=".ui.SplashActivity">
-
-        </activity>
+        <activity android:name=".ui.SplashActivity"></activity>
         <activity
             android:name=".ui.MainActivity"
             android:launchMode="singleInstance" />
@@ -103,7 +101,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.Video_playAty"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity android:name=".ui.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -111,6 +109,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.loader.ShowImgActivity"></activity>
     </application>
 
 </manifest>

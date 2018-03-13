@@ -32,7 +32,7 @@ android {
         multiDexEnabled true
         ndk {
             //选择要添加的对应cpu类型的.so库。
-            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a','x86', 'x86_64', 'mips', 'mips64'
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64', 'mips', 'mips64'
             // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
         }
 
@@ -126,4 +126,6 @@ dependencies {
     //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
     compile 'com.github.maning0303:MNProgressHUD:V1.0.1'
     compile 'cn.finalteam:galleryfinal:1.4.3'//相册库
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+
 }
