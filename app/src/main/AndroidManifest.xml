@@ -46,7 +46,7 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="mxtdgHIkw3aRgiUwAjVSc006m0yhyOUE" />
 
-        <activity android:name=".ui.SplashActivity"></activity>
+        <activity android:name=".ui.SplashActivity" />
         <activity
             android:name=".ui.MainActivity"
             android:launchMode="singleInstance" />
@@ -70,6 +70,23 @@
         <activity
             android:name=".ui.activity.ReplyJuBaoActivity"
             android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="1" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name=".ui.activity.PeoplePublishHistoryActivity" />
         <activity android:name=".ui.activity.PeopleHistoryActivity" />
         <activity android:name=".ui.activity.MessageDetailActivity" />
@@ -109,7 +126,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.loader.ShowImgActivity"></activity>
+        <activity android:name=".ui.loader.ShowImgActivity" />
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"></activity>
     </application>
 
 </manifest>

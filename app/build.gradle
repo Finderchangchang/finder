@@ -65,25 +65,15 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     //黄油刀插件
-
     //glide图片加载插件
-
     //compile 'com.github.florent37:camerafragment:1.0.7'
-
     //Gson 库
-
     //下面两个是RxJava 和RxAndroid
-
     //转换器，请求结果转换成Model
-
     //配合Rxjava 使用
-
     //必须使用
-
     //以下三个选择添加，okrx和okrx2不能同时使用
-
     // 此处以JPush 3.0.9 版本为例。
-
     // 此处以JCore 1.1.7 版本为例。
     compile files('libs/BaiduLBS_Android.jar')
     compile project(':camerafragment')
@@ -92,7 +82,6 @@ dependencies {
     compile files('libs/aliyun-vod-croe-android-sdk-1.2.1.jar')
     compile files('libs/aliyun-vod-upload-android-sdk-1.1.1.jar')
     compile files('libs/jsr305-3.0.0.jar')
-
     compile(name: 'AlivcReporter', ext: 'aar')
     compile(name: 'AlivcPlayer', ext: 'aar')
     compile(name: 'AliyunVodPlayer', ext: 'aar')
@@ -125,7 +114,9 @@ dependencies {
     compile 'com.tencent.bugly:nativecrashreport:latest.release'
     //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
     compile 'com.github.maning0303:MNProgressHUD:V1.0.1'
-    compile 'cn.finalteam:galleryfinal:1.4.3'//相册库
+    compile 'cn.finalteam:galleryfinal:1.4.3'
+    //相册库
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
-
+    compile files('libs/open_sdk_r5990_lite.jar')
+    compile 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
 }

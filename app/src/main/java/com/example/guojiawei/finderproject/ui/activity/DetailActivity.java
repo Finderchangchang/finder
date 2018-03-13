@@ -1,7 +1,9 @@
 package com.example.guojiawei.finderproject.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,6 +30,7 @@ import com.example.guojiawei.finderproject.util.Constant;
 import com.example.guojiawei.finderproject.util.EncryptUtil;
 import com.example.guojiawei.finderproject.util.GsonUtil;
 import com.cjt2325.cameralibrary.SharedPreferencesUtil;
+import com.example.guojiawei.finderproject.util.MyBottomDialog;
 import com.example.guojiawei.finderproject.util.UserStatusUtil;
 import com.example.guojiawei.finderproject.widget.MessageDetailDividerItemDecoration;
 import com.example.guojiawei.finderproject.widget.dialog.DialogSelector;
@@ -37,7 +40,20 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.convert.StringConvert;
 import com.lzy.okgo.model.Response;
 import com.lzy.okrx.adapter.ObservableResponse;
+import com.tencent.connect.common.Constants;
+import com.tencent.connect.share.QQShare;
+import com.tencent.connect.share.QzoneShare;
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.opensdk.modelmsg.WXImageObject;
+import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.tencent.tauth.IUiListener;
+import com.tencent.tauth.Tencent;
+import com.tencent.tauth.UiError;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,26 +77,87 @@ public class DetailActivity extends BaseActivity {
     SuperSwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.iv_preview_img)
     PhotoView ivPreviewImg;
-
+    @BindView(R.id.share_iv)
+    ImageView share_iv;
     private DetailsAdapter detailsAdapter;
     private String lat = "";
     private String lon = "";
     private String moodId = "";
     private Info mInfo;
+    Tencent mTencent;
 
     @Override
     public int getLayoutId() {
         return R.layout.activity_details;
     }
 
+    Bundle params;
+    private static final String APP_ID = "12312313212313213213";    //这个APP_ID就是注册APP的时候生成的
+
+    private static final String APP_SECRET = "12312312313212313213213";
+
+    public IWXAPI api;      //这个对象是专门用来向微信发送数据的一个重要接口,使用强引用持有,所有的信息发送都是基于这个对象的
+
+    public void registerWeChat() {   //向微信注册app
+        api = WXAPIFactory.createWXAPI(this, APP_ID, true);
+        api.registerApp(APP_ID);
+    }
+
     @Override
     public void initViews(Bundle savedInstanceState) {
+        registerWeChat();
         lat = (String) SharedPreferencesUtil.getData(this, Constant.TAG_LAT, "");
         lon = (String) SharedPreferencesUtil.getData(this, Constant.TAG_LON, "");
         moodId = getIntent().getStringExtra(Constant.TAG_MOOD_ID);
+        mTencent = Tencent.createInstance("", this);
         setRecyclerView();
         detailsAdapter = new DetailsAdapter(DetailActivity.this);
+        share_iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyBottomDialog dialog = new MyBottomDialog(DetailActivity.this);
+                dialog.setClick(new MyBottomDialog.click1() {
+                    @Override
+                    public void click(int position) {
+                        switch (position) {
+                            case 1:
+                                sharePicByFile(true, new File(""), "");
+                                break;
+                            case 2:
+                                showToast("开发中...");
+                                break;
+                            case 3:
+                                params = new Bundle();
+                                params.putInt(QzoneShare.SHARE_TO_QZONE_KEY_TYPE, QzoneShare.SHARE_TO_QZONE_TYPE_IMAGE_TEXT);
+                                params.putString(QzoneShare.SHARE_TO_QQ_TITLE, "标题");// 标题
+                                params.putString(QzoneShare.SHARE_TO_QQ_SUMMARY, "要分享的摘要");// 摘要
+                                params.putString(QzoneShare.SHARE_TO_QQ_TARGET_URL, "http://www.qq.com/news/1.html");// 内容地址
+                                params.putString(QzoneShare.SHARE_TO_QQ_IMAGE_URL, "http://imgcache.qq.com/qzone/space_item/pre/0/66768.gif");// 网络图片地址params.putString(QQShare.SHARE_TO_QQ_APP_NAME, "应用名称");// 应用名称
+                                params.putString(QzoneShare.SHARE_TO_QQ_EXT_INT, "其它附加功能");
 
+                                mTencent.shareToQQ(DetailActivity.this, params, mIUiListener);
+                                break;
+                            case 4:
+                                sharePicByFile(true, new File(""), "");
+                                break;
+                            case 5:
+                                params = new Bundle();
+                                params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
+                                params.putString(QQShare.SHARE_TO_QQ_TITLE, "标题");// 标题
+                                params.putString(QQShare.SHARE_TO_QQ_SUMMARY, "要分享的摘要");// 摘要
+                                params.putString(QQShare.SHARE_TO_QQ_TARGET_URL, "http://www.qq.com/news/1.html");// 内容地址
+
+                                params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, "http://imgcache.qq.com/qzone/space_item/pre/0/66768.gif");// 网络图片地址params.putString(QQShare.SHARE_TO_QQ_APP_NAME, "应用名称");// 应用名称
+                                params.putString(QQShare.SHARE_TO_QQ_EXT_INT, "其它附加功能");
+
+                                mTencent.shareToQQ(DetailActivity.this, params, mIUiListener);
+                                break;
+                        }
+                    }
+                });
+                dialog.show();
+            }
+        });
         getMoodDetatils(moodId, UserStatusUtil.getUserId(), lat, lon);
 
         detailsAdapter.setOnItemButtonListener(new OnItemButtonListener() {
@@ -295,12 +372,87 @@ public class DetailActivity extends BaseActivity {
         });
     }
 
+    public void sharePicByFile(boolean is_quan, File picFile, String tag) {
+        if (!picFile.exists()) {
+            return;
+        }
+        Bitmap pic = BitmapFactory.decodeFile(picFile.toString());
+
+        WXImageObject imageObject = new WXImageObject(pic);
+        //这个构造方法中自动把传入的bitmap转化为2进制数据,或者你直接传入byte[]也行
+        //注意传入的数据不能大于10M,开发文档上写的
+
+        WXMediaMessage msg = new WXMediaMessage();  //这个对象是用来包裹发送信息的对象
+        msg.mediaObject = imageObject;
+        //msg.mediaObject实际上是个IMediaObject对象,
+        //它有很多实现类,每一种实现类对应一种发送的信息,
+        //比如WXTextObject对应发送的信息是文字,想要发送文字直接传入WXTextObject对象就行
+
+
+        Bitmap thumbBitmap = Bitmap.createScaledBitmap(pic, 150, 150, true);
+
+        msg.thumbData = Bitmap2Bytes(thumbBitmap);
+        //在这设置缩略图
+        //官方文档介绍这个bitmap不能超过32kb
+        //如果一个像素是8bit的话换算成正方形的bitmap则边长不超过181像素,边长设置成150是比较保险的
+        //或者使用msg.setThumbImage(thumbBitmap);省去自己转换二进制数据的过程
+        //如果超过32kb则抛异常
+
+        SendMessageToWX.Req req = new SendMessageToWX.Req();    //创建一个请求对象
+        req.message = msg;  //把msg放入请求对象中
+        if (is_quan) {
+            req.scene = SendMessageToWX.Req.WXSceneTimeline;    //设置发送到朋友圈
+        } else {
+            req.scene = SendMessageToWX.Req.WXSceneSession;   //设置发送给朋友
+        }
+        req.transaction = tag;  //这个tag要唯一,用于在回调中分辨是哪个分享请求
+        boolean b = api.sendReq(req);   //如果调用成功微信,会返回true
+    }
+
+    public byte[] Bitmap2Bytes(Bitmap bm) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        return baos.toByteArray();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 10) {
             SharedPreferencesUtil.saveData(getContext(), "refresh", true);//评论
             getMoodDetatils(moodId, UserStatusUtil.getUserId(), lat, lon);
+        }
+        Tencent.onActivityResultData(requestCode, resultCode, data, mIUiListener);
+        if (requestCode == Constants.REQUEST_API) {
+            if (resultCode == Constants.REQUEST_QQ_SHARE || resultCode == Constants.REQUEST_QZONE_SHARE || resultCode == Constants.REQUEST_OLD_SHARE) {
+                Tencent.handleResultData(data, new MyIUiListener());
+            }
+        }
+    }
+
+    MyIUiListener mIUiListener = new MyIUiListener();
+
+    class MyIUiListener implements IUiListener {
+
+        @Override
+        public void onComplete(Object o) {
+// 操作成功
+            String a = "";
+        }
+
+        @Override
+        public void onError(UiError uiError) {
+            String a = "";
+// 分享异常
+        }
+
+        @Override
+
+
+        public void onCancel() {
+            String a = "";
+
+            // 取消分享
         }
     }
 

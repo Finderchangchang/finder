@@ -27,6 +27,7 @@ import com.bm.library.PhotoView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.cjt2325.cameralibrary.SharedPreferencesUtil;
 import com.example.guojiawei.finderproject.R;
 import com.example.guojiawei.finderproject.base.BaseActivity;
 import com.example.guojiawei.finderproject.entity.CodeEntity;
@@ -237,6 +238,7 @@ public class EditorActivity extends BaseActivity {
                         mMProgressDialog.dismiss();
                         if (entity.getCode() == 1) {
                             showToast("发送成功");
+                            SharedPreferencesUtil.saveData(getContext(), "refresh", true);
                             finish();
                         }
                     }
@@ -276,6 +278,7 @@ public class EditorActivity extends BaseActivity {
                         CodeEntity entity = GsonUtil.GosnToEntity(stringResponse.body(), CodeEntity.class);
                         if (entity.getCode() == 1) {
                             showToast("发送成功");
+                            SharedPreferencesUtil.saveData(getContext(), "refresh", true);
                             mMProgressDialog.dismiss();
                             finish();
                         }

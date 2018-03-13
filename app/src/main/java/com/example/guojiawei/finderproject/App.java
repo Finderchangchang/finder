@@ -1,6 +1,7 @@
 package com.example.guojiawei.finderproject;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.example.guojiawei.finderproject.util.GlideImageLoader;
@@ -11,6 +12,8 @@ import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.cookie.CookieJarImpl;
 import com.lzy.okgo.cookie.store.DBCookieStore;
 import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -29,6 +32,7 @@ import okhttp3.OkHttpClient;
 public class App extends Application {
 
     public static String JpushID = "";
+
 
     @Override
     public void onCreate() {
