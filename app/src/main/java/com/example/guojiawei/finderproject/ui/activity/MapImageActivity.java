@@ -23,8 +23,10 @@ import com.baidu.mapapi.map.InfoWindow;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -32,18 +34,35 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.example.guojiawei.finderproject.R;
 import com.example.guojiawei.finderproject.adapter.PreviewPagerAdapter;
 import com.example.guojiawei.finderproject.base.BaseActivity;
+import com.example.guojiawei.finderproject.entity.MapModel;
+import com.example.guojiawei.finderproject.entity.UserIdEntity;
+import com.example.guojiawei.finderproject.net.API;
 import com.example.guojiawei.finderproject.ui.Video_playAty;
 import com.example.guojiawei.finderproject.ui.fragment.ContentFragment;
 import com.example.guojiawei.finderproject.ui.fragment.ImageFragment;
 import com.example.guojiawei.finderproject.util.Constant;
 import com.example.guojiawei.finderproject.util.CornersTransform;
+import com.example.guojiawei.finderproject.util.EncryptUtil;
+import com.example.guojiawei.finderproject.util.GsonUtil;
+import com.example.guojiawei.finderproject.util.MapDistance;
+import com.example.guojiawei.finderproject.util.UserStatusUtil;
 import com.example.guojiawei.finderproject.widget.RoundImageView;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.convert.StringConvert;
+import com.lzy.okgo.model.Response;
+import com.lzy.okrx.adapter.ObservableResponse;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by guojiawei on 2017/11/16.
@@ -114,6 +133,63 @@ public class MapImageActivity extends BaseActivity {
         mBaiduMap = mMapView.getMap();
         mMapView.showZoomControls(false); // 设置是否显示缩放控件
         mMapView.showScaleControl(false); // 设置是否显示缩放控件
+        mBaiduMap.setOnMapStatusChangeListener(new BaiduMap.OnMapStatusChangeListener() {
+            @Override
+            public void onMapStatusChangeStart(MapStatus mapStatus) {
+
+            }
+
+            @Override
+            public void onMapStatusChangeStart(MapStatus mapStatus, int i) {
+
+            }
+
+            @Override
+            public void onMapStatusChange(MapStatus mapStatus) {
+
+            }
+
+            @Override
+            public void onMapStatusChangeFinish(MapStatus mapStatus) {
+                LatLng mCenterLatLng = mapStatus.target;
+                /**获取经纬度*/
+                double lat2 = mCenterLatLng.latitude;
+                double lng2 = mCenterLatLng.longitude;
+                //两个经纬度的距离
+                String jl = MapDistance.getInstance().getShortDistance(lat, lon, lat2, lng2);
+                Map<String, String> params = new HashMap<>();
+                params.put("user_id", UserStatusUtil.getUserId());
+                params.put("latitude", lat + "");
+                params.put("longitude", lon + "");
+                params.put("juli", jl);
+                EncryptUtil.EncryptAutoSort(params);
+
+                Observable<Response<String>> observable = OkGo.<String>post(API.MOOD_MAP)
+                        .params(params, false)
+                        .converter(new StringConvert())
+                        .adapt(new ObservableResponse<String>());
+
+                observable.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Subscriber<Response<String>>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                showToast("发送失败");
+                            }
+
+                            @Override
+                            public void onNext(Response<String> stringResponse) {
+                                MapModel entity = GsonUtil.GosnToEntity(stringResponse.body(), MapModel.class);
+                                String a = "";
+                            }
+                        });
+            }
+        });
     }
 
     private void setLocation() {
@@ -179,6 +255,24 @@ public class MapImageActivity extends BaseActivity {
                     //显示InfoWindow
                     mBaiduMap.showInfoWindow(mInfoWindow);
                 }
+                //定义Maker坐标点
+
+                LatLng point = new LatLng(39.963175, 116.400244);
+
+//构建Marker图标
+
+                BitmapDescriptor bitmap = BitmapDescriptorFactory
+                        .fromResource(R.drawable.ic_back);
+
+//构建MarkerOption，用于在地图上添加Marker
+
+                OverlayOptions option = new MarkerOptions()
+                        .position(point)
+                        .icon(bitmap);
+
+//在地图上添加Marker，并显示
+
+                mBaiduMap.addOverlay(option);
 
             }
         });

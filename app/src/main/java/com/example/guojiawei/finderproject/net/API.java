@@ -54,4 +54,6 @@ public interface API {
     String COMMENT_NUM = BASE_URL + "/api.php?c=Comment&a=num";
 
     String DEL_MESSAGE = BASE_URL + "/api.php?c=Comment&a=del";
+    String MOOD_MAP = BASE_URL + "/api.php?c=Mood&a=juli_s";//地图接口
+
 }

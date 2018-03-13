@@ -191,7 +191,8 @@ public class VideoAcitvity extends BaseActivity {
                                 loadGIF();
                             } else {
                                 startActivityForResult(new Intent(getContext(), ShowImgActivity.class)
-                                        .putExtra("url", resultList.get(0).getPhotoPath()), 22);
+                                        .putExtra("url", resultList.get(0).getPhotoPath())
+                                        .putExtra("latlng", d), 22);
                             }
                         }
                     }
@@ -308,7 +309,8 @@ public class VideoAcitvity extends BaseActivity {
                         loadGIF();
                     } else {
                         startActivityForResult(new Intent(getContext(), ShowImgActivity.class)
-                                .putExtra("url", resultList.get(0).getPhotoPath()), 22);
+                                .putExtra("url", resultList.get(0).getPhotoPath())
+                                .putExtra("latlng", d), 22);
                     }
                 }
             }

@@ -49,6 +49,7 @@ public class ShowImgActivity extends AppCompatActivity {
         setContentView(R.layout.activity_show_img);
         left_ll = (LinearLayout) findViewById(R.id.left_ll);
         right_ll = (LinearLayout) findViewById(R.id.right_ll);
+        latLng = getIntent().getParcelableExtra("latlng");
         url = getIntent().getStringExtra("url");
         img = (ImageView) findViewById(R.id.img);
 //        latLng = load_lat_lng(url);//获得当前图片的路径
