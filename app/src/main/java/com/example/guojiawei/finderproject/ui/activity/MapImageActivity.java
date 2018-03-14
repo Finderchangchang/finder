@@ -156,12 +156,12 @@ public class MapImageActivity extends BaseActivity {
                 double lat2 = mCenterLatLng.latitude;
                 double lng2 = mCenterLatLng.longitude;
                 //两个经纬度的距离
-                String jl = MapDistance.getInstance().getShortDistance(lat, lon, lat2, lng2);
+                //String jl = MapDistance.getInstance().getShortDistance(lat, lon, lat2, lng2);
                 Map<String, String> params = new HashMap<>();
                 params.put("user_id", UserStatusUtil.getUserId());
                 params.put("latitude", lat + "");
                 params.put("longitude", lon + "");
-                params.put("juli", jl);
+                params.put("juli", "1000");
                 EncryptUtil.EncryptAutoSort(params);
 
                 Observable<Response<String>> observable = OkGo.<String>post(API.MOOD_MAP)
@@ -185,11 +185,38 @@ public class MapImageActivity extends BaseActivity {
                             @Override
                             public void onNext(Response<String> stringResponse) {
                                 MapModel entity = GsonUtil.GosnToEntity(stringResponse.body(), MapModel.class);
-                                String a = "";
+                                mark(entity.getData());
                             }
                         });
             }
         });
+    }
+
+    LatLng point;
+
+    public void mark(List<MapModel.DataBean> list) {
+        mBaiduMap.clear();
+        for (int i = 0; i < list.size(); i++) {
+            MapModel.DataBean model = list.get(i);
+            point = new LatLng(Double.parseDouble(model.getLatitude()), Double.parseDouble(model.getLongitude()));
+            //构建Marker图标
+//            BitmapDescriptor bitmap = BitmapDescriptorFactory
+//                    .fromResource(R.drawable.ic_back);
+            Glide.with(MapImageActivity.this).load(img_url).asBitmap().
+                    transform(new CornersTransform(MapImageActivity.this)).into(new SimpleTarget<Bitmap>() {
+                @Override
+                public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+//                    BitmapDescriptorFactory.fromBitmap(resource);
+                    //构建MarkerOption，用于在地图上添加Marker
+                    OverlayOptions option = new MarkerOptions()
+                            .position(point)
+                            .icon(BitmapDescriptorFactory.fromBitmap(resource));
+                    //在地图上添加Marker，并显示
+                    mBaiduMap.addOverlay(option);
+                }
+            });
+
+        }
     }
 
     private void setLocation() {
@@ -257,22 +284,6 @@ public class MapImageActivity extends BaseActivity {
                 }
                 //定义Maker坐标点
 
-                LatLng point = new LatLng(39.963175, 116.400244);
-
-//构建Marker图标
-
-                BitmapDescriptor bitmap = BitmapDescriptorFactory
-                        .fromResource(R.drawable.ic_back);
-
-//构建MarkerOption，用于在地图上添加Marker
-
-                OverlayOptions option = new MarkerOptions()
-                        .position(point)
-                        .icon(bitmap);
-
-//在地图上添加Marker，并显示
-
-                mBaiduMap.addOverlay(option);
 
             }
         });

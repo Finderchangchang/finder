@@ -46,6 +46,7 @@ import com.tencent.connect.share.QzoneShare;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXImageObject;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.opensdk.modelmsg.WXTextObject;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.tencent.tauth.IUiListener;
@@ -54,6 +55,7 @@ import com.tencent.tauth.UiError;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -92,9 +94,7 @@ public class DetailActivity extends BaseActivity {
     }
 
     Bundle params;
-    private static final String APP_ID = "12312313212313213213";    //这个APP_ID就是注册APP的时候生成的
-
-    private static final String APP_SECRET = "12312312313212313213213";
+    private static final String APP_ID = "wxf4d9d01961dc2174";    //这个APP_ID就是注册APP的时候生成的
 
     public IWXAPI api;      //这个对象是专门用来向微信发送数据的一个重要接口,使用强引用持有,所有的信息发送都是基于这个对象的
 
@@ -109,7 +109,7 @@ public class DetailActivity extends BaseActivity {
         lat = (String) SharedPreferencesUtil.getData(this, Constant.TAG_LAT, "");
         lon = (String) SharedPreferencesUtil.getData(this, Constant.TAG_LON, "");
         moodId = getIntent().getStringExtra(Constant.TAG_MOOD_ID);
-        mTencent = Tencent.createInstance("", this);
+        mTencent = Tencent.createInstance("1106567682", this);
         setRecyclerView();
         detailsAdapter = new DetailsAdapter(DetailActivity.this);
         share_iv.setOnClickListener(new View.OnClickListener() {
@@ -121,10 +121,10 @@ public class DetailActivity extends BaseActivity {
                     public void click(int position) {
                         switch (position) {
                             case 1:
-                                sharePicByFile(true, new File(""), "");
+                                sharePicByFile(true, "");
                                 break;
                             case 2:
-                                showToast("开发中...");
+
                                 break;
                             case 3:
                                 params = new Bundle();
@@ -132,13 +132,17 @@ public class DetailActivity extends BaseActivity {
                                 params.putString(QzoneShare.SHARE_TO_QQ_TITLE, "标题");// 标题
                                 params.putString(QzoneShare.SHARE_TO_QQ_SUMMARY, "要分享的摘要");// 摘要
                                 params.putString(QzoneShare.SHARE_TO_QQ_TARGET_URL, "http://www.qq.com/news/1.html");// 内容地址
-                                params.putString(QzoneShare.SHARE_TO_QQ_IMAGE_URL, "http://imgcache.qq.com/qzone/space_item/pre/0/66768.gif");// 网络图片地址params.putString(QQShare.SHARE_TO_QQ_APP_NAME, "应用名称");// 应用名称
+                                //params.putString(QzoneShare.SHARE_TO_QQ_IMAGE_URL, "http://imgcache.qq.com/qzone/space_item/pre/0/66768.gif");// 网络图片地址params.putString(QQShare.SHARE_TO_QQ_APP_NAME, "应用名称");// 应用名称
+                                ArrayList<String> imgUrlList = new ArrayList<>();
+                                imgUrlList.add("http://f.hiphotos.baidu.com/image/h%3D200/sign=6f05c5f929738bd4db21b531918a876c/6a600c338744ebf8affdde1bdef9d72a6059a702.jpg");
+                                params.putStringArrayList(QzoneShare.SHARE_TO_QQ_IMAGE_URL, imgUrlList);// 图片地址
+
                                 params.putString(QzoneShare.SHARE_TO_QQ_EXT_INT, "其它附加功能");
 
-                                mTencent.shareToQQ(DetailActivity.this, params, mIUiListener);
+                                mTencent.shareToQzone(DetailActivity.this, params, mIUiListener);
                                 break;
                             case 4:
-                                sharePicByFile(true, new File(""), "");
+                                sharePicByFile(false, "");
                                 break;
                             case 5:
                                 params = new Bundle();
@@ -372,12 +376,14 @@ public class DetailActivity extends BaseActivity {
         });
     }
 
-    public void sharePicByFile(boolean is_quan, File picFile, String tag) {
-        if (!picFile.exists()) {
-            return;
-        }
-        Bitmap pic = BitmapFactory.decodeFile(picFile.toString());
+    private String buildTransaction(final String type) {
+        return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
+    }
 
+    public void sharePicByFile(boolean is_quan, String tag) {
+        //img_url
+        Bitmap pic;// = BitmapFactory.decodeFile(picFile.toString());
+        pic = BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.alivc_brightness);
         WXImageObject imageObject = new WXImageObject(pic);
         //这个构造方法中自动把传入的bitmap转化为2进制数据,或者你直接传入byte[]也行
         //注意传入的数据不能大于10M,开发文档上写的
@@ -399,6 +405,8 @@ public class DetailActivity extends BaseActivity {
         //如果超过32kb则抛异常
 
         SendMessageToWX.Req req = new SendMessageToWX.Req();    //创建一个请求对象
+        msg.title = "title";
+        msg.description = "描述";
         req.message = msg;  //把msg放入请求对象中
         if (is_quan) {
             req.scene = SendMessageToWX.Req.WXSceneTimeline;    //设置发送到朋友圈
@@ -451,7 +459,7 @@ public class DetailActivity extends BaseActivity {
 
         public void onCancel() {
             String a = "";
-
+            showToast("分享已取消");
             // 取消分享
         }
     }
@@ -530,15 +538,18 @@ public class DetailActivity extends BaseActivity {
 
                     @Override
                     public void onNext(Response<String> stringResponse) {
-
                         DetailsEntity.HeadEntity entity = GsonUtil.GosnToEntity(stringResponse.body(), DetailsEntity.HeadEntity.class);
                         detailsAdapter.setHeadEntity(entity);
+                        img_url = entity.getData().getImage_url();
+                        message = entity.getData().getContent();
                         recyclerView.setAdapter(detailsAdapter);
                         getMoodMessage("1", "10", entity.getData().getId());
                     }
                 });
     }
 
+    String img_url = "";//图片路径
+    String message = "";//分享的内容
 
     private void getMoodMessage(String page, String rows, String mood_id) {
         Map<String, String> params = new HashMap<>();

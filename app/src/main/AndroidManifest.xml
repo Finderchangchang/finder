@@ -23,6 +23,7 @@
     //获取设备网络状态，禁用后无法获取网络状态
     //网络权限，当禁用后，无法进行检索等相关业务
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     //读取设备硬件信息，统计数据
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
     //读取系统信息，包含系统版本等信息，用作统计
@@ -47,6 +48,14 @@
             android:value="mxtdgHIkw3aRgiUwAjVSc006m0yhyOUE" />
 
         <activity android:name=".ui.SplashActivity" />
+        <receiver
+            android:name=".wxapi.AppRegister"
+            android:permission="com.tencent.mm.plugin.permission.SEND">
+            <intent-filter>
+                <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".ui.MainActivity"
             android:launchMode="singleInstance" />
@@ -80,7 +89,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="1" />
+                <data android:scheme="1106567682" />
             </intent-filter>
         </activity>
         <activity
@@ -128,7 +137,7 @@
         </activity>
         <activity android:name=".ui.loader.ShowImgActivity" />
         <activity
-            android:name=".wxapi.WXEntryActivity"
+            android:name="com.example.finderproject.wxapi.WXEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"></activity>
     </application>

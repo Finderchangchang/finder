@@ -37,6 +37,10 @@ public class MapModel {
         this.msg = msg;
     }
 
+    public List<DataBean> getData() {
+        return data;
+    }
+
     public void setData(List<DataBean> data) {
         this.data = data;
     }
