@@ -31,12 +31,12 @@
 
         <ImageView
             android:id="@+id/share_iv"
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:src="@drawable/ic_back" />
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:src="@mipmap/share" />
     </RelativeLayout>
 
     <com.github.nuptboyzhb.lib.SuperSwipeRefreshLayout

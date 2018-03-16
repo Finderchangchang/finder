@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@mipmap/w_quan" />
     </LinearLayout>
 
     <LinearLayout
@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@mipmap/sina_user" />
     </LinearLayout>
 
     <LinearLayout
@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@mipmap/q_zone" />
     </LinearLayout>
 
     <LinearLayout
@@ -58,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@mipmap/w_user" />
     </LinearLayout>
 
     <LinearLayout
@@ -72,6 +72,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@mipmap/q_user" />
     </LinearLayout>
 </LinearLayout>

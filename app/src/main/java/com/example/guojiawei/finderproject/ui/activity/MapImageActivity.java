@@ -159,9 +159,9 @@ public class MapImageActivity extends BaseActivity {
                 //String jl = MapDistance.getInstance().getShortDistance(lat, lon, lat2, lng2);
                 Map<String, String> params = new HashMap<>();
                 params.put("user_id", UserStatusUtil.getUserId());
-                params.put("latitude", lat + "");
-                params.put("longitude", lon + "");
-                params.put("juli", "1000");
+                params.put("latitude", lat2 + "");
+                params.put("longitude", lng2 + "");
+                params.put("juli", "10000");
                 EncryptUtil.EncryptAutoSort(params);
 
                 Observable<Response<String>> observable = OkGo.<String>post(API.MOOD_MAP)
@@ -182,10 +182,15 @@ public class MapImageActivity extends BaseActivity {
                                 showToast("发送失败");
                             }
 
+                            /**
+                             * @param stringResponse
+                             */
                             @Override
                             public void onNext(Response<String> stringResponse) {
                                 MapModel entity = GsonUtil.GosnToEntity(stringResponse.body(), MapModel.class);
-                                mark(entity.getData());
+                                if (entity.getData() != null && entity.getData().size() > 0) {
+                                    mark(entity.getData());
+                                }
                             }
                         });
             }
@@ -200,9 +205,14 @@ public class MapImageActivity extends BaseActivity {
             MapModel.DataBean model = list.get(i);
             point = new LatLng(Double.parseDouble(model.getLatitude()), Double.parseDouble(model.getLongitude()));
             //构建Marker图标
-//            BitmapDescriptor bitmap = BitmapDescriptorFactory
-//                    .fromResource(R.drawable.ic_back);
-            Glide.with(MapImageActivity.this).load(img_url).asBitmap().
+            BitmapDescriptor bitmap = BitmapDescriptorFactory
+                    .fromResource(R.drawable.ic_back);
+//            OverlayOptions option = new MarkerOptions()
+//                    .position(point)
+//                    .icon(bitmap);
+//            //在地图上添加Marker，并显示
+//            mBaiduMap.addOverlay(option);
+            Glide.with(MapImageActivity.this).load(model.getImg()).asBitmap().
                     transform(new CornersTransform(MapImageActivity.this)).into(new SimpleTarget<Bitmap>() {
                 @Override
                 public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
