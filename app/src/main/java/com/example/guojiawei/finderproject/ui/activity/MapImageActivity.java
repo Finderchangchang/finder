@@ -203,6 +203,7 @@ public class MapImageActivity extends BaseActivity {
         mBaiduMap.clear();
         for (int i = 0; i < list.size(); i++) {
             MapModel.DataBean model = list.get(i);
+            Log.i("lat-lng", model.getLatitude() + "--" + model.getLongitude());
             point = new LatLng(Double.parseDouble(model.getLatitude()), Double.parseDouble(model.getLongitude()));
             //构建Marker图标
             BitmapDescriptor bitmap = BitmapDescriptorFactory
@@ -212,16 +213,31 @@ public class MapImageActivity extends BaseActivity {
 //                    .icon(bitmap);
 //            //在地图上添加Marker，并显示
 //            mBaiduMap.addOverlay(option);
-            Glide.with(MapImageActivity.this).load(model.getImg()).asBitmap().
+            final View view = LayoutInflater.from(this).inflate(R.layout.view_img_location, null);
+            final RoundImageView iv = (RoundImageView) view.findViewById(R.id.ic_img);
+            Glide.with(MapImageActivity.this).load(model.getImg_s()).asBitmap().
                     transform(new CornersTransform(MapImageActivity.this)).into(new SimpleTarget<Bitmap>() {
                 @Override
                 public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
 //                    BitmapDescriptorFactory.fromBitmap(resource);
                     //构建MarkerOption，用于在地图上添加Marker
+                    iv.setImageBitmap(resource);
+                    //在地图上添加Marker，并显示
+//                    InfoWindow mInfoWindow = new InfoWindow(BitmapDescriptorFactory.fromView(view), point, -47, new InfoWindow.OnInfoWindowClickListener() {
+//                        @Override
+//                        public void onInfoWindowClick() {
+//                            initFragment(imgUrls, content);
+//                            viewpager.setVisibility(View.VISIBLE);
+//                        }
+//                    });
+                    BitmapDescriptor bdOpen_iv =
+                            BitmapDescriptorFactory.fromView(view);
                     OverlayOptions option = new MarkerOptions()
                             .position(point)
-                            .icon(BitmapDescriptorFactory.fromBitmap(resource));
-                    //在地图上添加Marker，并显示
+                            .icon(bdOpen_iv);
+//                            .icon(BitmapDescriptorFactory.fromBitmap(resource));
+                    //显示InfoWindow
+                    //mBaiduMap.showInfoWindow(mInfoWindow);
                     mBaiduMap.addOverlay(option);
                 }
             });
@@ -260,43 +276,44 @@ public class MapImageActivity extends BaseActivity {
         //定义用于显示该InfoWindow的坐标点
         final LatLng ll = new LatLng(lat, lon);
         if (TextUtils.isEmpty(img_url)) img_url = imgUrl;
-        Glide.with(MapImageActivity.this).load(img_url).asBitmap().transform(new CornersTransform(MapImageActivity.this)).into(new SimpleTarget<Bitmap>() {
-            @Override
-            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                iv.setImageBitmap(resource);
-                if (video_id == null || video_id.equals("")) {
-                    //iv.setVisibility(View.VISIBLE);
-                    video_iv.setVisibility(View.GONE);
-                    InfoWindow mInfoWindow = new InfoWindow(BitmapDescriptorFactory.fromView(view), ll, -47, new InfoWindow.OnInfoWindowClickListener() {
-                        @Override
-                        public void onInfoWindowClick() {
-                            initFragment(imgUrls, content);
-                            viewpager.setVisibility(View.VISIBLE);
+        Glide.with(MapImageActivity.this).load(img_url).asBitmap().transform(new CornersTransform(MapImageActivity.this))
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        iv.setImageBitmap(resource);
+                        if (video_id == null || video_id.equals("")) {
+                            //iv.setVisibility(View.VISIBLE);
+                            video_iv.setVisibility(View.GONE);
+                            InfoWindow mInfoWindow = new InfoWindow(BitmapDescriptorFactory.fromView(view), ll, -47, new InfoWindow.OnInfoWindowClickListener() {
+                                @Override
+                                public void onInfoWindowClick() {
+                                    initFragment(imgUrls, content);
+                                    viewpager.setVisibility(View.VISIBLE);
+                                }
+                            });
+                            //显示InfoWindow
+                            mBaiduMap.showInfoWindow(mInfoWindow);
+                        } else {
+                            //iv.setVisibility(View.GONE);
+                            video_iv.setVisibility(View.VISIBLE);
+                            //创建InfoWindow , 传入 view， 地理坐标， y 轴偏移量
+                            InfoWindow mInfoWindow = new InfoWindow(BitmapDescriptorFactory.fromView(view), ll, -47, new InfoWindow.OnInfoWindowClickListener() {
+                                @Override
+                                public void onInfoWindowClick() {
+                                    String videoid = video_id;
+                                    Intent intent = new Intent(MapImageActivity.this, Video_playAty.class);
+                                    intent.putExtra("videoid", videoid);
+                                    startActivity(intent);
+                                }
+                            });
+                            //显示InfoWindow
+                            mBaiduMap.showInfoWindow(mInfoWindow);
                         }
-                    });
-                    //显示InfoWindow
-                    mBaiduMap.showInfoWindow(mInfoWindow);
-                } else {
-                    //iv.setVisibility(View.GONE);
-                    video_iv.setVisibility(View.VISIBLE);
-                    //创建InfoWindow , 传入 view， 地理坐标， y 轴偏移量
-                    InfoWindow mInfoWindow = new InfoWindow(BitmapDescriptorFactory.fromView(view), ll, -47, new InfoWindow.OnInfoWindowClickListener() {
-                        @Override
-                        public void onInfoWindowClick() {
-                            String videoid = video_id;
-                            Intent intent = new Intent(MapImageActivity.this, Video_playAty.class);
-                            intent.putExtra("videoid", videoid);
-                            startActivity(intent);
-                        }
-                    });
-                    //显示InfoWindow
-                    mBaiduMap.showInfoWindow(mInfoWindow);
-                }
-                //定义Maker坐标点
+                        //定义Maker坐标点
 
 
-            }
-        });
+                    }
+                });
 
 
 //        Glide.with(MapImageActivity.this).load(imgUrl).asBitmap().transform(new CornersTransform(MapImageActivity.this)).into(new SimpleTarget<Bitmap>() {

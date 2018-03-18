@@ -60,6 +60,24 @@ public class MapModel {
         private String img;
         private String longitude;
         private String latitude;
+        private String img_y;
+        private String img_s;
+
+        public String getImg_y() {
+            return img_y;
+        }
+
+        public void setImg_y(String img_y) {
+            this.img_y = img_y;
+        }
+
+        public String getImg_s() {
+            return img_s;
+        }
+
+        public void setImg_s(String img_s) {
+            this.img_s = img_s;
+        }
 
         public String getGjuli() {
             return gjuli;
