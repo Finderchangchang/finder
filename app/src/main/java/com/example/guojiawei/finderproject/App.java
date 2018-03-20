@@ -1,10 +1,8 @@
 package com.example.guojiawei.finderproject;
 
-import android.app.Application;
-import android.content.Context;
+import android.support.multidex.MultiDexApplication;
 
 import com.baidu.mapapi.SDKInitializer;
-import com.example.guojiawei.finderproject.util.GlideImageLoader;
 import com.example.guojiawei.finderproject.util.UserStatusUtil;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheEntity;
@@ -12,24 +10,21 @@ import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.cookie.CookieJarImpl;
 import com.lzy.okgo.cookie.store.DBCookieStore;
 import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
-import cn.finalteam.galleryfinal.CoreConfig;
-import cn.finalteam.galleryfinal.GalleryFinal;
-import cn.finalteam.galleryfinal.ThemeConfig;
+//import cn.finalteam.galleryfinal.CoreConfig;
+//import cn.finalteam.galleryfinal.GalleryFinal;
+//import cn.finalteam.galleryfinal.ThemeConfig;
 import cn.jpush.android.api.JPushInterface;
-import cn.jpush.android.service.JPushMessageReceiver;
 import okhttp3.OkHttpClient;
 
 /**
  * Created by guojiawei on 2017/11/8.
  */
 
-public class App extends Application {
+public class App extends MultiDexApplication {
 
     public static String JpushID = "";
 

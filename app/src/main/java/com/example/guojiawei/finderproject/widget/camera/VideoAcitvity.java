@@ -2,6 +2,7 @@ package com.example.guojiawei.finderproject.widget.camera;
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.media.ExifInterface;
 import android.os.Build;
@@ -20,11 +21,16 @@ import com.cjt2325.cameralibrary.listener.JCameraListener;
 import com.cjt2325.cameralibrary.util.FileUtil;
 import com.example.guojiawei.finderproject.R;
 import com.example.guojiawei.finderproject.base.BaseActivity;
+import com.example.guojiawei.finderproject.ui.activity.CenterActivity;
 import com.example.guojiawei.finderproject.ui.activity.EditorActivity;
-import com.example.guojiawei.finderproject.ui.activity.LoginActivity;
-import com.example.guojiawei.finderproject.ui.loader.ShowImgActivity;
+import com.example.guojiawei.finderproject.ui.activity.GifSizeFilter;
 import com.example.guojiawei.finderproject.util.Constant;
-import com.example.guojiawei.finderproject.util.GlideImageLoader;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.engine.impl.GlideEngine;
+import com.zhihu.matisse.engine.impl.PicassoEngine;
+import com.zhihu.matisse.filter.Filter;
+import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -35,11 +41,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-import cn.finalteam.galleryfinal.CoreConfig;
-import cn.finalteam.galleryfinal.FunctionConfig;
-import cn.finalteam.galleryfinal.GalleryFinal;
-import cn.finalteam.galleryfinal.ThemeConfig;
-import cn.finalteam.galleryfinal.model.PhotoInfo;
 
 public class VideoAcitvity extends BaseActivity {
     private JCameraView jCameraView;
@@ -170,38 +171,13 @@ public class VideoAcitvity extends BaseActivity {
         jCameraView.setRightClickListener(new ClickListener() {
             @Override
             public void onClick() {
-                ThemeConfig theme = new ThemeConfig.Builder()
-                        .build();
-                //配置功能
-                FunctionConfig functionConfig = new FunctionConfig.Builder()
-                        .setEnablePreview(true)
-                        .build();
-                CoreConfig coreConfig = new CoreConfig.Builder(getContext(), new GlideImageLoader(), theme)
-                        .setFunctionConfig(functionConfig)
-                        .build();
-                GalleryFinal.init(coreConfig);
-                GalleryFinal.openGallerySingle(0, new GalleryFinal.OnHanlderResultCallback() {
-                    @Override
-                    public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
-                        if (resultList.size() > 0) {
-                            String url = resultList.get(0).getPhotoPath();
-                            LatLng d = load_lat_lng(url);
-                            if (d.latitude == 0) {
-                                showToast("未发现当前图像位置");
-                                loadGIF();
-                            } else {
-                                startActivityForResult(new Intent(getContext(), ShowImgActivity.class)
-                                        .putExtra("url", resultList.get(0).getPhotoPath())
-                                        .putExtra("latlng", d), 22);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onHanlderFailure(int requestCode, String errorMsg) {
-
-                    }
-                });
+                Matisse.from(VideoAcitvity.this)
+                        .choose(MimeType.ofAll())
+                        .theme(R.style.Matisse_Zhihu)
+                        .countable(false)
+                        .maxSelectable(1)
+                        .imageEngine(new GlideEngine())
+                        .forResult(0);
             }
         });
         jCameraView.setErrorLisenter(new ErrorListener() {
@@ -298,28 +274,28 @@ public class VideoAcitvity extends BaseActivity {
     }
 
     private void loadGIF() {
-        GalleryFinal.openGallerySingle(0, new GalleryFinal.OnHanlderResultCallback() {
-            @Override
-            public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
-                if (resultList.size() > 0) {
-                    String url = resultList.get(0).getPhotoPath();
-                    LatLng d = load_lat_lng(url);
-                    if (d.latitude == 0) {
-                        showToast("未发现当前图像位置");
-                        loadGIF();
-                    } else {
-                        startActivityForResult(new Intent(getContext(), ShowImgActivity.class)
-                                .putExtra("url", resultList.get(0).getPhotoPath())
-                                .putExtra("latlng", d), 22);
-                    }
-                }
-            }
-
-            @Override
-            public void onHanlderFailure(int requestCode, String errorMsg) {
-
-            }
-        });
+//        GalleryFinal.openGallerySingle(0, new GalleryFinal.OnHanlderResultCallback() {
+//            @Override
+//            public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
+//                if (resultList.size() > 0) {
+//                    String url = resultList.get(0).getPhotoPath();
+//                    LatLng d = load_lat_lng(url);
+//                    if (d.latitude == 0) {
+//                        showToast("未发现当前图像位置");
+//                        loadGIF();
+//                    } else {
+//                        startActivityForResult(new Intent(getContext(), ShowImgActivity.class)
+//                                .putExtra("url", resultList.get(0).getPhotoPath())
+//                                .putExtra("latlng", d), 22);
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onHanlderFailure(int requestCode, String errorMsg) {
+//
+//            }
+//        });
     }
 
     private void clapAnim(View left, View right) {

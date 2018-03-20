@@ -1,8 +1,9 @@
 apply plugin: 'com.android.application'
+//useOldManifestMerger true
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.3"
     aaptOptions.cruncherEnabled = false
     aaptOptions.useNewCruncher = false
     sourceSets {
@@ -25,7 +26,7 @@ android {
     defaultConfig {
         applicationId "com.example.finderproject"
         minSdkVersion 19
-        targetSdkVersion 23
+        targetSdkVersion 26
         versionCode 1
         versionName "1.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -78,6 +79,7 @@ dependencies {
     compile files('libs/BaiduLBS_Android.jar')
     compile project(':camerafragment')
     compile project(':camera')
+    compile project(':matisse')//第三方图库
     compile files('libs/aliyun-oss-sdk-android-2.4.5.jar')
     compile files('libs/aliyun-vod-croe-android-sdk-1.2.1.jar')
     compile files('libs/aliyun-vod-upload-android-sdk-1.1.1.jar')
@@ -86,12 +88,12 @@ dependencies {
     compile(name: 'AlivcPlayer', ext: 'aar')
     compile(name: 'AliyunVodPlayer', ext: 'aar')
     compile(name: 'AliyunVodPlayerView', ext: 'aar')
-    compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+//    compile 'com.android.support:appcompat-v7:25.4.0'
+//    compile 'com.android.support:recyclerview-v7:26.1.0'
     compile 'com.jakewharton:butterknife:8.8.1'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
+//    compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.github.nuptboyzhb.lib.uikit:superswiperefreshlayout:1.0.0'
-    compile 'com.android.support:recyclerview-v7:26.0.0-alpha1'
+
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'io.reactivex:rxjava:1.1.0'
     compile 'io.reactivex:rxandroid:1.1.0'
@@ -103,7 +105,7 @@ dependencies {
     compile 'com.lzy.net:okrx:1.0.2'
     compile 'cn.jiguang.sdk:jpush:3.0.9'
     compile 'cn.jiguang.sdk:jcore:1.1.7'
-    compile 'com.zhihu.android:matisse:0.4.3'
+//    compile 'com.zhihu.android:matisse:0.4.3'
     compile 'com.bm.photoview:library:1.4.1'
     compile 'com.github.lsjwzh.RecyclerViewPager:lib:v1.1.2@aar'
     compile 'com.linchaolong.android:imagepicker:1.5'
@@ -114,9 +116,14 @@ dependencies {
     compile 'com.tencent.bugly:nativecrashreport:latest.release'
     //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
     compile 'com.github.maning0303:MNProgressHUD:V1.0.1'
-    compile 'cn.finalteam:galleryfinal:1.4.3'
+//    compile 'cn.finalteam:galleryfinal:1.4.3'
     //相册库
-    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+//    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     compile files('libs/open_sdk_r5990_lite.jar')
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
+
+//    compile 'com.android.support:recyclerview-v7:25.3.1'
+//    compile 'com.android.support:appcompat-v7:26.1.0'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
 }

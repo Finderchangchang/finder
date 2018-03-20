@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="barHeight">46dp</dimen>
+    <dimen name="grid_expected_size">120dp</dimen>
+
 </resources>

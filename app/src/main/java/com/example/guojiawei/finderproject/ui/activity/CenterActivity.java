@@ -146,7 +146,7 @@ public class CenterActivity extends BaseActivity {
                 break;
             case R.id.rl_head:
                 Matisse.from(CenterActivity.this)
-                        .choose(MimeType.allOf())
+                        .choose(MimeType.ofAll())
                         .countable(true)
                         // 图片选择的最多数量
                         .maxSelectable(1)
@@ -302,7 +302,7 @@ public class CenterActivity extends BaseActivity {
                 .adapt(new ObservableResponse<String>());
 
         observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+//                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Response<String>>() {
                     @Override
                     public void onCompleted() {
@@ -352,7 +352,7 @@ public class CenterActivity extends BaseActivity {
         }
 
         observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+//                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Response<String>>() {
                     @Override
                     public void onCompleted() {

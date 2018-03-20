@@ -1,1 +1,2 @@
-include ':app', ':camerafragment',':camera'
+include ':app', ':camerafragment',':camera',':matisse'
+//,':library'

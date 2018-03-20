@@ -2,7 +2,7 @@
     <string name="app_name">finder</string>
     <string name="test">finder</string>
     <string name="message">\u0040</string>
-
+    <string name="error_gif">长宽不小于 %1$dpx，且大小不超过 %2$sM。</string>
 
     <string name="cancel_label">Cancel</string>
     <string name="ok_label">Ok</string>
