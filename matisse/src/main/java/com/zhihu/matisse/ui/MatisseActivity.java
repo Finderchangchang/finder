@@ -16,25 +16,31 @@
 package com.zhihu.matisse.ui;
 
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.zhihu.matisse.R;
 import com.zhihu.matisse.internal.entity.Album;
@@ -52,7 +58,10 @@ import com.zhihu.matisse.internal.ui.widget.AlbumsSpinner;
 import com.zhihu.matisse.internal.utils.MediaStoreCompat;
 import com.zhihu.matisse.internal.utils.PathUtils;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Main Activity to display albums and media content (images/videos) in each album
@@ -242,8 +251,81 @@ public class MatisseActivity extends AppCompatActivity implements
             result.putParcelableArrayListExtra(EXTRA_RESULT_SELECTION, selectedUris);
             ArrayList<String> selectedPaths = (ArrayList<String>) mSelectedCollection.asListOfString();
             result.putStringArrayListExtra(EXTRA_RESULT_SELECTION_PATH, selectedPaths);
-            setResult(RESULT_OK, result);
-            finish();
+            String url = selectedPaths.get(0);
+            String aurl = getMediaBeanWithVideo(this, url);
+            url = getMediaBeanWithImage(this, url);
+            if (!TextUtils.isEmpty(url)) {
+                setResult(RESULT_OK, result);
+                finish();
+            } else {
+                Toast.makeText(this, "未发现当前图片位置", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public static String getMediaBeanWithVideo(Context context, String originalPath) {
+        ContentResolver contentResolver = context.getContentResolver();
+        List<String> projection = new ArrayList<>();
+        projection.add(MediaStore.Video.Media.MIME_TYPE);
+        projection.add(MediaStore.Video.Media.LATITUDE);
+        projection.add(MediaStore.Video.Media.LONGITUDE);
+        Cursor cursor = contentResolver.query(
+                MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                projection.toArray(new String[projection.size()]),
+                MediaStore.Images.Media.DATA + "=?",
+                new String[]{originalPath}, null);
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            parseVideoCursorAndCreateThumImage(context, cursor);
+        }
+        if (cursor != null && !cursor.isClosed()) {
+            cursor.close();
+        }
+        return null;
+    }
+    private static String parseVideoCursorAndCreateThumImage(Context context, Cursor cursor) {
+        String mimeType = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.MIME_TYPE));
+
+        double latitude = cursor.getDouble(cursor.getColumnIndex(MediaStore.Video.Media.LATITUDE));
+
+        double longitude = cursor.getDouble(cursor.getColumnIndex(MediaStore.Video.Media.LONGITUDE));
+        String cc="";
+        return null;
+    }
+    public static String getMediaBeanWithImage(Context context, String originalPath) {
+        String url = "";
+        ContentResolver contentResolver = context.getContentResolver();
+        List<String> projection = new ArrayList<>();
+        projection.add(MediaStore.Images.Media.MIME_TYPE);
+        projection.add(MediaStore.Images.Media.LATITUDE);
+        projection.add(MediaStore.Images.Media.LONGITUDE);
+        projection.add(MediaStore.Video.Media.MIME_TYPE);
+        projection.add(MediaStore.Video.Media.LATITUDE);
+        projection.add(MediaStore.Video.Media.LONGITUDE);
+        Cursor cursor = contentResolver.query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection.toArray(new String[projection.size()]), MediaStore.Images.Media.DATA + "=?",
+                new String[]{originalPath}, null);
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            url = parseImageCursorAndCreateThumImage(originalPath, cursor);
+        }
+        if (cursor != null && !cursor.isClosed()) {
+            cursor.close();
+        }
+        return url;
+    }
+
+    private static String parseImageCursorAndCreateThumImage(String url, Cursor cursor) {
+        String mimeType = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.MIME_TYPE));
+        String mimeType1 = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.MIME_TYPE));
+        double latitude = cursor.getDouble(cursor.getColumnIndex(MediaStore.Images.Media.LATITUDE));
+        double longitude = cursor.getDouble(cursor.getColumnIndex(MediaStore.Images.Media.LONGITUDE));
+        double latitude1 = cursor.getDouble(cursor.getColumnIndex(MediaStore.Video.Media.LATITUDE));
+        double longitude1 = cursor.getDouble(cursor.getColumnIndex(MediaStore.Video.Media.LONGITUDE));
+        if (latitude != 0) {
+            return url;
+        } else {
+            return "";
         }
     }
 
