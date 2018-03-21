@@ -43,15 +43,16 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="KV5u9sUvyG5tvBYK6Amk8RAM0U0I6K3Z" />
-        <!--KV5u9sUvyG5tvBYK6Amk8RAM0U0I6K3Z
+        <!--
+            KV5u9sUvyG5tvBYK6Amk8RAM0U0I6K3Z
             mxtdgHIkw3aRgiUwAjVSc006m0yhyOUE正式版KEY
         -->
 
         <activity android:name=".ui.SplashActivity" />
+
         <receiver
             android:name=".wxapi.AppRegister"
             android:permission="com.tencent.mm.plugin.permission.SEND">
@@ -142,8 +143,9 @@
         <activity
             android:name="com.example.finderproject.wxapi.WXEntryActivity"
             android:exported="true"
-            android:launchMode="singleTop"></activity>
-        <!--provider
+            android:launchMode="singleTop" />
+        <!--
+        provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.example.guojiawei.finderproject.fileprovider"
             android:exported="false"
@@ -151,7 +153,9 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths_public"></meta-data>
-        </provider-->
+        </provider
+        -->
+        <activity android:name=".ui.activity.ShowImgActivity"></activity>
     </application>
 
 </manifest>

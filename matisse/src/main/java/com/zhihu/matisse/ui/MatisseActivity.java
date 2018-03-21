@@ -88,6 +88,8 @@ public class MatisseActivity extends AppCompatActivity implements
     private TextView mButtonApply;
     private View mContainer;
     private View mEmptyView;
+    public double lat;
+    public double lng;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -192,6 +194,9 @@ public class MatisseActivity extends AppCompatActivity implements
                 }
                 result.putParcelableArrayListExtra(EXTRA_RESULT_SELECTION, selectedUris);
                 result.putStringArrayListExtra(EXTRA_RESULT_SELECTION_PATH, selectedPaths);
+                result.putExtra("lat",lat);
+                result.putExtra("lng",lng);
+                //result.putExtra("url",url);
                 setResult(RESULT_OK, result);
                 finish();
             } else {
@@ -214,6 +219,8 @@ public class MatisseActivity extends AppCompatActivity implements
             Intent result = new Intent();
             result.putParcelableArrayListExtra(EXTRA_RESULT_SELECTION, selected);
             result.putStringArrayListExtra(EXTRA_RESULT_SELECTION_PATH, selectedPath);
+            result.putExtra("lat",lat);
+            result.putExtra("lng",lng);
             setResult(RESULT_OK, result);
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
                 MatisseActivity.this.revokeUriPermission(contentUri,
@@ -252,9 +259,12 @@ public class MatisseActivity extends AppCompatActivity implements
             ArrayList<String> selectedPaths = (ArrayList<String>) mSelectedCollection.asListOfString();
             result.putStringArrayListExtra(EXTRA_RESULT_SELECTION_PATH, selectedPaths);
             String url = selectedPaths.get(0);
-            String aurl = getMediaBeanWithVideo(this, url);
+
             url = getMediaBeanWithImage(this, url);
             if (!TextUtils.isEmpty(url)) {
+                result.putExtra("lat",lat);
+                result.putExtra("lng",lng);
+                result.putExtra("url",url);
                 setResult(RESULT_OK, result);
                 finish();
             } else {
@@ -263,7 +273,7 @@ public class MatisseActivity extends AppCompatActivity implements
         }
     }
 
-    public static String getMediaBeanWithVideo(Context context, String originalPath) {
+    public String getMediaBeanWithVideo(Context context, String originalPath) {
         ContentResolver contentResolver = context.getContentResolver();
         List<String> projection = new ArrayList<>();
         projection.add(MediaStore.Video.Media.MIME_TYPE);
@@ -276,23 +286,32 @@ public class MatisseActivity extends AppCompatActivity implements
                 new String[]{originalPath}, null);
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
-            parseVideoCursorAndCreateThumImage(context, cursor);
+            if (!TextUtils.isEmpty(parseVideoCursorAndCreateThumImage(originalPath, cursor))) {
+                return originalPath;
+            }
         }
         if (cursor != null && !cursor.isClosed()) {
             cursor.close();
         }
-        return null;
+        return "";
     }
-    private static String parseVideoCursorAndCreateThumImage(Context context, Cursor cursor) {
+
+    private String parseVideoCursorAndCreateThumImage(String url, Cursor cursor) {
         String mimeType = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.MIME_TYPE));
 
         double latitude = cursor.getDouble(cursor.getColumnIndex(MediaStore.Video.Media.LATITUDE));
 
         double longitude = cursor.getDouble(cursor.getColumnIndex(MediaStore.Video.Media.LONGITUDE));
-        String cc="";
+
+        if (latitude != 0) {
+            lat = latitude;
+            lng = longitude;
+            return url;
+        }
         return null;
     }
-    public static String getMediaBeanWithImage(Context context, String originalPath) {
+
+    public String getMediaBeanWithImage(Context context, String originalPath) {
         String url = "";
         ContentResolver contentResolver = context.getContentResolver();
         List<String> projection = new ArrayList<>();
@@ -308,6 +327,11 @@ public class MatisseActivity extends AppCompatActivity implements
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
             url = parseImageCursorAndCreateThumImage(originalPath, cursor);
+            if (TextUtils.isEmpty(url)) {
+                return getMediaBeanWithVideo(context, originalPath);
+            }
+        } else {
+            return getMediaBeanWithVideo(context, originalPath);
         }
         if (cursor != null && !cursor.isClosed()) {
             cursor.close();
@@ -315,14 +339,13 @@ public class MatisseActivity extends AppCompatActivity implements
         return url;
     }
 
-    private static String parseImageCursorAndCreateThumImage(String url, Cursor cursor) {
+    private String parseImageCursorAndCreateThumImage(String url, Cursor cursor) {
         String mimeType = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.MIME_TYPE));
-        String mimeType1 = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.MIME_TYPE));
         double latitude = cursor.getDouble(cursor.getColumnIndex(MediaStore.Images.Media.LATITUDE));
         double longitude = cursor.getDouble(cursor.getColumnIndex(MediaStore.Images.Media.LONGITUDE));
-        double latitude1 = cursor.getDouble(cursor.getColumnIndex(MediaStore.Video.Media.LATITUDE));
-        double longitude1 = cursor.getDouble(cursor.getColumnIndex(MediaStore.Video.Media.LONGITUDE));
         if (latitude != 0) {
+            lat = latitude;
+            lng = longitude;
             return url;
         } else {
             return "";

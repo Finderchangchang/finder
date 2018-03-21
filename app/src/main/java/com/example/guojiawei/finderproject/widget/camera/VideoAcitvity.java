@@ -24,6 +24,7 @@ import com.example.guojiawei.finderproject.base.BaseActivity;
 import com.example.guojiawei.finderproject.ui.activity.CenterActivity;
 import com.example.guojiawei.finderproject.ui.activity.EditorActivity;
 import com.example.guojiawei.finderproject.ui.activity.GifSizeFilter;
+import com.example.guojiawei.finderproject.ui.activity.ShowImgActivity;
 import com.example.guojiawei.finderproject.util.Constant;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
@@ -177,7 +178,7 @@ public class VideoAcitvity extends BaseActivity {
                         .countable(false)
                         .maxSelectable(1)
                         .imageEngine(new GlideEngine())
-                        .forResult(0);
+                        .forResult(1);
             }
         });
         jCameraView.setErrorLisenter(new ErrorListener() {
@@ -271,6 +272,24 @@ public class VideoAcitvity extends BaseActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            List mSelected = Matisse.obtainResult(data);
+            if (mSelected.size() > 0) {
+                String url = mSelected.get(0).toString();
+                double lat = data.getDoubleExtra("lat", 0);
+                double lng = data.getDoubleExtra("lng", 0);
+                LatLng d = new LatLng(lat, lng);
+                startActivityForResult(new Intent(getContext(), ShowImgActivity.class)
+                        .putExtra("url", data.getStringExtra("url"))
+                        .putExtra("latlng", d), 22);
+                finish();
+            }
+        }
     }
 
     private void loadGIF() {
