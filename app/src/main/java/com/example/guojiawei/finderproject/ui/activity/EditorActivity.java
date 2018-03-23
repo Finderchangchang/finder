@@ -147,8 +147,12 @@ public class EditorActivity extends BaseActivity {
                 icPreview_video1.setVisibility(View.VISIBLE);
 
                 byte[] bis = getIntent().getByteArrayExtra("bitmap");
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bis, 0, bis.length);
-                icPreview_video.setImageBitmap(bitmap);
+                if (bis != null) {
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(bis, 0, bis.length);
+                    icPreview_video.setImageBitmap(bitmap);
+                } else {
+                    Glide.with(this).load(photopath).into(icPreview_video);
+                }
 //                file = new File(photopath);
 //                BitMapUtil.loadImage(this, file, icPreview_video);
                 // 上传视频
@@ -156,7 +160,10 @@ public class EditorActivity extends BaseActivity {
                 vodsVideoUploadClient = new VODSVideoUploadClientImpl(this.getApplicationContext());
                 vodsVideoUploadClient.init();
                 getaddress();
+            } else {
+                Glide.with(this).load(photopath).into(icPreview_video);
             }
+
         } else {
             icPreview.setVisibility(View.VISIBLE);
             icPreview_video1.setVisibility(View.GONE);

@@ -21,6 +21,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
@@ -36,12 +38,14 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cjt2325.cameralibrary.util.FileUtil;
 import com.zhihu.matisse.R;
 import com.zhihu.matisse.internal.entity.Album;
 import com.zhihu.matisse.internal.entity.Item;
@@ -60,6 +64,8 @@ import com.zhihu.matisse.internal.utils.PathUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,6 +96,7 @@ public class MatisseActivity extends AppCompatActivity implements
     private View mEmptyView;
     public double lat;
     public double lng;
+    public String img_path = "";//视频的图
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -194,8 +201,9 @@ public class MatisseActivity extends AppCompatActivity implements
                 }
                 result.putParcelableArrayListExtra(EXTRA_RESULT_SELECTION, selectedUris);
                 result.putStringArrayListExtra(EXTRA_RESULT_SELECTION_PATH, selectedPaths);
-                result.putExtra("lat",lat);
-                result.putExtra("lng",lng);
+                result.putExtra("lat", lat);
+                result.putExtra("lng", lng);
+                result.putExtra("img_path", img_path);
                 //result.putExtra("url",url);
                 setResult(RESULT_OK, result);
                 finish();
@@ -219,8 +227,10 @@ public class MatisseActivity extends AppCompatActivity implements
             Intent result = new Intent();
             result.putParcelableArrayListExtra(EXTRA_RESULT_SELECTION, selected);
             result.putStringArrayListExtra(EXTRA_RESULT_SELECTION_PATH, selectedPath);
-            result.putExtra("lat",lat);
-            result.putExtra("lng",lng);
+            result.putExtra("lat", lat);
+            result.putExtra("lng", lng);
+            result.putExtra("img_path", img_path);
+
             setResult(RESULT_OK, result);
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
                 MatisseActivity.this.revokeUriPermission(contentUri,
@@ -262,9 +272,10 @@ public class MatisseActivity extends AppCompatActivity implements
 
             url = getMediaBeanWithImage(this, url);
             if (!TextUtils.isEmpty(url)) {
-                result.putExtra("lat",lat);
-                result.putExtra("lng",lng);
-                result.putExtra("url",url);
+                result.putExtra("lat", lat);
+                result.putExtra("lng", lng);
+                result.putExtra("img_path", img_path);
+                result.putExtra("url", url);
                 setResult(RESULT_OK, result);
                 finish();
             } else {
@@ -306,6 +317,8 @@ public class MatisseActivity extends AppCompatActivity implements
         if (latitude != 0) {
             lat = latitude;
             lng = longitude;
+            img_path = FileUtil.saveBitmap("JCamera", createVideoThumbnail(url));
+
             return url;
         }
         return null;
@@ -350,6 +363,55 @@ public class MatisseActivity extends AppCompatActivity implements
         } else {
             return "";
         }
+    }
+
+    //截取视频的第一帧
+    public static Bitmap createVideoThumbnail(String filePath) {
+        // MediaMetadataRetriever is available on API Level 8
+        // but is hidden until API Level 10
+        Class<?> clazz = null;
+        Object instance = null;
+        try {
+            clazz = Class.forName("android.media.MediaMetadataRetriever");
+            instance = clazz.newInstance();
+
+            Method method = clazz.getMethod("setDataSource", String.class);
+            method.invoke(instance, filePath);
+
+            // The method name changes between API Level 9 and 10.
+            if (Build.VERSION.SDK_INT <= 9) {
+                return (Bitmap) clazz.getMethod("captureFrame").invoke(instance);
+            } else {
+                byte[] data = (byte[]) clazz.getMethod("getEmbeddedPicture").invoke(instance);
+                if (data != null) {
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                    if (bitmap != null) return bitmap;
+                }
+                return (Bitmap) clazz.getMethod("getFrameAtTime").invoke(instance);
+            }
+        } catch (IllegalArgumentException ex) {
+            // Assume this is a corrupt video file
+        } catch (RuntimeException ex) {
+            // Assume this is a corrupt video file.
+        } catch (InstantiationException e) {
+//            Log.e(TAG, "createVideoThumbnail", e);
+        } catch (InvocationTargetException e) {
+//            Log.e(TAG, "createVideoThumbnail", e);
+        } catch (ClassNotFoundException e) {
+//            Log.e(TAG, "createVideoThumbnail", e);
+        } catch (NoSuchMethodException e) {
+//            Log.e(TAG, "createVideoThumbnail", e);
+        } catch (IllegalAccessException e) {
+//            Log.e(TAG, "createVideoThumbnail", e);
+        } finally {
+            try {
+                if (instance != null) {
+                    clazz.getMethod("release").invoke(instance);
+                }
+            } catch (Exception ignored) {
+            }
+        }
+        return null;
     }
 
     @Override

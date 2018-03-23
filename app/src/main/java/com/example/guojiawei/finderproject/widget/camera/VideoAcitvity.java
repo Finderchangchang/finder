@@ -286,6 +286,7 @@ public class VideoAcitvity extends BaseActivity {
                 LatLng d = new LatLng(lat, lng);
                 startActivityForResult(new Intent(getContext(), ShowImgActivity.class)
                         .putExtra("url", data.getStringExtra("url"))
+                        .putExtra("img_path", data.getStringExtra("img_path"))
                         .putExtra("latlng", d), 22);
                 finish();
             }
