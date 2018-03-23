@@ -49,6 +49,9 @@
         <!--
             KV5u9sUvyG5tvBYK6Amk8RAM0U0I6K3Z
             mxtdgHIkw3aRgiUwAjVSc006m0yhyOUE正式版KEY
+            正式版SHA1 60:B1:F8:4F:38:21:DD:A6:E3:43:C1:E6:10:AE:33:F5:86:43:32:5E
+            公司测试版sha1 D2:D7:DF:01:A4:23:FA:F4:47:A7:67:2A:19:D6:3D:52:DE:FF:3E:CE
+            家里测试版sha1 4A:29:7E:93:B8:D9:6A:E3:B4:8C:64:4F:96:EB:AF:ED:35:DE:12:94
         -->
 
         <activity android:name=".ui.SplashActivity" />

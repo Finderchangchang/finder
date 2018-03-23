@@ -87,6 +87,10 @@ public class DetailActivity extends BaseActivity {
     private String moodId = "";
     private Info mInfo;
     Tencent mTencent;
+    String share_title = "";
+    String share_content = "";
+    String share_img = "";
+    String share_url = "";
 
     @Override
     public int getLayoutId() {
@@ -129,16 +133,13 @@ public class DetailActivity extends BaseActivity {
                             case 3:
                                 params = new Bundle();
                                 params.putInt(QzoneShare.SHARE_TO_QZONE_KEY_TYPE, QzoneShare.SHARE_TO_QZONE_TYPE_IMAGE_TEXT);
-                                params.putString(QzoneShare.SHARE_TO_QQ_TITLE, "标题");// 标题
+                                params.putString(QzoneShare.SHARE_TO_QQ_TITLE, "Finder");// 标题
                                 params.putString(QzoneShare.SHARE_TO_QQ_SUMMARY, "要分享的摘要");// 摘要
                                 params.putString(QzoneShare.SHARE_TO_QQ_TARGET_URL, "http://www.qq.com/news/1.html");// 内容地址
                                 //params.putString(QzoneShare.SHARE_TO_QQ_IMAGE_URL, "http://imgcache.qq.com/qzone/space_item/pre/0/66768.gif");// 网络图片地址params.putString(QQShare.SHARE_TO_QQ_APP_NAME, "应用名称");// 应用名称
                                 ArrayList<String> imgUrlList = new ArrayList<>();
                                 imgUrlList.add("http://f.hiphotos.baidu.com/image/h%3D200/sign=6f05c5f929738bd4db21b531918a876c/6a600c338744ebf8affdde1bdef9d72a6059a702.jpg");
                                 params.putStringArrayList(QzoneShare.SHARE_TO_QQ_IMAGE_URL, imgUrlList);// 图片地址
-
-                                params.putString(QzoneShare.SHARE_TO_QQ_EXT_INT, "其它附加功能");
-
                                 mTencent.shareToQzone(DetailActivity.this, params, mIUiListener);
                                 break;
                             case 4:
@@ -147,13 +148,11 @@ public class DetailActivity extends BaseActivity {
                             case 5:
                                 params = new Bundle();
                                 params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
-                                params.putString(QQShare.SHARE_TO_QQ_TITLE, "标题");// 标题
+
                                 params.putString(QQShare.SHARE_TO_QQ_SUMMARY, "要分享的摘要");// 摘要
                                 params.putString(QQShare.SHARE_TO_QQ_TARGET_URL, "http://www.qq.com/news/1.html");// 内容地址
 
                                 params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, "http://imgcache.qq.com/qzone/space_item/pre/0/66768.gif");// 网络图片地址params.putString(QQShare.SHARE_TO_QQ_APP_NAME, "应用名称");// 应用名称
-                                params.putString(QQShare.SHARE_TO_QQ_EXT_INT, "其它附加功能");
-
                                 mTencent.shareToQQ(DetailActivity.this, params, mIUiListener);
                                 break;
                         }
@@ -543,7 +542,7 @@ public class DetailActivity extends BaseActivity {
                         img_url = entity.getData().getImage_url();
                         message = entity.getData().getContent();
                         recyclerView.setAdapter(detailsAdapter);
-                        getMoodMessage("1", "10", entity.getData().getId());
+                        getMoodMessage("1", "10", entity.getData().getId());//获得评论的信息
                     }
                 });
     }

@@ -280,9 +280,10 @@ public class VideoAcitvity extends BaseActivity {
         if (requestCode == 1 && resultCode == RESULT_OK) {
             List mSelected = Matisse.obtainResult(data);
             if (mSelected.size() > 0) {
-                String url = mSelected.get(0).toString();
                 double lat = data.getDoubleExtra("lat", 0);
                 double lng = data.getDoubleExtra("lng", 0);
+                String url = data.getStringExtra("url");
+                String img_path = data.getStringExtra("img_path");
                 LatLng d = new LatLng(lat, lng);
                 startActivityForResult(new Intent(getContext(), ShowImgActivity.class)
                         .putExtra("url", data.getStringExtra("url"))

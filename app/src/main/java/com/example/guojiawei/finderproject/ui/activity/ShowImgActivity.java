@@ -55,7 +55,7 @@ public class ShowImgActivity extends AppCompatActivity {
         img_path = getIntent().getStringExtra("img_path");
         img = (ImageView) findViewById(R.id.img);
         //        latLng = load_lat_lng(url);//获得当前图片的路径
-        if (TextUtils.isEmpty(url)) {
+        if (TextUtils.isEmpty(img_path)) {
             img.setImageURI(Uri.fromFile(new File(url)));
         } else {
             aty_video_preview_videoView.setVisibility(View.VISIBLE);

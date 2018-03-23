@@ -15,7 +15,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:padding="21dp"
             android:src="@mipmap/w_quan" />
     </LinearLayout>
 
@@ -29,7 +29,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="21dp"
             android:src="@mipmap/sina_user" />
     </LinearLayout>
 
@@ -43,7 +43,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="21dp"
             android:src="@mipmap/q_zone" />
     </LinearLayout>
 
@@ -57,7 +57,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="21dp"
             android:src="@mipmap/w_user" />
     </LinearLayout>
 
@@ -71,7 +71,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="21dp"
             android:src="@mipmap/q_user" />
     </LinearLayout>
 </LinearLayout>
