@@ -1,6 +1,8 @@
 package com.example.guojiawei.finderproject.ui.activity;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,10 +15,13 @@ import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.InfoWindow;
 import com.baidu.mapapi.map.MapPoi;
+import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.geocode.GeoCodeResult;
@@ -24,15 +29,36 @@ import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.example.guojiawei.finderproject.R;
 import com.example.guojiawei.finderproject.base.BaseActivity;
+import com.example.guojiawei.finderproject.entity.MapModel;
+import com.example.guojiawei.finderproject.net.API;
 import com.example.guojiawei.finderproject.util.Constant;
 import com.cjt2325.cameralibrary.SharedPreferencesUtil;
+import com.example.guojiawei.finderproject.util.CornersTransform;
+import com.example.guojiawei.finderproject.util.EncryptUtil;
+import com.example.guojiawei.finderproject.util.GsonUtil;
+import com.example.guojiawei.finderproject.util.UserStatusUtil;
+import com.example.guojiawei.finderproject.widget.RoundImageView;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.convert.StringConvert;
+import com.lzy.okgo.model.Response;
+import com.lzy.okrx.adapter.ObservableResponse;
 
 import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static com.baidu.mapapi.map.InfoWindow.*;
 import static com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
@@ -97,6 +123,70 @@ public class MapActivity extends BaseActivity {
             public boolean onMapPoiClick(MapPoi mapPoi) {
 
                 return false;
+            }
+        });
+        mMapView.showZoomControls(false); // 设置是否显示缩放控件
+        mMapView.showScaleControl(false); // 设置是否显示缩放控件
+        mBaiduMap.setOnMapStatusChangeListener(new BaiduMap.OnMapStatusChangeListener() {
+            @Override
+            public void onMapStatusChangeStart(MapStatus mapStatus) {
+
+            }
+
+            @Override
+            public void onMapStatusChangeStart(MapStatus mapStatus, int i) {
+
+            }
+
+            @Override
+            public void onMapStatusChange(MapStatus mapStatus) {
+
+            }
+
+            @Override
+            public void onMapStatusChangeFinish(MapStatus mapStatus) {
+                LatLng mCenterLatLng = mapStatus.target;
+                /**获取经纬度*/
+                double lat2 = mCenterLatLng.latitude;
+                double lng2 = mCenterLatLng.longitude;
+                //两个经纬度的距离
+                //String jl = MapDistance.getInstance().getShortDistance(lat, lon, lat2, lng2);
+                Map<String, String> params = new HashMap<>();
+                //params.put("user_id", UserStatusUtil.getUserId());
+                params.put("latitude", lat2 + "");
+                params.put("longitude", lng2 + "");
+                params.put("juli", "10000");
+                EncryptUtil.EncryptAutoSort(params);
+
+                Observable<Response<String>> observable = OkGo.<String>post(API.MOOD_MAP)
+                        .params(params, false)
+                        .converter(new StringConvert())
+                        .adapt(new ObservableResponse<String>());
+
+                observable.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Subscriber<Response<String>>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                showToast("发送失败");
+                            }
+
+                            /**
+                             * @param stringResponse
+                             */
+                            @Override
+                            public void onNext(Response<String> stringResponse) {
+                                MapModel entity = GsonUtil.GosnToEntity(stringResponse.body(), MapModel.class);
+                                if (entity.getData() != null && entity.getData().size() > 0) {
+                                    mark(entity.getData());
+                                }
+                            }
+                        });
             }
         });
     }
@@ -195,7 +285,53 @@ public class MapActivity extends BaseActivity {
         mBaiduMap.showInfoWindow(mInfoWindow);
 
     }
+    LatLng point;
 
+    public void mark(List<MapModel.DataBean> list) {
+        mBaiduMap.clear();
+        for (int i = 0; i < list.size(); i++) {
+            MapModel.DataBean model = list.get(i);
+            Log.i("lat-lng", model.getLatitude() + "--" + model.getLongitude());
+            point = new LatLng(Double.parseDouble(model.getLatitude()), Double.parseDouble(model.getLongitude()));
+            //构建Marker图标
+            BitmapDescriptor bitmap = BitmapDescriptorFactory
+                    .fromResource(R.drawable.ic_back);
+//            OverlayOptions option = new MarkerOptions()
+//                    .position(point)
+//                    .icon(bitmap);
+//            //在地图上添加Marker，并显示
+//            mBaiduMap.addOverlay(option);
+            final View view = LayoutInflater.from(this).inflate(R.layout.view_img_location, null);
+            final RoundImageView iv = (RoundImageView) view.findViewById(R.id.ic_img);
+            Glide.with(MapActivity.this).load(model.getImg_s()).asBitmap().
+                    transform(new CornersTransform(MapActivity.this)).into(new SimpleTarget<Bitmap>() {
+                @Override
+                public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+//                    BitmapDescriptorFactory.fromBitmap(resource);
+                    //构建MarkerOption，用于在地图上添加Marker
+                    iv.setImageBitmap(resource);
+                    //在地图上添加Marker，并显示
+//                    InfoWindow mInfoWindow = new InfoWindow(BitmapDescriptorFactory.fromView(view), point, -47, new InfoWindow.OnInfoWindowClickListener() {
+//                        @Override
+//                        public void onInfoWindowClick() {
+//                            initFragment(imgUrls, content);
+//                            viewpager.setVisibility(View.VISIBLE);
+//                        }
+//                    });
+                    BitmapDescriptor bdOpen_iv =
+                            BitmapDescriptorFactory.fromView(view);
+                    OverlayOptions option = new MarkerOptions()
+                            .position(point)
+                            .icon(bdOpen_iv);
+//                            .icon(BitmapDescriptorFactory.fromBitmap(resource));
+                    //显示InfoWindow
+                    //mBaiduMap.showInfoWindow(mInfoWindow);
+                    mBaiduMap.addOverlay(option);
+                }
+            });
+
+        }
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();

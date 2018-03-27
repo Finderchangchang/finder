@@ -158,7 +158,7 @@ public class MapImageActivity extends BaseActivity {
                 //两个经纬度的距离
                 //String jl = MapDistance.getInstance().getShortDistance(lat, lon, lat2, lng2);
                 Map<String, String> params = new HashMap<>();
-                params.put("user_id", UserStatusUtil.getUserId());
+                //params.put("user_id", UserStatusUtil.getUserId());
                 params.put("latitude", lat2 + "");
                 params.put("longitude", lng2 + "");
                 params.put("juli", "10000");
