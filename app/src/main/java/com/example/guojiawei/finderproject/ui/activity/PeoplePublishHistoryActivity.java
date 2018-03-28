@@ -70,7 +70,7 @@ public class PeoplePublishHistoryActivity extends BaseActivity {
     RelativeLayout mainBar;
     @BindView(R.id.tv_nothing)
     TextView tvNothing;
-
+    boolean right=false;
 
     private PublishRecyclerAdapter mainRecyclerAdapter;
 
@@ -88,7 +88,7 @@ public class PeoplePublishHistoryActivity extends BaseActivity {
     private Info mInfo;
     private String userId = "";
     private String nickname = "";
-
+    ImageView right_iv;
     @Override
     public int getLayoutId() {
         return R.layout.activity_publish_history;
@@ -101,8 +101,19 @@ public class PeoplePublishHistoryActivity extends BaseActivity {
         nickname = getIntent().getStringExtra("name");
         mLat = (String) SharedPreferencesUtil.getData(this, Constant.TAG_LAT, "");
         mLon = (String) SharedPreferencesUtil.getData(this, Constant.TAG_LON, "");
+        right_iv= (ImageView) findViewById(R.id.right_iv);
         loadHistoryData(userId, default_page);
         title.setText(nickname);
+        right_iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(PeoplePublishHistoryActivity.this, MapImageActivity.class)
+                        .putExtra(Constant.TAG_LAT, Double.valueOf(mLat))
+                        .putExtra(Constant.TAG_LON, Double.valueOf(mLon))
+                        .putExtra("url", ""));
+            }
+        });
+        right_iv.setImageResource(R.mipmap.location);
     }
 
     /**
