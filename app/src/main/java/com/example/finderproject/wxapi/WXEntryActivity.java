@@ -2,6 +2,7 @@ package com.example.finderproject.wxapi;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.example.guojiawei.finderproject.R;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
@@ -24,28 +25,46 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
         //2.resp.transaction则是在分享数据的时候手动指定的字符创,用来分辨是那次分享(参照4.中req.transaction)
         switch (resp.errCode) { //根据需要的情况进行处理
             case BaseResp.ErrCode.ERR_OK:
-                finish();
+                share(true);
                 //正确返回
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:
+                share(false);
+
                 //用户取消
                 break;
             case BaseResp.ErrCode.ERR_AUTH_DENIED:
+                share(false);
+
                 //认证被否决
                 break;
             case BaseResp.ErrCode.ERR_SENT_FAILED:
+                share(false);
+
                 //发送失败
                 break;
             case BaseResp.ErrCode.ERR_UNSUPPORT:
+                share(false);
+
                 //不支持错误
                 break;
             case BaseResp.ErrCode.ERR_COMM:
+                share(false);
+
                 //一般错误
                 break;
             default:
                 //其他不可名状的情况
+                share(false);
                 break;
         }
+    }
+
+    private void share(boolean result) {
+        String message = "分享取消";
+        if (result) message = "分享成功";
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     @Override
