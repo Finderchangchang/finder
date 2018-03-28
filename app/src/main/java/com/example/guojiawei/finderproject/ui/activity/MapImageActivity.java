@@ -106,7 +106,6 @@ public class MapImageActivity extends BaseActivity {
 
     @Override
     public void initViews(Bundle savedInstanceState) {
-
         setMap();
         lat = getIntent().getDoubleExtra(Constant.TAG_LAT, 0);
         lon = getIntent().getDoubleExtra(Constant.TAG_LON, 0);
@@ -121,6 +120,8 @@ public class MapImageActivity extends BaseActivity {
         } else {
             // setLocation();
             setMarker();
+            loadMaps(lat + "", lon + "");
+
         }
 
         setPageClickListener();
@@ -155,46 +156,50 @@ public class MapImageActivity extends BaseActivity {
                 /**获取经纬度*/
                 double lat2 = mCenterLatLng.latitude;
                 double lng2 = mCenterLatLng.longitude;
-                //两个经纬度的距离
-                //String jl = MapDistance.getInstance().getShortDistance(lat, lon, lat2, lng2);
-                Map<String, String> params = new HashMap<>();
-                //params.put("user_id", UserStatusUtil.getUserId());
-                params.put("latitude", lat2 + "");
-                params.put("longitude", lng2 + "");
-                params.put("juli", "10000");
-                EncryptUtil.EncryptAutoSort(params);
-
-                Observable<Response<String>> observable = OkGo.<String>post(API.MOOD_MAP)
-                        .params(params, false)
-                        .converter(new StringConvert())
-                        .adapt(new ObservableResponse<String>());
-
-                observable.subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Subscriber<Response<String>>() {
-                            @Override
-                            public void onCompleted() {
-
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                showToast("发送失败");
-                            }
-
-                            /**
-                             * @param stringResponse
-                             */
-                            @Override
-                            public void onNext(Response<String> stringResponse) {
-                                MapModel entity = GsonUtil.GosnToEntity(stringResponse.body(), MapModel.class);
-                                if (entity.getData() != null && entity.getData().size() > 0) {
-                                    mark(entity.getData());
-                                }
-                            }
-                        });
+                loadMaps(lat2 + "", lng2 + "");
             }
         });
+    }
+
+    private void loadMaps(String lat2, String lng2) {
+        //两个经纬度的距离
+        //String jl = MapDistance.getInstance().getShortDistance(lat, lon, lat2, lng2);
+        Map<String, String> params = new HashMap<>();
+        //params.put("user_id", UserStatusUtil.getUserId());
+        params.put("latitude", lat2 + "");
+        params.put("longitude", lng2 + "");
+        params.put("juli", "10000");
+        EncryptUtil.EncryptAutoSort(params);
+
+        Observable<Response<String>> observable = OkGo.<String>post(API.MOOD_MAP)
+                .params(params, false)
+                .converter(new StringConvert())
+                .adapt(new ObservableResponse<String>());
+
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Response<String>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        showToast("发送失败");
+                    }
+
+                    /**
+                     * @param stringResponse
+                     */
+                    @Override
+                    public void onNext(Response<String> stringResponse) {
+                        MapModel entity = GsonUtil.GosnToEntity(stringResponse.body(), MapModel.class);
+                        if (entity.getData() != null && entity.getData().size() > 0) {
+                            mark(entity.getData());
+                        }
+                    }
+                });
     }
 
     LatLng point;
@@ -212,7 +217,7 @@ public class MapImageActivity extends BaseActivity {
                     .position(point)
                     .icon(bitmap);
 //            //在地图上添加Marker，并显示
-            mBaiduMap.addOverlay(option);
+//            mBaiduMap.addOverlay(option);
             final View view = LayoutInflater.from(this).inflate(R.layout.view_img_location, null);
             final RoundImageView iv = (RoundImageView) view.findViewById(R.id.ic_img);
             Glide.with(MapImageActivity.this).load(model.getImg_s()).asBitmap().
@@ -238,7 +243,7 @@ public class MapImageActivity extends BaseActivity {
 //                            .icon(BitmapDescriptorFactory.fromBitmap(resource));
                     //显示InfoWindow
                     //mBaiduMap.showInfoWindow(mInfoWindow);
-//                    mBaiduMap.addOverlay(option);
+                    mBaiduMap.addOverlay(option);
                 }
             });
 

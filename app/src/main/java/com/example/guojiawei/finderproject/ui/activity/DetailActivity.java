@@ -134,11 +134,10 @@ public class DetailActivity extends BaseActivity {
                                 params = new Bundle();
                                 params.putInt(QzoneShare.SHARE_TO_QZONE_KEY_TYPE, QzoneShare.SHARE_TO_QZONE_TYPE_IMAGE_TEXT);
                                 params.putString(QzoneShare.SHARE_TO_QQ_TITLE, "Finder");// 标题
-                                params.putString(QzoneShare.SHARE_TO_QQ_SUMMARY, "要分享的摘要");// 摘要
+                                params.putString(QzoneShare.SHARE_TO_QQ_SUMMARY, message);// 摘要
                                 params.putString(QzoneShare.SHARE_TO_QQ_TARGET_URL, "http://www.qq.com/news/1.html");// 内容地址
-                                //params.putString(QzoneShare.SHARE_TO_QQ_IMAGE_URL, "http://imgcache.qq.com/qzone/space_item/pre/0/66768.gif");// 网络图片地址params.putString(QQShare.SHARE_TO_QQ_APP_NAME, "应用名称");// 应用名称
                                 ArrayList<String> imgUrlList = new ArrayList<>();
-                                imgUrlList.add("http://f.hiphotos.baidu.com/image/h%3D200/sign=6f05c5f929738bd4db21b531918a876c/6a600c338744ebf8affdde1bdef9d72a6059a702.jpg");
+                                imgUrlList.add(img_url);
                                 params.putStringArrayList(QzoneShare.SHARE_TO_QQ_IMAGE_URL, imgUrlList);// 图片地址
                                 mTencent.shareToQzone(DetailActivity.this, params, mIUiListener);
                                 break;
@@ -148,11 +147,9 @@ public class DetailActivity extends BaseActivity {
                             case 5:
                                 params = new Bundle();
                                 params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
-
-                                params.putString(QQShare.SHARE_TO_QQ_SUMMARY, "要分享的摘要");// 摘要
+                                params.putString(QQShare.SHARE_TO_QQ_TITLE, message);// 标题
                                 params.putString(QQShare.SHARE_TO_QQ_TARGET_URL, "http://www.qq.com/news/1.html");// 内容地址
-
-                                params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, "http://imgcache.qq.com/qzone/space_item/pre/0/66768.gif");// 网络图片地址params.putString(QQShare.SHARE_TO_QQ_APP_NAME, "应用名称");// 应用名称
+                                params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, img_url);// 网络图片地址params.putString(QQShare.SHARE_TO_QQ_APP_NAME, "应用名称");// 应用名称
                                 mTencent.shareToQQ(DetailActivity.this, params, mIUiListener);
                                 break;
                         }
@@ -404,8 +401,8 @@ public class DetailActivity extends BaseActivity {
         //如果超过32kb则抛异常
 
         SendMessageToWX.Req req = new SendMessageToWX.Req();    //创建一个请求对象
-        msg.title = "title";
-        msg.description = "描述";
+        msg.title = "Finder";
+        msg.description = img_url;
         req.message = msg;  //把msg放入请求对象中
         if (is_quan) {
             req.scene = SendMessageToWX.Req.WXSceneTimeline;    //设置发送到朋友圈

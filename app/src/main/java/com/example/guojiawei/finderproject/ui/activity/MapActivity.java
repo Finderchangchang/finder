@@ -151,46 +151,49 @@ public class MapActivity extends BaseActivity {
                 double lng2 = mCenterLatLng.longitude;
                 //两个经纬度的距离
                 //String jl = MapDistance.getInstance().getShortDistance(lat, lon, lat2, lng2);
-                Map<String, String> params = new HashMap<>();
-                //params.put("user_id", UserStatusUtil.getUserId());
-                params.put("latitude", lat2 + "");
-                params.put("longitude", lng2 + "");
-                params.put("juli", "10000");
-                EncryptUtil.EncryptAutoSort(params);
-
-                Observable<Response<String>> observable = OkGo.<String>post(API.MOOD_MAP)
-                        .params(params, false)
-                        .converter(new StringConvert())
-                        .adapt(new ObservableResponse<String>());
-
-                observable.subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Subscriber<Response<String>>() {
-                            @Override
-                            public void onCompleted() {
-
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                showToast("发送失败");
-                            }
-
-                            /**
-                             * @param stringResponse
-                             */
-                            @Override
-                            public void onNext(Response<String> stringResponse) {
-                                MapModel entity = GsonUtil.GosnToEntity(stringResponse.body(), MapModel.class);
-                                if (entity.getData() != null && entity.getData().size() > 0) {
-                                    mark(entity.getData());
-                                }
-                            }
-                        });
+                load_map(lat2+"",lng2+"");
             }
         });
-    }
 
+    }
+    private void  load_map(String lat,String lng){
+        Map<String, String> params = new HashMap<>();
+        //params.put("user_id", UserStatusUtil.getUserId());
+        params.put("latitude", lat + "");
+        params.put("longitude", lng + "");
+        params.put("juli", "10000");
+        EncryptUtil.EncryptAutoSort(params);
+
+        Observable<Response<String>> observable = OkGo.<String>post(API.MOOD_MAP)
+                .params(params, false)
+                .converter(new StringConvert())
+                .adapt(new ObservableResponse<String>());
+
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Response<String>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        showToast("发送失败");
+                    }
+
+                    /**
+                     * @param stringResponse
+                     */
+                    @Override
+                    public void onNext(Response<String> stringResponse) {
+                        MapModel entity = GsonUtil.GosnToEntity(stringResponse.body(), MapModel.class);
+                        if (entity.getData() != null && entity.getData().size() > 0) {
+                            mark(entity.getData());
+                        }
+                    }
+                });
+    }
     private void setOverlay() {
         lat = getIntent().getDoubleExtra(Constant.TAG_LAT, 0);
         lon = getIntent().getDoubleExtra(Constant.TAG_LON, 0);
@@ -203,6 +206,7 @@ public class MapActivity extends BaseActivity {
             LatLng pt = new LatLng(lat, lon);
             setMarker(gpsInfo, pt);
         }
+        load_map(lat+"",lon+"");
     }
 
     // 初始化搜索模块，注册事件监听
