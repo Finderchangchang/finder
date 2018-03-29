@@ -34,6 +34,11 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:src="@mipmap/f_you_true" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/bg"
+            android:layout_alignParentBottom="true"/>
     </RelativeLayout>
 
     <com.github.nuptboyzhb.lib.SuperSwipeRefreshLayout

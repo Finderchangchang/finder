@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.cjt2325.cameralibrary.listener.CaptureListener;
@@ -260,6 +261,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
                         machine.stopRecord(true, time);
                     }
                 }, 1500 - time);
+                Toast.makeText(getContext(), "录制时间过短", Toast.LENGTH_SHORT).show();
             }
 
             @Override

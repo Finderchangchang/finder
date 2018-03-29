@@ -278,7 +278,7 @@ public class CaptureLayout extends FrameLayout {
         });
         //右边自定义按钮
         iv_custom_right = new ImageView(getContext());
-        LayoutParams iv_custom_param_right = new LayoutParams((int) (button_size / 2.5f), (int) (button_size / 2.5f));
+        LayoutParams iv_custom_param_right = new LayoutParams((int) (button_size / 2.2f), (int) (button_size / 2.2f));
         iv_custom_param_right.gravity = Gravity.CENTER_VERTICAL | Gravity.RIGHT;
         iv_custom_param_right.setMargins(0, 0, (layout_width / 4) - button_size / 2, 0);
         iv_custom_right.setImageResource(R.drawable.img_glary);

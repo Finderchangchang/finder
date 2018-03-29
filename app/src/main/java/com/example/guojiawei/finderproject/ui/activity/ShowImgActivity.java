@@ -72,7 +72,7 @@ public class ShowImgActivity extends AppCompatActivity {
         int screenWidth = (int) (width / density);  // 屏幕宽度(dp)
         button_size = screenWidth;
 
-        btn_confirm = new TypeButton(getBaseContext(), TypeButton.TYPE_CANCEL, (int) (button_size / 2f));
+        btn_confirm = new TypeButton(getBaseContext(), TypeButton.TYPE_CANCEL, (int) (button_size / 1.9f));
         btn_confirm.setBackgroundResource(R.drawable.ic_camera_cancel);
 
         btn_confirm.setOnClickListener(new View.OnClickListener() {
@@ -82,7 +82,7 @@ public class ShowImgActivity extends AppCompatActivity {
             }
         });
         left_ll.addView(btn_confirm);
-        btn_cancle = new TypeButton(getBaseContext(), TypeButton.TYPE_CONFIRM, (int) (button_size / 2f));
+        btn_cancle = new TypeButton(getBaseContext(), TypeButton.TYPE_CONFIRM, (int) (button_size / 1.9f));
         btn_cancle.setBackgroundResource(R.drawable.ic_camera_true);
         //确定按钮
         btn_cancle.setOnClickListener(new View.OnClickListener() {

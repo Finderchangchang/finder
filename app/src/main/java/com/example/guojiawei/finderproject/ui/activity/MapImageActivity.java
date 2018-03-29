@@ -3,6 +3,7 @@ package com.example.guojiawei.finderproject.ui.activity;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -204,22 +205,18 @@ public class MapImageActivity extends BaseActivity {
 
     LatLng point;
 
-    public void mark(List<MapModel.DataBean> list) {
+    public void mark(final List<MapModel.DataBean> list) {
         mBaiduMap.clear();
         for (int i = 0; i < list.size(); i++) {
-            MapModel.DataBean model = list.get(i);
+            final MapModel.DataBean model = list.get(i);
             Log.i("lat-lng", model.getLatitude() + "--" + model.getLongitude());
-            point = new LatLng(Double.parseDouble(model.getLatitude()), Double.parseDouble(model.getLongitude()));
             //构建Marker图标
-            BitmapDescriptor bitmap = BitmapDescriptorFactory
-                    .fromResource(R.drawable.ic_back);
-            OverlayOptions option = new MarkerOptions()
-                    .position(point)
-                    .icon(bitmap);
+
 //            //在地图上添加Marker，并显示
 //            mBaiduMap.addOverlay(option);
             final View view = LayoutInflater.from(this).inflate(R.layout.view_img_locations, null);
             final RoundImageView iv = (RoundImageView) view.findViewById(R.id.ic_img);
+            final int finalI = i;
             Glide.with(MapImageActivity.this).load(model.getImg_s()).asBitmap().
                     transform(new CornersTransform(MapImageActivity.this)).into(new SimpleTarget<Bitmap>() {
                 @Override
@@ -235,15 +232,27 @@ public class MapImageActivity extends BaseActivity {
 //                            viewpager.setVisibility(View.VISIBLE);
 //                        }
 //                    });
+//                    BitmapDescriptor bdOpen_iv =BitmapDescriptorFactory.fromBitmap(resource);
                     BitmapDescriptor bdOpen_iv =
                             BitmapDescriptorFactory.fromView(view);
-                    OverlayOptions option = new MarkerOptions()
+                    BitmapDescriptor bitmap = BitmapDescriptorFactory
+                            .fromResource(R.drawable.ic_logo144);
+                    MapModel.DataBean model = list.get(finalI);
+                    point = new LatLng(Double.parseDouble(model.getLatitude()), Double.parseDouble(model.getLongitude()));
+
+//                    OverlayOptions option = new MarkerOptions()
+//                            .position(point)
+//                            .icon(bitmap);
+//                    mBaiduMap.addOverlay(option);
+
+                    OverlayOptions option1 = new MarkerOptions()
                             .position(point)
                             .icon(bdOpen_iv);
 //                            .icon(BitmapDescriptorFactory.fromBitmap(resource));
                     //显示InfoWindow
                     //mBaiduMap.showInfoWindow(mInfoWindow);
-                    mBaiduMap.addOverlay(option);
+                    mBaiduMap.addOverlay(option1);
+
                 }
             });
 
