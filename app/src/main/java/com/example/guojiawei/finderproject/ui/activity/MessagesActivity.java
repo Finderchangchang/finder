@@ -69,12 +69,12 @@ public class MessagesActivity extends BaseActivity {
         right_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                is_all = !is_all;
                 if (is_all) {//true:所有人。false：
                     right_iv.setImageResource(R.mipmap.f_you_true);
                 } else {
                     right_iv.setImageResource(R.mipmap.f_you_false);
                 }
-                is_all = !is_all;
                 getMyMessage(UserStatusUtil.getUserId(), defaultPage + "", defaultRows + "");
             }
         });
@@ -90,6 +90,7 @@ public class MessagesActivity extends BaseActivity {
                 messageRecyclerAdapter.notifyItemChanged(position);
             }
         });
+
     }
 
 
@@ -166,7 +167,7 @@ public class MessagesActivity extends BaseActivity {
                 });
     }
 
-    boolean is_all = false;
+    boolean is_all = true;
 
     private void getMyMessage(String user_id, String page, String rows) {
         Map<String, String> params = new HashMap<>();
@@ -175,8 +176,8 @@ public class MessagesActivity extends BaseActivity {
         params.put("rows", rows);
         EncryptUtil.EncryptAutoSort(params);
 //        String url = API.MY_MESSAGE;
-        String url = API.MY_FOLLOW_TO;//关注我的人
-        if (is_all) url = API.MY_FOLLOW_MY;//我关注的人
+        String url = API.MY_FOLLOW_TO;//我关注的人
+        if (is_all) url = API.MY_FOLLOW_MY;//关注我的人
         Observable<Response<String>> observable = OkGo.<String>post(url)
                 .params(params, false)
                 .converter(new StringConvert())

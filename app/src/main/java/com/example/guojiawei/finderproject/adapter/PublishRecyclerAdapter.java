@@ -101,6 +101,12 @@ public class PublishRecyclerAdapter extends BaseRecyclerViewAdapater<PublishEnti
                         onItemButtonListener.juli(position);
                     }
                 });
+                h.icHead.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onItemButtonListener.head(position);
+                    }
+                });
                 h.rlDianzan.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

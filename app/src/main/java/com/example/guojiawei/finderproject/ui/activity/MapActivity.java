@@ -300,10 +300,10 @@ public class MapActivity extends BaseActivity {
             //构建Marker图标
             BitmapDescriptor bitmap = BitmapDescriptorFactory
                     .fromResource(R.drawable.ic_back);
-//            OverlayOptions option = new MarkerOptions()
-//                    .position(point)
-//                    .icon(bitmap);
-//            //在地图上添加Marker，并显示
+            OverlayOptions option = new MarkerOptions()
+                    .position(point)
+                    .icon(bitmap);
+            //在地图上添加Marker，并显示
 //            mBaiduMap.addOverlay(option);
             final View view = LayoutInflater.from(this).inflate(R.layout.view_img_location, null);
             final RoundImageView iv = (RoundImageView) view.findViewById(R.id.ic_img);

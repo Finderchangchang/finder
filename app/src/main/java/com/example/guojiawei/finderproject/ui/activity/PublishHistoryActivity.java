@@ -13,11 +13,13 @@ import android.widget.TextView;
 import com.bm.library.Info;
 import com.bm.library.PhotoView;
 import com.example.guojiawei.finderproject.R;
+import com.example.guojiawei.finderproject.adapter.MainRecyclerAdapter;
 import com.example.guojiawei.finderproject.adapter.PublishRecyclerAdapter;
 import com.example.guojiawei.finderproject.adapter.listener.OnPublishItemButtonListener;
 import com.example.guojiawei.finderproject.adapter.listener.OnRecyclerViewItemClickListener;
 import com.example.guojiawei.finderproject.base.BaseActivity;
 import com.example.guojiawei.finderproject.entity.CodeEntity;
+import com.example.guojiawei.finderproject.entity.HomeDataEntity;
 import com.example.guojiawei.finderproject.entity.PublishEntity;
 import com.example.guojiawei.finderproject.net.API;
 import com.example.guojiawei.finderproject.ui.Video_playAty;
@@ -155,6 +157,14 @@ public class PublishHistoryActivity extends BaseActivity {
          * item 点赞 评论 举报等按钮监听点击
          */
         mainRecyclerAdapter.setOnItemButtonListener(new OnPublishItemButtonListener() {
+            @Override
+            public void head(int position) {
+                PublishEntity.DataBean.RowsBean bean = mainRecyclerAdapter.getDatas().get(position);
+                startActivity(new Intent(getContext(), PeoplePublishHistoryActivity.class)
+                        .putExtra("userid", bean.getUser_id())
+                        .putExtra("name", bean.getUser().getNickname()));
+            }
+
             @Override
             public void zan(int position) {
                 PublishEntity.DataBean.RowsBean bean = mainRecyclerAdapter.getDatas().get(position);

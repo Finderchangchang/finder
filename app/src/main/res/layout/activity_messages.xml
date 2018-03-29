@@ -28,10 +28,11 @@
             android:textColor="@color/black"/>
         <ImageView
             android:id="@+id/right_iv"
-            android:layout_width="@dimen/barHeight"
+            android:layout_width="40dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:padding="14dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:src="@mipmap/f_you_true" />
     </RelativeLayout>
 

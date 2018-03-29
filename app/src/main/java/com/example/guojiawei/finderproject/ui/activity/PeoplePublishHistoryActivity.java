@@ -158,6 +158,11 @@ public class PeoplePublishHistoryActivity extends BaseActivity {
          */
         mainRecyclerAdapter.setOnItemButtonListener(new OnPublishItemButtonListener() {
             @Override
+            public void head(int position) {
+
+            }
+
+            @Override
             public void zan(int position) {
                 PublishEntity.DataBean.RowsBean bean = mainRecyclerAdapter.getDatas().get(position);
 

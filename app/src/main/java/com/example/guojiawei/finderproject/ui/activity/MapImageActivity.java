@@ -218,7 +218,7 @@ public class MapImageActivity extends BaseActivity {
                     .icon(bitmap);
 //            //在地图上添加Marker，并显示
 //            mBaiduMap.addOverlay(option);
-            final View view = LayoutInflater.from(this).inflate(R.layout.view_img_location, null);
+            final View view = LayoutInflater.from(this).inflate(R.layout.view_img_locations, null);
             final RoundImageView iv = (RoundImageView) view.findViewById(R.id.ic_img);
             Glide.with(MapImageActivity.this).load(model.getImg_s()).asBitmap().
                     transform(new CornersTransform(MapImageActivity.this)).into(new SimpleTarget<Bitmap>() {

@@ -59,15 +59,14 @@
                 android:textColor="@android:color/white"
                 android:textSize="8sp" />
         </RelativeLayout>
-
         <ImageView
             android:id="@+id/right_iv"
-            android:layout_width="@dimen/barHeight"
+            android:layout_width="40dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:padding="14dp"
-            android:src="@mipmap/f_wen_true"
-            />
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:src="@mipmap/f_wen_true" />
     </RelativeLayout>
 
     <com.github.nuptboyzhb.lib.SuperSwipeRefreshLayout
