@@ -89,7 +89,6 @@ public class PeoplePublishHistoryActivity extends BaseActivity {
     private String userId = "";
     private String nickname = "";
     ImageView right_iv;
-    ImageView right_ivs;
 
     @Override
     public int getLayoutId() {
@@ -104,7 +103,6 @@ public class PeoplePublishHistoryActivity extends BaseActivity {
         mLat = (String) SharedPreferencesUtil.getData(this, Constant.TAG_LAT, "");
         mLon = (String) SharedPreferencesUtil.getData(this, Constant.TAG_LON, "");
         right_iv= (ImageView) findViewById(R.id.right_iv);
-        right_ivs= (ImageView) findViewById(R.id.right_ivs);
         loadHistoryData(userId, default_page);
         title.setText(nickname);
         right_iv.setOnClickListener(new View.OnClickListener() {
@@ -117,7 +115,6 @@ public class PeoplePublishHistoryActivity extends BaseActivity {
             }
         });
         right_iv.setVisibility(View.GONE);
-        right_ivs.setVisibility(View.VISIBLE);
     }
 
     /**

@@ -281,7 +281,7 @@ public class CaptureLayout extends FrameLayout {
         LayoutParams iv_custom_param_right = new LayoutParams((int) (button_size / 2.2f), (int) (button_size / 2.2f));
         iv_custom_param_right.gravity = Gravity.CENTER_VERTICAL | Gravity.RIGHT;
         iv_custom_param_right.setMargins(0, 0, (layout_width / 4) - button_size / 2, 0);
-        iv_custom_right.setImageResource(R.drawable.img_glary);
+        iv_custom_right.setImageResource(R.drawable.img_white);
         iv_custom_right.setLayoutParams(iv_custom_param_right);
         iv_custom_right.setOnClickListener(new OnClickListener() {
             @Override

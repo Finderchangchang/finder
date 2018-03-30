@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,6 +25,7 @@ import com.example.guojiawei.finderproject.util.Constant;
 import com.example.guojiawei.finderproject.widget.camera.VideoAcitvity;
 
 import java.io.File;
+import java.math.BigDecimal;
 
 public class ShowImgActivity extends AppCompatActivity {
 
@@ -47,9 +49,25 @@ public class ShowImgActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_img);
         aty_video_preview_videoView = (VideoView) findViewById(R.id.aty_video_preview_videoView);
+        DisplayMetrics dm = new DisplayMetrics();
+        //获取屏幕信息
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
 
+        double a = new BigDecimal((float) 150 / 768).doubleValue();
+        double widths = dm.widthPixels * a;
         left_ll = (LinearLayout) findViewById(R.id.left_ll);
+        ViewGroup.LayoutParams lp;
+        lp = left_ll.getLayoutParams();
+        lp.width = (int) widths;
+        lp.height = (int) widths;
+        //lp.height = widths;
+        left_ll.setLayoutParams(lp);
+
         right_ll = (LinearLayout) findViewById(R.id.right_ll);
+        lp = right_ll.getLayoutParams();
+        lp.width = (int) widths;
+        lp.height = (int) widths;
+        right_ll.setLayoutParams(lp);
         latLng = getIntent().getParcelableExtra("latlng");
         url = getIntent().getStringExtra("url");
         img_path = getIntent().getStringExtra("img_path");
@@ -64,7 +82,6 @@ public class ShowImgActivity extends AppCompatActivity {
             initListener();
         }
         WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics dm = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(dm);
         int width = dm.widthPixels;         // 屏幕宽度（像素）
         float density = dm.density;         // 屏幕密度（0.75 / 1.0 / 1.5）
@@ -72,7 +89,7 @@ public class ShowImgActivity extends AppCompatActivity {
         int screenWidth = (int) (width / density);  // 屏幕宽度(dp)
         button_size = screenWidth;
 
-        btn_confirm = new TypeButton(getBaseContext(), TypeButton.TYPE_CANCEL, (int) (button_size / 1.9f));
+        btn_confirm = new TypeButton(getBaseContext(), TypeButton.TYPE_CANCEL, (int) (button_size / 2.0f));
         btn_confirm.setBackgroundResource(R.drawable.ic_camera_cancel);
 
         btn_confirm.setOnClickListener(new View.OnClickListener() {
@@ -82,7 +99,7 @@ public class ShowImgActivity extends AppCompatActivity {
             }
         });
         left_ll.addView(btn_confirm);
-        btn_cancle = new TypeButton(getBaseContext(), TypeButton.TYPE_CONFIRM, (int) (button_size / 1.9f));
+        btn_cancle = new TypeButton(getBaseContext(), TypeButton.TYPE_CONFIRM, (int) (button_size / 2.0f));
         btn_cancle.setBackgroundResource(R.drawable.ic_camera_true);
         //确定按钮
         btn_cancle.setOnClickListener(new View.OnClickListener() {

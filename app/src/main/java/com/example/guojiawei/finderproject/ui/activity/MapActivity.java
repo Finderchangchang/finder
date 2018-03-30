@@ -151,12 +151,13 @@ public class MapActivity extends BaseActivity {
                 double lng2 = mCenterLatLng.longitude;
                 //两个经纬度的距离
                 //String jl = MapDistance.getInstance().getShortDistance(lat, lon, lat2, lng2);
-                load_map(lat2+"",lng2+"");
+                load_map(lat2 + "", lng2 + "");
             }
         });
 
     }
-    private void  load_map(String lat,String lng){
+
+    private void load_map(String lat, String lng) {
         Map<String, String> params = new HashMap<>();
         //params.put("user_id", UserStatusUtil.getUserId());
         params.put("latitude", lat + "");
@@ -194,6 +195,7 @@ public class MapActivity extends BaseActivity {
                     }
                 });
     }
+
     private void setOverlay() {
         lat = getIntent().getDoubleExtra(Constant.TAG_LAT, 0);
         lon = getIntent().getDoubleExtra(Constant.TAG_LON, 0);
@@ -206,7 +208,7 @@ public class MapActivity extends BaseActivity {
             LatLng pt = new LatLng(lat, lon);
             setMarker(gpsInfo, pt);
         }
-        load_map(lat+"",lon+"");
+        load_map(lat + "", lon + "");
     }
 
     // 初始化搜索模块，注册事件监听
@@ -231,7 +233,7 @@ public class MapActivity extends BaseActivity {
                             .show();
                     return;
                 }
-                if(reverseGeoCodeResult.getAddress().isEmpty()){
+                if (reverseGeoCodeResult.getAddress().isEmpty()) {
                     return;
                 }
                 mBaiduMap.clear();
@@ -289,6 +291,7 @@ public class MapActivity extends BaseActivity {
         mBaiduMap.showInfoWindow(mInfoWindow);
 
     }
+
     LatLng point;
 
     public void mark(List<MapModel.DataBean> list) {
@@ -322,6 +325,7 @@ public class MapActivity extends BaseActivity {
 //                            viewpager.setVisibility(View.VISIBLE);
 //                        }
 //                    });
+                    iv.setAlpha(0.5f);
                     BitmapDescriptor bdOpen_iv =
                             BitmapDescriptorFactory.fromView(view);
                     OverlayOptions option = new MarkerOptions()
@@ -336,6 +340,7 @@ public class MapActivity extends BaseActivity {
 
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

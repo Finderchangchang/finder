@@ -105,6 +105,8 @@ public class MapImageActivity extends BaseActivity {
         return R.layout.activity_map;
     }
 
+    boolean is_location = false;//true定位成功 地图不再描点
+
     @Override
     public void initViews(Bundle savedInstanceState) {
         setMap();
@@ -120,7 +122,7 @@ public class MapImageActivity extends BaseActivity {
             showToast("位置信息获取失败 ");
         } else {
             // setLocation();
-            setMarker();
+            //setMarker();
             loadMaps(lat + "", lon + "");
 
         }
@@ -207,6 +209,7 @@ public class MapImageActivity extends BaseActivity {
 
     public void mark(final List<MapModel.DataBean> list) {
         mBaiduMap.clear();
+        setMarker();
         for (int i = 0; i < list.size(); i++) {
             final MapModel.DataBean model = list.get(i);
             Log.i("lat-lng", model.getLatitude() + "--" + model.getLongitude());
@@ -233,6 +236,7 @@ public class MapImageActivity extends BaseActivity {
 //                        }
 //                    });
 //                    BitmapDescriptor bdOpen_iv =BitmapDescriptorFactory.fromBitmap(resource);
+                    iv.setAlpha(0.5f);
                     BitmapDescriptor bdOpen_iv =
                             BitmapDescriptorFactory.fromView(view);
                     BitmapDescriptor bitmap = BitmapDescriptorFactory
@@ -347,11 +351,12 @@ public class MapImageActivity extends BaseActivity {
 //            }
 //        });
 
-
-        MapStatus.Builder builder = new MapStatus.Builder();
-        builder.target(new LatLng(lat, lon));
-        mBaiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
-
+        if (!is_location) {
+            MapStatus.Builder builder = new MapStatus.Builder();
+            builder.target(new LatLng(lat, lon));
+            mBaiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
+            is_location = true;
+        }
     }
 
     @Override

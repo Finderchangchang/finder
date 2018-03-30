@@ -10,8 +10,9 @@
     <VideoView
         android:id="@+id/aty_video_preview_videoView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_centerInParent="true"/>
 
     <ImageView
         android:id="@+id/img"
@@ -24,7 +25,8 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
-        android:layout_margin="20dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="40dp"
         android:gravity="center"
         android:orientation="vertical" />
 
@@ -34,7 +36,8 @@
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_margin="20dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginRight="40dp"
         android:gravity="center"
         android:orientation="vertical" />
 </RelativeLayout>
