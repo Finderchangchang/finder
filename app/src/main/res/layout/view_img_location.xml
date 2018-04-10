@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="80dp"
-    android:layout_height="80dp"
-    android:background="@drawable/ic_img_location">
+    android:layout_width="40dp"
+    android:layout_height="40dp"
+    android:background="@mipmap/map">
 
     <com.example.guojiawei.finderproject.widget.RoundImageView
         android:id="@+id/ic_img"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_gravity="center"
-        android:layout_marginBottom="14dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginBottom="6dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginTop="2dp"
         android:scaleType="center"
         android:src="@drawable/ic_loading"
         android:visibility="visible" />
     <ImageView
         android:id="@+id/video_iv"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
         android:layout_centerInParent="true"
         android:src="@drawable/icon_share_video"
         />
     <RelativeLayout
         android:id="@+id/ic_preview_video1"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
 
         android:visibility="gone">
 
         <com.example.guojiawei.finderproject.widget.RoundImageView
             android:id="@+id/ic_preview_video"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginBottom="14dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="6dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
             android:layout_marginTop="4dp"
             android:scaleType="center"
             android:src="@drawable/ic_loading" />
