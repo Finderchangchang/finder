@@ -47,6 +47,7 @@ import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXImageObject;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.opensdk.modelmsg.WXTextObject;
+import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.tencent.tauth.IUiListener;
@@ -87,10 +88,9 @@ public class DetailActivity extends BaseActivity {
     private String moodId = "";
     private Info mInfo;
     Tencent mTencent;
-    String share_title = "";
-    String share_content = "";
+    String share_title = "Finder";
+    String share_content = "finders可以在地图上共享自己的所见所想，共同构建全民信息地图.";
     String share_img = "";
-    String share_url = "";
 
     @Override
     public int getLayoutId() {
@@ -133,9 +133,9 @@ public class DetailActivity extends BaseActivity {
                             case 3:
                                 params = new Bundle();
                                 params.putInt(QzoneShare.SHARE_TO_QZONE_KEY_TYPE, QzoneShare.SHARE_TO_QZONE_TYPE_IMAGE_TEXT);
-                                params.putString(QzoneShare.SHARE_TO_QQ_TITLE, "Finder");// 标题
-                                params.putString(QzoneShare.SHARE_TO_QQ_SUMMARY, message);// 摘要
-                                params.putString(QzoneShare.SHARE_TO_QQ_TARGET_URL, "http://www.qq.com/news/1.html");// 内容地址
+                                params.putString(QzoneShare.SHARE_TO_QQ_TITLE, share_title);// 标题
+                                params.putString(QzoneShare.SHARE_TO_QQ_SUMMARY, share_content);// 摘要
+                                params.putString(QzoneShare.SHARE_TO_QQ_TARGET_URL, share_url);// 内容地址
                                 ArrayList<String> imgUrlList = new ArrayList<>();
                                 imgUrlList.add(img_url);
                                 params.putStringArrayList(QzoneShare.SHARE_TO_QQ_IMAGE_URL, imgUrlList);// 图片地址
@@ -147,8 +147,8 @@ public class DetailActivity extends BaseActivity {
                             case 5:
                                 params = new Bundle();
                                 params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
-                                params.putString(QQShare.SHARE_TO_QQ_TITLE, message);// 标题
-                                params.putString(QQShare.SHARE_TO_QQ_TARGET_URL, "http://www.qq.com/news/1.html");// 内容地址
+                                params.putString(QQShare.SHARE_TO_QQ_TITLE, share_title);// 标题
+                                params.putString(QQShare.SHARE_TO_QQ_TARGET_URL, share_url);// 内容地址
                                 params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, img_url);// 网络图片地址params.putString(QQShare.SHARE_TO_QQ_APP_NAME, "应用名称");// 应用名称
                                 mTencent.shareToQQ(DetailActivity.this, params, mIUiListener);
                                 break;
@@ -377,33 +377,20 @@ public class DetailActivity extends BaseActivity {
     }
 
     public void sharePicByFile(boolean is_quan, String tag) {
-        //img_url
-        Bitmap pic;// = BitmapFactory.decodeFile(picFile.toString());
-        pic = BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.alivc_brightness);
-        WXImageObject imageObject = new WXImageObject(pic);
-        //这个构造方法中自动把传入的bitmap转化为2进制数据,或者你直接传入byte[]也行
-        //注意传入的数据不能大于10M,开发文档上写的
+        WXWebpageObject webpage = new WXWebpageObject();
+        webpage.webpageUrl = share_url;
+        WXMediaMessage msg = new WXMediaMessage(webpage);
+        msg.title = share_title;
+        msg.description = share_content;
+        //Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.send_music_thumb);
+        //Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, THUMB_SIZE, THUMB_SIZE, true);
+        //bmp.recycle();
+        //msg.thumbData = Util.bmpToByteArray(thumbBmp, true);
 
-        WXMediaMessage msg = new WXMediaMessage();  //这个对象是用来包裹发送信息的对象
-        msg.mediaObject = imageObject;
-        //msg.mediaObject实际上是个IMediaObject对象,
-        //它有很多实现类,每一种实现类对应一种发送的信息,
-        //比如WXTextObject对应发送的信息是文字,想要发送文字直接传入WXTextObject对象就行
-
-
-        Bitmap thumbBitmap = Bitmap.createScaledBitmap(pic, 150, 150, true);
-
-        msg.thumbData = Bitmap2Bytes(thumbBitmap);
-        //在这设置缩略图
-        //官方文档介绍这个bitmap不能超过32kb
-        //如果一个像素是8bit的话换算成正方形的bitmap则边长不超过181像素,边长设置成150是比较保险的
-        //或者使用msg.setThumbImage(thumbBitmap);省去自己转换二进制数据的过程
-        //如果超过32kb则抛异常
-
-        SendMessageToWX.Req req = new SendMessageToWX.Req();    //创建一个请求对象
-        msg.title = "Finder";
-        msg.description = img_url;
-        req.message = msg;  //把msg放入请求对象中
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = buildTransaction("webpage");
+        req.message = msg;
+        api.sendReq(req);
         if (is_quan) {
             req.scene = SendMessageToWX.Req.WXSceneTimeline;    //设置发送到朋友圈
         } else {
@@ -427,11 +414,11 @@ public class DetailActivity extends BaseActivity {
             getMoodDetatils(moodId, UserStatusUtil.getUserId(), lat, lon);
         }
         Tencent.onActivityResultData(requestCode, resultCode, data, mIUiListener);
-        if (requestCode == Constants.REQUEST_API) {
-            if (resultCode == Constants.REQUEST_QQ_SHARE || resultCode == Constants.REQUEST_QZONE_SHARE || resultCode == Constants.REQUEST_OLD_SHARE) {
-                Tencent.handleResultData(data, new MyIUiListener());
-            }
+//        if (requestCode == Constants.REQUEST_API) {
+        if (requestCode == Constants.REQUEST_QQ_SHARE || requestCode == Constants.REQUEST_QZONE_SHARE || requestCode == Constants.REQUEST_OLD_SHARE) {
+            Tencent.handleResultData(data, new MyIUiListener());
         }
+//        }
     }
 
     MyIUiListener mIUiListener = new MyIUiListener();
@@ -441,7 +428,7 @@ public class DetailActivity extends BaseActivity {
         @Override
         public void onComplete(Object o) {
 // 操作成功
-            String a = "";
+            //showToast("分享成功");
         }
 
         @Override
@@ -455,7 +442,7 @@ public class DetailActivity extends BaseActivity {
 
         public void onCancel() {
             String a = "";
-            showToast("分享已取消");
+            //showToast("分享已取消");
             // 取消分享
         }
     }
@@ -546,6 +533,7 @@ public class DetailActivity extends BaseActivity {
 
     String img_url = "";//图片路径
     String message = "";//分享的内容
+    String share_url = "http://www.baidu.com";//分享之后的url
 
     private void getMoodMessage(String page, String rows, String mood_id) {
         Map<String, String> params = new HashMap<>();

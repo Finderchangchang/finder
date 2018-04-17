@@ -297,18 +297,17 @@ public class MapActivity extends BaseActivity {
     public void mark(List<MapModel.DataBean> list) {
         mBaiduMap.clear();
         for (int i = 0; i < list.size(); i++) {
-            MapModel.DataBean model = list.get(i);
+            final MapModel.DataBean model = list.get(i);
             Log.i("lat-lng", model.getLatitude() + "--" + model.getLongitude());
-            point = new LatLng(Double.parseDouble(model.getLatitude()), Double.parseDouble(model.getLongitude()));
             //构建Marker图标
-            BitmapDescriptor bitmap = BitmapDescriptorFactory
-                    .fromResource(R.drawable.ic_back);
-            OverlayOptions option = new MarkerOptions()
-                    .position(point)
-                    .icon(bitmap);
+//            BitmapDescriptor bitmap = BitmapDescriptorFactory
+//                    .fromResource(R.drawable.ic_back);
+//            OverlayOptions option = new MarkerOptions()
+//                    .position(point)
+//                    .icon(bitmap);
             //在地图上添加Marker，并显示
 //            mBaiduMap.addOverlay(option);
-            final View view = LayoutInflater.from(this).inflate(R.layout.view_img_location, null);
+            final View view = LayoutInflater.from(this).inflate(R.layout.view_img_locations, null);
             final RoundImageView iv = (RoundImageView) view.findViewById(R.id.ic_img);
             Glide.with(MapActivity.this).load(model.getImg_s()).asBitmap().
                     transform(new CornersTransform(MapActivity.this)).into(new SimpleTarget<Bitmap>() {
@@ -326,6 +325,8 @@ public class MapActivity extends BaseActivity {
 //                        }
 //                    });
                     iv.setAlpha(0.5f);
+                    point = new LatLng(Double.parseDouble(model.getLatitude()), Double.parseDouble(model.getLongitude()));
+
                     BitmapDescriptor bdOpen_iv =
                             BitmapDescriptorFactory.fromView(view);
                     OverlayOptions option = new MarkerOptions()
