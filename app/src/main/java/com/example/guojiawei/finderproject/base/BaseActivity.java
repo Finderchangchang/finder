@@ -118,8 +118,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(UserStatusUtil.isLogin()){
+        if (UserStatusUtil.isLogin()) {
             getCommentNum(UserStatusUtil.getUserId());
+            getFCommentNum(UserStatusUtil.getUserId());
         }
     }
 
@@ -137,7 +138,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
 
-    public Context getContext(){
+    public Context getContext() {
         return this;
     }
 
@@ -161,7 +162,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             Manifest.permission.RECORD_AUDIO
     };
 
-    private void checkPremiss(){
+    private void checkPremiss() {
         int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (permission != PackageManager.PERMISSION_GRANTED) {
             // We don't have permission so prompt the user
@@ -182,14 +183,14 @@ public abstract class BaseActivity extends AppCompatActivity {
              * 定位权限为必须权限，用户如果禁止，则每次进入都会申请
              */
             // 定位精确位置
-            if(checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
             }
-            if(checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
             }
-			/*
-			 * 读写权限和电话状态权限非必要权限(建议授予)只会申请一次，用户同意或者禁止，只会弹一次
+            /*
+             * 读写权限和电话状态权限非必要权限(建议授予)只会申请一次，用户同意或者禁止，只会弹一次
 			 */
             // 读写权限
             if (addPermission(permissions, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
@@ -209,14 +210,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     @TargetApi(23)
     private boolean addPermission(ArrayList<String> permissionsList, String permission) {
         if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) { // 如果应用没有获得对应权限,则添加到列表中,准备批量申请
-            if (shouldShowRequestPermissionRationale(permission)){
+            if (shouldShowRequestPermissionRationale(permission)) {
                 return true;
-            }else{
+            } else {
                 permissionsList.add(permission);
                 return false;
             }
 
-        }else{
+        } else {
             return true;
         }
     }
@@ -255,11 +256,43 @@ public abstract class BaseActivity extends AppCompatActivity {
                     @Override
                     public void onNext(Response<String> stringResponse) {
                         NumEntity entity = GsonUtil.GosnToEntity(stringResponse.body(), NumEntity.class);
-                        if(entity.getCode() == 1){
+                        if (entity.getCode() == 1) {
                             UserStatusUtil.setCommentNum(entity.getData());
                         }
                     }
                 });
     }
 
+    public void getFCommentNum(String user_id) {
+        Map<String, String> params = new HashMap<>();
+        params.put("user_id", user_id);
+
+        EncryptUtil.EncryptAutoSort(params);
+
+        Observable<Response<String>> observable = OkGo.<String>post(API.F_COMMENT_NUM)
+                .params(params, false)
+                .converter(new StringConvert())
+                .adapt(new ObservableResponse<String>());
+
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Response<String>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(Response<String> stringResponse) {
+                        NumEntity entity = GsonUtil.GosnToEntity(stringResponse.body(), NumEntity.class);
+                        if (entity.getCode() == 1) {
+                            UserStatusUtil.setFCommentNum(entity.getData());
+                        }
+                    }
+                });
+    }
 }

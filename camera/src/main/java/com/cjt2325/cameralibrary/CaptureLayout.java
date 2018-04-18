@@ -138,7 +138,7 @@ public class CaptureLayout extends FrameLayout {
         } else {
             btn_return.setVisibility(GONE);
             btn_capture.setVisibility(GONE);
-            txt_tip.setVisibility(GONE);
+            //txt_tip.setVisibility(GONE);
         }
         if (this.iconRight != 0)
 //            iv_custom_right.setVisibility(GONE);
@@ -181,7 +181,7 @@ public class CaptureLayout extends FrameLayout {
                 if (captureLisenter != null) {
                     btn_return.setVisibility(View.GONE);
                     btn_capture.setVisibility(GONE);
-                    txt_tip.setVisibility(GONE);
+                    //txt_tip.setVisibility(GONE);
                     captureLisenter.takePictures();
                 }
             }
@@ -191,7 +191,7 @@ public class CaptureLayout extends FrameLayout {
                 if (captureLisenter != null) {
                     captureLisenter.recordShort(time);
                 }
-                startAlphaAnimation(false);
+                //startAlphaAnimation(false);
             }
 
             @Override
@@ -202,12 +202,12 @@ public class CaptureLayout extends FrameLayout {
                     //} else {
                     btn_return.setVisibility(View.GONE);
 //                    btn_capture.setVisibility(GONE);
-                    txt_tip.setVisibility(GONE);
+                    //txt_tip.setVisibility(GONE);
 
                     captureLisenter.recordStart();
                     //}
                 }
-                startAlphaAnimation(false);
+//                startAlphaAnimation(false);
             }
 
             @Override

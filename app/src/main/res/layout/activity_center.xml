@@ -134,7 +134,21 @@
             android:textSize="8sp"
             android:visibility="gone" />
 
+        <TextView
+            android:id="@+id/f_message_num"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/right_iv"
+            android:background="@drawable/circle_messages"
+            android:gravity="center"
+            android:text="1"
+            android:layout_marginRight="5dp"
+            android:textColor="@android:color/white"
+            android:textSize="8sp" />
+
         <ImageView
+            android:id="@+id/right_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

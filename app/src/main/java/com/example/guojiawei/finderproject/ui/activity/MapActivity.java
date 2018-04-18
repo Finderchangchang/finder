@@ -295,7 +295,7 @@ public class MapActivity extends BaseActivity {
     LatLng point;
 
     public void mark(List<MapModel.DataBean> list) {
-        mBaiduMap.clear();
+        //mBaiduMap.clear();
         for (int i = 0; i < list.size(); i++) {
             final MapModel.DataBean model = list.get(i);
             Log.i("lat-lng", model.getLatitude() + "--" + model.getLongitude());
@@ -324,7 +324,7 @@ public class MapActivity extends BaseActivity {
 //                            viewpager.setVisibility(View.VISIBLE);
 //                        }
 //                    });
-                    iv.setAlpha(0.5f);
+//                    iv.setAlpha(0.5f);
                     point = new LatLng(Double.parseDouble(model.getLatitude()), Double.parseDouble(model.getLongitude()));
 
                     BitmapDescriptor bdOpen_iv =

@@ -204,15 +204,15 @@ public class MessageDetailActivity extends BaseActivity {
             public void onItemClick(View v, final int position) {
                 if (!UserStatusUtil.getUserId().equals(messageDetailAdapter.getDatas().get(position).getUser_id())) {
 
-                    final ContentPreviewDialog dialog = new ContentPreviewDialog(getContext(),
-                            messageDetailAdapter.getDatas().get(position).getContent().toString());
-                    dialog.show();
+//                    final ContentPreviewDialog dialog = new ContentPreviewDialog(getContext(),
+//                            messageDetailAdapter.getDatas().get(position).getContent().toString());
+//                    dialog.show();
 //                    startActivity(new Intent(MessageDetailActivity.this, DetailActivity.class)
 //                            .putExtra(Constant.TAG_MOOD_ID, messageDetailAdapter.getDatas().get(position).getId()));
-//                    startActivity(new Intent(MessageDetailActivity.this, ReplyMessageActivity.class)
-//                            .putExtra(Constant.TAG_MOOD_ID, messageDetailAdapter.getDatas().get(position).getMood_id())
-//                            .putExtra(Constant.TAG_COMMENT_ID, messageDetailAdapter.getDatas().get(position).getId())
-//                            .putExtra("name", messageDetailAdapter.getDatas().get(position).getUser().getNickname()));
+                    startActivity(new Intent(MessageDetailActivity.this, ReplyMessageActivity.class)
+                            .putExtra(Constant.TAG_MOOD_ID, messageDetailAdapter.getDatas().get(position).getMood_id())
+                            .putExtra(Constant.TAG_COMMENT_ID, messageDetailAdapter.getDatas().get(position).getId())
+                            .putExtra("name", messageDetailAdapter.getDatas().get(position).getUser().getNickname()));
 
                 } else {
                     final DialogSelector dialogSelector = new DialogSelector(MessageDetailActivity.this);

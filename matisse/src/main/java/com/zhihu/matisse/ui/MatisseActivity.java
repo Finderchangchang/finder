@@ -191,22 +191,23 @@ public class MatisseActivity extends AppCompatActivity implements
                     SelectedItemCollection.COLLECTION_UNDEFINED);
             if (data.getBooleanExtra(BasePreviewActivity.EXTRA_RESULT_APPLY, false)) {
                 Intent result = new Intent();
-                ArrayList<Uri> selectedUris = new ArrayList<>();
-                ArrayList<String> selectedPaths = new ArrayList<>();
-                if (selected != null) {
-                    for (Item item : selected) {
-                        selectedUris.add(item.getContentUri());
-                        selectedPaths.add(PathUtils.getPath(this, item.getContentUri()));
-                    }
-                }
+                ArrayList<Uri> selectedUris = (ArrayList<Uri>) mSelectedCollection.asListOfUri();
                 result.putParcelableArrayListExtra(EXTRA_RESULT_SELECTION, selectedUris);
+                ArrayList<String> selectedPaths = (ArrayList<String>) mSelectedCollection.asListOfString();
                 result.putStringArrayListExtra(EXTRA_RESULT_SELECTION_PATH, selectedPaths);
-                result.putExtra("lat", lat);
-                result.putExtra("lng", lng);
-                result.putExtra("img_path", img_path);
-                //result.putExtra("url",url);
-                setResult(RESULT_OK, result);
-                finish();
+                String url = selectedPaths.get(0);
+
+                url = getMediaBeanWithImage(this, url);
+                if (!TextUtils.isEmpty(url)) {
+                    result.putExtra("lat", lat);
+                    result.putExtra("lng", lng);
+                    result.putExtra("img_path", img_path);
+                    result.putExtra("url", url);
+                    setResult(RESULT_OK, result);
+                    finish();
+                } else {
+                    Toast.makeText(this, "未发现当前图片位置", Toast.LENGTH_SHORT).show();
+                }
             } else {
                 mSelectedCollection.overwrite(selected, collectionType);
                 Fragment mediaSelectionFragment = getSupportFragmentManager().findFragmentByTag(

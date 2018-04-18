@@ -52,6 +52,8 @@ public interface API {
     String MOOD_MESSAGE = BASE_URL + "/api.php?c=Comment&a=lists";
 
     String COMMENT_NUM = BASE_URL + "/api.php?c=Comment&a=num";
+    String F_COMMENT_NUM = BASE_URL + "/api.php?c=Comment&a=nums";//获取f文未读数量
+
 
     String DEL_MESSAGE = BASE_URL + "/api.php?c=Comment&a=del";
     String MOOD_MAP = BASE_URL + "/api.php?c=Mood&a=juli_s";//地图接口

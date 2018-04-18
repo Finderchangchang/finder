@@ -289,7 +289,7 @@ public class VideoAcitvity extends BaseActivity {
                         .putExtra("url", data.getStringExtra("url"))
                         .putExtra("img_path", data.getStringExtra("img_path"))
                         .putExtra("latlng", d), 22);
-                finish();
+                //finish();
             }
         }
     }

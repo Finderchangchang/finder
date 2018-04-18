@@ -329,11 +329,16 @@ public class MainActivity extends BaseActivity {
 
                 //获取img1的信息
                 mInfo = PhotoView.getImageViewInfo(pv);
-                ivPreviewImg.setVisibility(View.VISIBLE);
-                ivPreviewImg.animaFrom(mInfo);
+
+                //ivPreviewImg.animaFrom(mInfo);
                 MainRecyclerAdapter adapter = (MainRecyclerAdapter) adapaterm;
                 HomeDataEntity.DataBean.RowsBean.ListBean bean = adapter.getDatas().get(position);
                 ivPreviewImg.setImageDrawable(null);
+
+
+                Glide.with(getContext()).load(bean.getImg_s()).into(ivPreviewImg);
+                ivPreviewImg.setVisibility(View.VISIBLE);
+
                 Glide.with(getContext()).load(bean.getImg()).asBitmap().into(new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
@@ -342,7 +347,7 @@ public class MainActivity extends BaseActivity {
                         //获取img1的信息
                         mInfo = PhotoView.getImageViewInfo(pv);
                         ivPreviewImg.setVisibility(View.VISIBLE);
-                        ivPreviewImg.animaFrom(mInfo);
+                        //ivPreviewImg.animaFrom(mInfo);
                     }
                 });
                 ivPreviewImg.setOnClickListener(new View.OnClickListener() {
@@ -353,6 +358,7 @@ public class MainActivity extends BaseActivity {
                             @Override
                             public void run() {
                                 ivPreviewImg.setVisibility(View.GONE);
+                                //ivPreviewImg.setImageDrawable(null);
                             }
                         });
                     }
@@ -679,6 +685,7 @@ public class MainActivity extends BaseActivity {
         public void onFinish() {
             if (UserStatusUtil.isLogin()) {
                 getCommentNum(UserStatusUtil.getUserId());
+                getFCommentNum(UserStatusUtil.getUserId());
                 setCommentNum();
             }
             timeCount.start();

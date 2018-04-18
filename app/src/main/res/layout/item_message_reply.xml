@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:gravity="center_vertical"
     android:orientation="horizontal">
 
-    <com.example.guojiawei.finderproject.widget.CircleImageView
-        android:id="@+id/ic_head"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/ic_preview"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="5dp"
-        android:layout_weight="1"
-        android:src="@drawable/ic_head_load" />
+    <LinearLayout
+        android:layout_width="60dp"
+        android:paddingTop="10dp"
+        android:layout_height="match_parent"
+        android:paddingLeft="15dp">
 
+        <com.example.guojiawei.finderproject.widget.CircleImageView
+            android:id="@+id/ic_head"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/ic_head_load" />
+    </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/ic_head"
+        android:layout_weight="1"
         android:orientation="vertical"
         android:padding="10dp">
 
@@ -82,4 +85,4 @@
             android:src="@drawable/icon_share_video" />
     </RelativeLayout>
 
-</RelativeLayout>
+</LinearLayout>

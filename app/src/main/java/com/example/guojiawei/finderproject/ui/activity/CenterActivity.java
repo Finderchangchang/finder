@@ -77,6 +77,8 @@ public class CenterActivity extends BaseActivity {
     TextView textView;
     @BindView(R.id.message_num)
     TextView messageNum;
+    @BindView(R.id.f_message_num)
+    TextView f_messageNum;
     @BindView(R.id.rl_my)
     RelativeLayout rlMy;
     @BindView(R.id.center)
@@ -95,14 +97,31 @@ public class CenterActivity extends BaseActivity {
 
     @Override
     public void initViews(Bundle savedInstanceState) {
-        if (UserStatusUtil.getCommentNum().equals("0")) {
+        if (UserStatusUtil.getCommentNum().equals("0") && UserStatusUtil.getFCommentNum().equals("0")) {
             messageNum.setVisibility(View.GONE);
             tvMessageNum.setVisibility(View.GONE);
+            f_messageNum.setVisibility(View.GONE);
         } else {
+            int num = 0;
+            String num1 = UserStatusUtil.getCommentNum();
+            String num2 = UserStatusUtil.getFCommentNum();
+            if (!num1.equals("0")) {
+                num += Integer.parseInt(num1);
+                messageNum.setVisibility(View.VISIBLE);
+                messageNum.setText(num1);
+            } else {
+                messageNum.setVisibility(View.GONE);
+            }
+            if (!num2.equals("0")) {
+                num += Integer.parseInt(num2);
+                f_messageNum.setVisibility(View.VISIBLE);
+                f_messageNum.setText(num1);
+            }else {
+                f_messageNum.setVisibility(View.GONE);
+            }
             tvMessageNum.setVisibility(View.VISIBLE);
-            tvMessageNum.setText(UserStatusUtil.getCommentNum());
-            messageNum.setVisibility(View.VISIBLE);
-            messageNum.setText(UserStatusUtil.getCommentNum());
+            tvMessageNum.setText(num + "");
+
         }
 
         getUserInfo(UserStatusUtil.getUserId());

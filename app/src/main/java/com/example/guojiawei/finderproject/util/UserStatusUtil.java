@@ -12,6 +12,8 @@ public class UserStatusUtil {
     private final static String TAG_ID = "USERID";
 
     private final static String TAG_COMMENT_NUM = "NUM";
+    private final static String TAG_FCOMMENT_NUM = "NUMS";
+
 
     private static boolean mLogiStatu = false;
 
@@ -50,6 +52,14 @@ public class UserStatusUtil {
 
     public static String getCommentNum() {
         return (String) SharedPreferencesUtil.getData(mContext, TAG_COMMENT_NUM, "0");
+    }
+    public static void setFCommentNum(String num) {
+        SharedPreferencesUtil.saveData(mContext, TAG_FCOMMENT_NUM, num);
+
+    }
+
+    public static String getFCommentNum() {
+        return (String) SharedPreferencesUtil.getData(mContext, TAG_FCOMMENT_NUM, "0");
     }
 
 

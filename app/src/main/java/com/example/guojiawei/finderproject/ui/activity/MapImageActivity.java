@@ -137,6 +137,7 @@ public class MapImageActivity extends BaseActivity {
         mBaiduMap = mMapView.getMap();
         mMapView.showZoomControls(false); // 设置是否显示缩放控件
         mMapView.showScaleControl(false); // 设置是否显示缩放控件
+        mBaiduMap.setMapStatus(MapStatusUpdateFactory.zoomTo(18f));
         mBaiduMap.setOnMapStatusChangeListener(new BaiduMap.OnMapStatusChangeListener() {
             @Override
             public void onMapStatusChangeStart(MapStatus mapStatus) {
@@ -236,7 +237,7 @@ public class MapImageActivity extends BaseActivity {
 //                        }
 //                    });
 //                    BitmapDescriptor bdOpen_iv =BitmapDescriptorFactory.fromBitmap(resource);
-                    iv.setAlpha(0.5f);
+//                    iv.setAlpha(0.5f);
                     BitmapDescriptor bdOpen_iv =
                             BitmapDescriptorFactory.fromView(view);
                     BitmapDescriptor bitmap = BitmapDescriptorFactory
