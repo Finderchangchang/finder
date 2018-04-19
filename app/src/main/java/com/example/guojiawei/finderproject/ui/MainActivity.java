@@ -575,6 +575,7 @@ public class MainActivity extends BaseActivity {
                             .putExtra(Constant.TAG_LAT, mLat)
                             .putExtra(Constant.TAG_LON, mLon), 2);
                     SharedPreferencesUtil.saveData(getContext(), "refresh", false);
+                    MainActivity.this.overridePendingTransition(R.anim.activity_open, 0);
                 } else {
                     startActivityForResult(new Intent(this, LoginActivity.class)
                             .putExtra(Constant.TAG_LAT, mLat)

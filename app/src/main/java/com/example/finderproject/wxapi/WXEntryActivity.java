@@ -1,5 +1,6 @@
 package com.example.finderproject.wxapi;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -7,17 +8,30 @@ import android.widget.Toast;
 import com.example.guojiawei.finderproject.R;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHandler {
-
+    private IWXAPI api;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_wxentry);
-
+        api = WXAPIFactory.createWXAPI(this, "wxf4d9d01961dc2174", false);
+        try {
+            api.handleIntent(getIntent(), this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
 
+        setIntent(intent);
+        api.handleIntent(intent, this);
+    }
     @Override
     public void onResp(BaseResp resp) { //在这个方法中处理微信传回的数据
         //形参resp 有下面两个个属性比较重要
@@ -61,7 +75,7 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
     }
 
     private void share(boolean result) {
-        String message = "分享取消";
+        String message = "分享已取消";
         if (result) message = "分享成功";
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         finish();

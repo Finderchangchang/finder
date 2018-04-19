@@ -97,8 +97,13 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="1106567682" />
+                <data android:scheme="tencent1106567682" />
             </intent-filter>
+        </activity>
+        <activity android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
+            android:configChanges="keyboardHidden|orientation"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="false" >
         </activity>
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
@@ -146,6 +151,7 @@
         <activity
             android:name="com.example.finderproject.wxapi.WXEntryActivity"
             android:exported="true"
+            android:theme="@android:style/Theme.Translucent"
             android:launchMode="singleTop" />
         <!--
         provider

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,7 @@ import com.bm.library.PhotoView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.example.guojiawei.finderproject.Constant_web;
 import com.example.guojiawei.finderproject.R;
 import com.example.guojiawei.finderproject.adapter.DetailsAdapter;
 import com.example.guojiawei.finderproject.adapter.base.BaseRecyclerViewAdapater;
@@ -40,6 +42,19 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.convert.StringConvert;
 import com.lzy.okgo.model.Response;
 import com.lzy.okrx.adapter.ObservableResponse;
+import com.sina.weibo.sdk.WbSdk;
+import com.sina.weibo.sdk.WeiboAppManager;
+import com.sina.weibo.sdk.api.ImageObject;
+import com.sina.weibo.sdk.api.MultiImageObject;
+import com.sina.weibo.sdk.api.TextObject;
+import com.sina.weibo.sdk.api.WeiboMultiMessage;
+import com.sina.weibo.sdk.auth.AuthInfo;
+import com.sina.weibo.sdk.auth.Oauth2AccessToken;
+import com.sina.weibo.sdk.auth.WbAuthListener;
+import com.sina.weibo.sdk.auth.WbConnectErrorMessage;
+import com.sina.weibo.sdk.auth.sso.SsoHandler;
+import com.sina.weibo.sdk.share.WbShareCallback;
+import com.sina.weibo.sdk.share.WbShareHandler;
 import com.tencent.connect.common.Constants;
 import com.tencent.connect.share.QQShare;
 import com.tencent.connect.share.QzoneShare;
@@ -56,6 +71,7 @@ import com.tencent.tauth.UiError;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -71,7 +87,7 @@ import rx.schedulers.Schedulers;
  * Created by guojiawei on 2017/11/10.
  */
 
-public class DetailActivity extends BaseActivity {
+public class DetailActivity extends BaseActivity implements WbShareCallback {
     @BindView(R.id.ic_back)
     ImageView icBack;
     @BindView(R.id.recycler_view)
@@ -101,10 +117,18 @@ public class DetailActivity extends BaseActivity {
     private static final String APP_ID = "wxf4d9d01961dc2174";    //这个APP_ID就是注册APP的时候生成的
 
     public IWXAPI api;      //这个对象是专门用来向微信发送数据的一个重要接口,使用强引用持有,所有的信息发送都是基于这个对象的
+    SsoHandler mSsoHandler;
+    WbShareHandler shareHandler;
 
     public void registerWeChat() {   //向微信注册app
         api = WXAPIFactory.createWXAPI(this, APP_ID, true);
         api.registerApp(APP_ID);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        shareHandler.doResultIntent(intent, this);
     }
 
     @Override
@@ -114,6 +138,10 @@ public class DetailActivity extends BaseActivity {
         lon = (String) SharedPreferencesUtil.getData(this, Constant.TAG_LON, "");
         moodId = getIntent().getStringExtra(Constant.TAG_MOOD_ID);
         mTencent = Tencent.createInstance("1106567682", this);
+        AuthInfo mAuthInfo = new AuthInfo(DetailActivity.this, Constant_web.APP_KEY, Constant_web.REDIRECT_URL, Constant_web.SCOPE);
+        WbSdk.install(DetailActivity.this, mAuthInfo);
+        shareHandler = new WbShareHandler(this);
+        shareHandler.registerApp();
         setRecyclerView();
         detailsAdapter = new DetailsAdapter(DetailActivity.this);
         share_iv.setOnClickListener(new View.OnClickListener() {
@@ -128,7 +156,24 @@ public class DetailActivity extends BaseActivity {
                                 sharePicByFile(true, "");
                                 break;
                             case 2:
+                                TextObject textObject = new TextObject();
+                                textObject.text = share_url + "@Finde";
+                                WeiboMultiMessage weiboMultiMessage = new WeiboMultiMessage();
+                                weiboMultiMessage.textObject = textObject;
+                                Bitmap largeImg = bitmap;
+                                int MAX_SIZE_LARGE_BYTE = 1 << 21;
+//                                if (largeImg.getByteCount() > MAX_SIZE_LARGE_BYTE) {
+//                                    double scale = Math.sqrt(1.0 * largeImg.getByteCount() / MAX_SIZE_LARGE_BYTE);
+//                                    int scaledW = (int) (largeImg.getWidth() / scale);
+//                                    int scaledH = (int) (largeImg.getHeight() / scale);
+//
+//                                    largeImg = Bitmap.createScaledBitmap(bitmap, scaledW, scaledH, true);
+                                ImageObject imageObject = new ImageObject();
+                                imageObject.setImageObject(largeImg);
+                                weiboMultiMessage.imageObject = imageObject;
+//                                }
 
+                                shareHandler.shareMessage(weiboMultiMessage, false);
                                 break;
                             case 3:
                                 params = new Bundle();
@@ -159,7 +204,7 @@ public class DetailActivity extends BaseActivity {
             }
         });
         getMoodDetatils(moodId, UserStatusUtil.getUserId(), lat, lon);
-
+        share_url="http://111.231.194.105/share/?id="+moodId;
         detailsAdapter.setOnItemButtonListener(new OnItemButtonListener() {
             @Override
             public void head(BaseRecyclerViewAdapater adapaterm, View v, int position) {
@@ -308,6 +353,7 @@ public class DetailActivity extends BaseActivity {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                         ivPreviewImg.setImageBitmap(resource);
+                        bitmap = resource;
                         //获取img1的信息
                         mInfo = PhotoView.getImageViewInfo(pv);
                         ivPreviewImg.setVisibility(View.VISIBLE);
@@ -372,6 +418,8 @@ public class DetailActivity extends BaseActivity {
         });
     }
 
+    Bitmap bitmap;
+
     private String buildTransaction(final String type) {
         return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
     }
@@ -390,7 +438,7 @@ public class DetailActivity extends BaseActivity {
         SendMessageToWX.Req req = new SendMessageToWX.Req();
         req.transaction = buildTransaction("webpage");
         req.message = msg;
-        api.sendReq(req);
+        //api.sendReq(req);
         if (is_quan) {
             req.scene = SendMessageToWX.Req.WXSceneTimeline;    //设置发送到朋友圈
         } else {
@@ -408,32 +456,55 @@ public class DetailActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        //super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 10) {
             SharedPreferencesUtil.saveData(getContext(), "refresh", true);//评论
             getMoodDetatils(moodId, UserStatusUtil.getUserId(), lat, lon);
         }
         Tencent.onActivityResultData(requestCode, resultCode, data, mIUiListener);
 //        if (requestCode == Constants.REQUEST_API) {
-        if (requestCode == Constants.REQUEST_QQ_SHARE || requestCode == Constants.REQUEST_QZONE_SHARE || requestCode == Constants.REQUEST_OLD_SHARE) {
-            Tencent.handleResultData(data, new MyIUiListener());
+        if (requestCode == Constants.REQUEST_API) {
+            if (resultCode == Constants.REQUEST_QQ_SHARE ||
+                    resultCode == Constants.REQUEST_QZONE_SHARE ||
+                    resultCode == Constants.REQUEST_OLD_SHARE) {
+                Tencent.handleResultData(data, mIUiListener);
+            }
+        }
+        if (mSsoHandler != null) {
+            mSsoHandler.authorizeCallBack(requestCode, resultCode, data);
         }
 //        }
     }
 
     MyIUiListener mIUiListener = new MyIUiListener();
 
+    @Override
+    public void onWbShareSuccess() {
+        showToast("分享成功");
+    }
+
+    @Override
+    public void onWbShareCancel() {
+        showToast("分享已取消");
+    }
+
+    @Override
+    public void onWbShareFail() {
+        showToast("分享失败");
+    }
+
     class MyIUiListener implements IUiListener {
 
         @Override
         public void onComplete(Object o) {
 // 操作成功
-            //showToast("分享成功");
+            showToast("分享成功");
+
         }
 
         @Override
         public void onError(UiError uiError) {
-            String a = "";
+            showToast("分享失败，请稍后重试");
 // 分享异常
         }
 
@@ -442,7 +513,7 @@ public class DetailActivity extends BaseActivity {
 
         public void onCancel() {
             String a = "";
-            //showToast("分享已取消");
+            showToast("分享已取消");
             // 取消分享
         }
     }
@@ -533,7 +604,7 @@ public class DetailActivity extends BaseActivity {
 
     String img_url = "";//图片路径
     String message = "";//分享的内容
-    String share_url = "http://www.baidu.com";//分享之后的url
+    String share_url ;//分享之后的url
 
     private void getMoodMessage(String page, String rows, String mood_id) {
         Map<String, String> params = new HashMap<>();

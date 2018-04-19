@@ -86,7 +86,13 @@ public class VideoAcitvity extends BaseActivity {
         super.onPause();
         jCameraView.onPause();
     }
-
+    @Override
+    public void finish() {
+        // TODO Auto-generated method stub
+        super.finish();
+        //关闭窗体动画显示
+        this.overridePendingTransition(0,R.anim.activity_close);
+    }
     ImageView close_iv;
 
     @Override
