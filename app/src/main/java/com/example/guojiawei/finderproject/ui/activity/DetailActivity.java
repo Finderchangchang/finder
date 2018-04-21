@@ -28,6 +28,7 @@ import com.example.guojiawei.finderproject.entity.CodeEntity;
 import com.example.guojiawei.finderproject.entity.DetailsEntity;
 import com.example.guojiawei.finderproject.net.API;
 import com.example.guojiawei.finderproject.ui.Video_playAty;
+import com.example.guojiawei.finderproject.util.BitMapUtil;
 import com.example.guojiawei.finderproject.util.Constant;
 import com.example.guojiawei.finderproject.util.EncryptUtil;
 import com.example.guojiawei.finderproject.util.GsonUtil;
@@ -105,7 +106,7 @@ public class DetailActivity extends BaseActivity implements WbShareCallback {
     private Info mInfo;
     Tencent mTencent;
     String share_title = "Finder";
-    String share_content = "finders可以在地图上共享自己的所见所想，共同构建全民信息地图.";
+    String share_content = "来自 人 的Finder文";
     String share_img = "";
 
     @Override
@@ -119,6 +120,7 @@ public class DetailActivity extends BaseActivity implements WbShareCallback {
     public IWXAPI api;      //这个对象是专门用来向微信发送数据的一个重要接口,使用强引用持有,所有的信息发送都是基于这个对象的
     SsoHandler mSsoHandler;
     WbShareHandler shareHandler;
+    Bitmap map;
 
     public void registerWeChat() {   //向微信注册app
         api = WXAPIFactory.createWXAPI(this, APP_ID, true);
@@ -157,10 +159,13 @@ public class DetailActivity extends BaseActivity implements WbShareCallback {
                                 break;
                             case 2:
                                 TextObject textObject = new TextObject();
-                                textObject.text = share_url + "@Finde";
+                                textObject.text = share_content + " " + share_url + " @finder分享眼前世界";
                                 WeiboMultiMessage weiboMultiMessage = new WeiboMultiMessage();
                                 weiboMultiMessage.textObject = textObject;
-                                Bitmap largeImg = bitmap;
+//                                Bitmap largeImg = bitmap;
+//                                Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.mipmap.f_wen_false);
+//
+//                                bmp.recycle();
                                 int MAX_SIZE_LARGE_BYTE = 1 << 21;
 //                                if (largeImg.getByteCount() > MAX_SIZE_LARGE_BYTE) {
 //                                    double scale = Math.sqrt(1.0 * largeImg.getByteCount() / MAX_SIZE_LARGE_BYTE);
@@ -169,7 +174,7 @@ public class DetailActivity extends BaseActivity implements WbShareCallback {
 //
 //                                    largeImg = Bitmap.createScaledBitmap(bitmap, scaledW, scaledH, true);
                                 ImageObject imageObject = new ImageObject();
-                                imageObject.setImageObject(largeImg);
+                                imageObject.setImageObject(bitmaps);
                                 weiboMultiMessage.imageObject = imageObject;
 //                                }
 
@@ -193,6 +198,7 @@ public class DetailActivity extends BaseActivity implements WbShareCallback {
                                 params = new Bundle();
                                 params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
                                 params.putString(QQShare.SHARE_TO_QQ_TITLE, share_title);// 标题
+                                params.putString(QzoneShare.SHARE_TO_QQ_SUMMARY, share_content);// 摘要
                                 params.putString(QQShare.SHARE_TO_QQ_TARGET_URL, share_url);// 内容地址
                                 params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, img_url);// 网络图片地址params.putString(QQShare.SHARE_TO_QQ_APP_NAME, "应用名称");// 应用名称
                                 mTencent.shareToQQ(DetailActivity.this, params, mIUiListener);
@@ -204,13 +210,14 @@ public class DetailActivity extends BaseActivity implements WbShareCallback {
             }
         });
         getMoodDetatils(moodId, UserStatusUtil.getUserId(), lat, lon);
-        share_url="http://111.231.194.105/share/?id="+moodId;
+        share_url = "http://111.231.194.105/share/?id=" + moodId;
         detailsAdapter.setOnItemButtonListener(new OnItemButtonListener() {
             @Override
             public void head(BaseRecyclerViewAdapater adapaterm, View v, int position) {
                 DetailsAdapter adapter = (DetailsAdapter) adapaterm;
                 DetailsEntity.HeadEntity.DataBean bean = adapter.getHeadEntity().getData();
                 final ImageView pv = (ImageView) v;
+
                 //设置不可以双指缩放移动放大等操作，跟普通的image一模一样,默认情况下就是disenable()状态
                 ivPreviewImg.setImageDrawable(null);
                 // BitMapUtil.loadImage(MainActivity.this, pv.getDrawingCache(), ivPreviewImg);
@@ -353,7 +360,7 @@ public class DetailActivity extends BaseActivity implements WbShareCallback {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                         ivPreviewImg.setImageBitmap(resource);
-                        bitmap = resource;
+                        //bitmap = resource;
                         //获取img1的信息
                         mInfo = PhotoView.getImageViewInfo(pv);
                         ivPreviewImg.setVisibility(View.VISIBLE);
@@ -418,7 +425,7 @@ public class DetailActivity extends BaseActivity implements WbShareCallback {
         });
     }
 
-    Bitmap bitmap;
+    Bitmap bitmaps;
 
     private String buildTransaction(final String type) {
         return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
@@ -430,11 +437,11 @@ public class DetailActivity extends BaseActivity implements WbShareCallback {
         WXMediaMessage msg = new WXMediaMessage(webpage);
         msg.title = share_title;
         msg.description = share_content;
-        //Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.send_music_thumb);
+        Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.mipmap.f_wen_false);
         //Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, THUMB_SIZE, THUMB_SIZE, true);
-        //bmp.recycle();
-        //msg.thumbData = Util.bmpToByteArray(thumbBmp, true);
 
+        msg.thumbData = Bitmap2Bytes(bitmaps);
+        //bitmap.recycle();
         SendMessageToWX.Req req = new SendMessageToWX.Req();
         req.transaction = buildTransaction("webpage");
         req.message = msg;
@@ -448,10 +455,16 @@ public class DetailActivity extends BaseActivity implements WbShareCallback {
         boolean b = api.sendReq(req);   //如果调用成功微信,会返回true
     }
 
-    public byte[] Bitmap2Bytes(Bitmap bm) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        return baos.toByteArray();
+    public byte[] Bitmap2Bytes(Bitmap bitmap) {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, output);
+        int options = 100;
+        while (output.toByteArray().length > 32&& options != 10) {
+            output.reset(); //清空output
+            bitmap.compress(Bitmap.CompressFormat.JPEG, options, output);//这里压缩options%，把压缩后的数据存放到output中
+            options -= 10;
+        }
+        return output.toByteArray();
     }
 
     @Override
@@ -598,13 +611,28 @@ public class DetailActivity extends BaseActivity implements WbShareCallback {
                         message = entity.getData().getContent();
                         recyclerView.setAdapter(detailsAdapter);
                         getMoodMessage("1", "10", entity.getData().getId());//获得评论的信息
+                        DetailsEntity.HeadEntity.DataBean bean = detailsAdapter.getHeadEntity().getData();
+                        share_content = "来自 " + bean.getUser().getNickname() + " 的f文";
+                        String url = "";
+                        if (bean.getImage_url() == null || bean.getImage_url().equals("")) {
+                            url = bean.getImg_s();
+                        } else {
+                            url = bean.getImage_url();
+                        }
+                        Glide.with(DetailActivity.this).load(url).asBitmap().into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                bitmaps = resource;
+                            }
+                        });
+                        share_title = bean.getContent();
                     }
                 });
     }
 
     String img_url = "";//图片路径
     String message = "";//分享的内容
-    String share_url ;//分享之后的url
+    String share_url;//分享之后的url
 
     private void getMoodMessage(String page, String rows, String mood_id) {
         Map<String, String> params = new HashMap<>();
@@ -638,6 +666,7 @@ public class DetailActivity extends BaseActivity implements WbShareCallback {
                         if (entity.getCode() == 1) {
                             if (entity.getData() != null) {
                                 detailsAdapter.refreshDatas(entity.getData().getRows());
+
                             }
                         }
 

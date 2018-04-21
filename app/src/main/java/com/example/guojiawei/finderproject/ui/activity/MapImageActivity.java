@@ -200,7 +200,7 @@ public class MapImageActivity extends BaseActivity {
                     public void onNext(Response<String> stringResponse) {
                         MapModel entity = GsonUtil.GosnToEntity(stringResponse.body(), MapModel.class);
                         if (entity.getData() != null && entity.getData().size() > 0) {
-                            mark(entity.getData());
+                            //mark(entity.getData());
                         }
                     }
                 });

@@ -115,7 +115,7 @@ public class CenterActivity extends BaseActivity {
             if (!num2.equals("0")) {
                 num += Integer.parseInt(num2);
                 f_messageNum.setVisibility(View.VISIBLE);
-                f_messageNum.setText(num1);
+                f_messageNum.setText(num2);
             }else {
                 f_messageNum.setVisibility(View.GONE);
             }

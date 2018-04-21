@@ -116,19 +116,19 @@ public class MessageDetailActivity extends BaseActivity {
         @TargetApi(Build.VERSION_CODES.HONEYCOMB)
         @Override
         public void onTransform(View view, float position) {
-            float rotation = 180f * position;
-
-            view.setTranslationX(view.getWidth() * -position);
-            view.setAlpha(rotation > 90f || rotation < -90f ? 0 : 1);
-            view.setPivotX(view.getWidth() * 0.5f);
-            view.setPivotY(view.getHeight() * 0.5f);
-            view.setRotationY(rotation);
-
-            if (position > -0.5f && position < 0.5f) {
-                view.setVisibility(View.VISIBLE);
-            } else {
-                view.setVisibility(View.INVISIBLE);
-            }
+//            float rotation = 180f * position;
+//
+//            view.setTranslationX(view.getWidth() * -position);
+//            view.setAlpha(rotation > 90f || rotation < -90f ? 0 : 1);
+//            view.setPivotX(view.getWidth() * 0.5f);
+//            view.setPivotY(view.getHeight() * 0.5f);
+//            view.setRotationY(rotation);
+//
+//            if (position > -0.5f && position < 0.5f) {
+//                view.setVisibility(View.VISIBLE);
+//            } else {
+//                view.setVisibility(View.INVISIBLE);
+//            }
         }
     }
 
@@ -257,7 +257,7 @@ public class MessageDetailActivity extends BaseActivity {
         contentFragment = new ContentFragment(Content);
         datas = new ArrayList<>();
         datas.add(imageFragment);
-        datas.add(contentFragment);
+        //datas.add(contentFragment);
         initPagerAdapter();
         contentFragment.setOnPagerContentClickListener(new ContentFragment.OnPagerContentClickListener() {
             @Override
@@ -268,7 +268,7 @@ public class MessageDetailActivity extends BaseActivity {
     }
 
     private void initPagerAdapter() {
-        viewpager.setPageTransformer(true, new FlipHorizontalTransformer());
+        //viewpager.setPageTransformer(true, new FlipHorizontalTransformer());
         adapter = new PreviewPagerAdapter(getSupportFragmentManager(), datas);
         viewpager.setAdapter(adapter);
     }

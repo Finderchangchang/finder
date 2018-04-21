@@ -109,6 +109,7 @@ public class DetailsAdapter extends BaseRecyclerViewAdapater<DetailsEntity.MessE
             }
             BitMapUtil.loadImage(mContext, headEntity.getData().getImg_s(), h.icPreviewImg);
             h.tvName.setText(headEntity.getData().getUser().toString());
+
             h.tvContent.setText(headEntity.getData().getContent().toString());
             Glide.with(mContext).load(headEntity.getData().getUser().getHead_img()).placeholder(R.drawable.ic_head_load).into(h.icHead);
             h.tvName.setText(headEntity.getData().getUser().getNickname());
